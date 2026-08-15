@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>surflist — find a surf school</title>
+  <meta name="description" content="A simple directory of surf schools. Pick a country and region to find one near your next break." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap" />
+  <style>
+    :root {
+      --paper: #f7f4ec;
+      --ink: #13302c;
+      --muted: #5f6f6a;
+      --line: #e4ddcc;
+      --accent: #0c5c57;
+      --accent-ink: #fbfaf5;
+      --dot: #ef9e39;
+      --radius: 999px;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { width: min(880px, 100% - 2.5rem); margin-inline: auto; }
+    a { color: inherit; }
+
+    /* header */
+    header { padding: 3.2rem 0 1.6rem; }
+    .brand {
+      font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em;
+      text-decoration: none;
+    }
+    .brand span { color: var(--dot); }
+    .tagline { color: var(--muted); margin: 0.4rem 0 0; font-size: 1.05rem; }
+
+    /* filters */
+    .filters { position: sticky; top: 0; z-index: 5;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      backdrop-filter: blur(8px);
+      padding: 0.9rem 0; border-bottom: 1px solid var(--line); margin-bottom: 1.6rem; }
+    .filter-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); margin: 0 0 0.5rem;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .btn-row + .filter-label { margin-top: 1rem; }
+    .chip {
+      font: inherit; font-size: 0.92rem; font-weight: 500;
+      padding: 0.4em 0.95em; border-radius: var(--radius);
+      border: 1px solid var(--line); background: #fffdf8; color: var(--ink);
+      cursor: pointer; transition: border-color .12s, background .12s, color .12s;
+      white-space: nowrap;
+    }
+    .chip:hover { border-color: var(--accent); }
+    .chip.is-active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .chip .n { opacity: 0.6; font-size: 0.8em; margin-left: 0.4ch; }
+    .chip.is-active .n { opacity: 0.75; }
+    .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* count */
+    .count { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.2rem; }
+
+    /* listings */
+    .list { list-style: none; margin: 0 0 4rem; padding: 0; display: grid; gap: 0; }
+    .item {
+      padding: 1.25rem 0; border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1.2rem; align-items: start;
+    }
+    .item:last-child { border-bottom: 1px solid var(--line); }
+    .item__place {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--accent); grid-column: 1 / -1; margin-bottom: 0.15rem;
+    }
+    .item__name { font-size: 1.22rem; font-weight: 600; margin: 0; }
+    .item__blurb { color: var(--muted); margin: 0.15rem 0 0; grid-column: 1; }
+    .item__levels { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.55rem 0 0; grid-column: 1; }
+    .lvl {
+      font-size: 0.72rem; color: var(--muted);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 0.15em 0.6em; background: #fffdf8;
+    }
+    .item__link {
+      grid-row: 1 / span 2; grid-column: 2; align-self: center;
+      font-size: 0.92rem; font-weight: 600; color: var(--accent);
+      text-decoration: none; white-space: nowrap;
+    }
+    .item__link:hover { text-decoration: underline; }
+    .empty { color: var(--muted); padding: 2rem 0; }
+
+    footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+
+    @media (max-width: 520px) {
+      header { padding-top: 2.2rem; }
+      .item { grid-template-columns: 1fr; }
+      .item__link { grid-row: auto; grid-column: 1; align-self: start; margin-top: 0.4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="/">surflist<span>.</span></a>
+      <p class="tagline">Find a surf school. Pick a country, then a region.</p>
+    </div>
+  </header>
+
+  <div class="filters">
+    <div class="wrap">
+      <p class="filter-label">Country</p>
+      <div class="btn-row" id="countries"></div>
+      <div id="region-block" hidden>
+        <p class="filter-label">Region</p>
+        <div class="btn-row" id="regions"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <p class="count" id="count"></p>
+    <ul class="list" id="list"></ul>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Run a surf school? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it's free.
+    </div>
+  </footer>
+
+  <script src="/listings.js"></script>
+  <script>
+    (function () {
+      var data = (window.LISTINGS || []).slice().sort(function (a, b) {
+        return a.country.localeCompare(b.country) || a.region.localeCompare(b.region) || a.name.localeCompare(b.name);
+      });
+
+      var state = { country: "All", region: "All" };
+      var elCountries = document.getElementById("countries");
+      var elRegions = document.getElementById("regions");
+      var elRegionBlock = document.getElementById("region-block");
+      var elList = document.getElementById("list");
+      var elCount = document.getElementById("count");
+
+      function uniq(arr) { return arr.filter(function (v, i) { return arr.indexOf(v) === i; }); }
+      function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+      function countriesList() {
+        return ["All"].concat(uniq(data.map(function (d) { return d.country; })).sort());
+      }
+      function regionsList(country) {
+        var inC = data.filter(function (d) { return d.country === country; });
+        return ["All"].concat(uniq(inC.map(function (d) { return d.region; })).sort());
+      }
+      function countFor(country, region) {
+        return data.filter(function (d) {
+          return (country === "All" || d.country === country) &&
+                 (region === "All" || d.region === region);
+        }).length;
+      }
+
+      function makeChip(label, active, count, onClick) {
+        var b = document.createElement("button");
+        b.className = "chip" + (active ? " is-active" : "");
+        b.type = "button";
+        b.innerHTML = esc(label) + (count != null ? ' <span class="n">' + count + "</span>" : "");
+        b.addEventListener("click", onClick);
+        return b;
+      }
+
+      function renderCountries() {
+        elCountries.innerHTML = "";
+        countriesList().forEach(function (c) {
+          var count = c === "All" ? data.length : countFor(c, "All");
+          elCountries.appendChild(makeChip(c, state.country === c, count, function () {
+            state.country = c; state.region = "All";
+            renderCountries(); renderRegions(); renderList();
+          }));
+        });
+      }
+
+      function renderRegions() {
+        if (state.country === "All") { elRegionBlock.hidden = true; elRegions.innerHTML = ""; return; }
+        elRegionBlock.hidden = false;
+        elRegions.innerHTML = "";
+        regionsList(state.country).forEach(function (r) {
+          var count = countFor(state.country, r);
+          elRegions.appendChild(makeChip(r, state.region === r, count, function () {
+            state.region = r; renderRegions(); renderList();
+          }));
+        });
+      }
+
+      function renderList() {
+        var rows = data.filter(function (d) {
+          return (state.country === "All" || d.country === state.country) &&
+                 (state.region === "All" || d.region === state.region);
+        });
+
+        var noun = rows.length === 1 ? " surf school" : " surf schools";
+        var where = state.country === "All" ? ""
+          : " in " + (state.region === "All" ? state.country : state.region + ", " + state.country);
+        elCount.textContent = rows.length + noun + where;
+
+        if (!rows.length) { elList.innerHTML = '<li class="empty">Nothing here yet.</li>'; return; }
+
+        elList.innerHTML = rows.map(function (d) {
+          var place = [d.town, d.region].filter(Boolean).join(", ");
+          var levels = (d.levels || []).map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
+          var link = d.url ? '<a class="item__link" href="' + esc(d.url) + '" target="_blank" rel="noopener">Visit &rarr;</a>' : "";
+          return '<li class="item">' +
+                   '<span class="item__place">' + esc(place) + "</span>" +
+                   '<h2 class="item__name">' + esc(d.name) + "</h2>" +
+                   (d.blurb ? '<p class="item__blurb">' + esc(d.blurb) + "</p>" : "") +
+                   (levels ? '<div class="item__levels">' + levels + "</div>" : "") +
+                   link +
+                 "</li>";
+        }).join("");
+      }
+
+      renderCountries();
+      renderRegions();
+      renderList();
+    })();
+  </script>
+</body>
+</html>
