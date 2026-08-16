@@ -70,30 +70,51 @@
     .count { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.2rem; }
 
     /* listings */
-    .list { list-style: none; margin: 0 0 4rem; padding: 0; display: grid; gap: 0; }
+    .list { list-style: none; margin: 0 0 4rem; padding: 0; }
     .item {
-      padding: 1.25rem 0; border-top: 1px solid var(--line);
-      display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1.2rem; align-items: start;
+      padding: 1.4rem 0; border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: 140px 1fr; gap: 1.3rem; align-items: start;
     }
     .item:last-child { border-bottom: 1px solid var(--line); }
+    .item__thumb {
+      aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: var(--line);
+    }
+    .item__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .item.is-premium .item__thumb { box-shadow: 0 0 0 2px color-mix(in srgb, var(--dot) 60%, #fff); }
+    .item__body { min-width: 0; }
     .item__place {
       font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--accent); grid-column: 1 / -1; margin-bottom: 0.15rem;
+      color: var(--accent); display: block; margin-bottom: 0.2rem;
     }
+    .item__head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .item__name { font-size: 1.22rem; font-weight: 600; margin: 0; }
-    .item__blurb { color: var(--muted); margin: 0.15rem 0 0; grid-column: 1; }
-    .item__levels { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.55rem 0 0; grid-column: 1; }
+    .badge-premium {
+      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+      color: #7a4a05; background: color-mix(in srgb, var(--dot) 24%, #fff);
+      border: 1px solid color-mix(in srgb, var(--dot) 55%, #fff);
+      padding: 0.2em 0.62em; border-radius: var(--radius);
+    }
+    .item__blurb { color: var(--muted); margin: 0.3rem 0 0; }
+    .item__foot {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.8rem 1rem; margin-top: 0.75rem; flex-wrap: wrap;
+    }
+    .item__levels { display: flex; flex-wrap: wrap; gap: 0.35rem; }
     .lvl {
       font-size: 0.72rem; color: var(--muted);
       border: 1px solid var(--line); border-radius: var(--radius);
       padding: 0.15em 0.6em; background: #fffdf8;
     }
-    .item__link {
-      grid-row: 1 / span 2; grid-column: 2; align-self: center;
+    .item__actions { display: flex; align-items: center; gap: 0.95rem; margin-left: auto; }
+    .socials { display: flex; align-items: center; gap: 0.55rem; }
+    .soc { color: var(--muted); display: inline-flex; transition: color .12s; }
+    .soc svg { width: 18px; height: 18px; display: block; fill: currentColor; }
+    .soc:hover { color: var(--accent); }
+    .visit {
       font-size: 0.92rem; font-weight: 600; color: var(--accent);
       text-decoration: none; white-space: nowrap;
     }
-    .item__link:hover { text-decoration: underline; }
+    .visit:hover { text-decoration: underline; }
     .empty { color: var(--muted); padding: 2rem 0; }
 
     footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; }
@@ -101,8 +122,8 @@
 
     @media (max-width: 520px) {
       header { padding-top: 2.2rem; }
-      .item { grid-template-columns: 1fr; }
-      .item__link { grid-row: auto; grid-column: 1; align-self: start; margin-top: 0.4rem; }
+      .item { grid-template-columns: 1fr; gap: 0.9rem; }
+      .item__thumb { aspect-ratio: 16 / 9; }
     }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
@@ -141,8 +162,47 @@
   <script>
     (function () {
       var data = (window.LISTINGS || []).slice().sort(function (a, b) {
-        return a.country.localeCompare(b.country) || a.region.localeCompare(b.region) || a.name.localeCompare(b.name);
+        return (b.premium ? 1 : 0) - (a.premium ? 1 : 0) ||
+               a.country.localeCompare(b.country) ||
+               a.region.localeCompare(b.region) ||
+               a.name.localeCompare(b.name);
       });
+
+      // Inline SVG icons — only rendered for socials a listing actually has.
+      var SOCIAL_ICONS = {
+        instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.62c-3.15 0-3.52.01-4.76.07-.9.04-1.39.19-1.71.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.13.32-.28.81-.32 1.71-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.04.9.19 1.39.32 1.71.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.13.81.28 1.71.32 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.9-.04 1.39-.19 1.71-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.13-.32.28-.81.32-1.71.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.04-.9-.19-1.39-.32-1.71a2.85 2.85 0 0 0-.69-1.06 2.85 2.85 0 0 0-1.06-.69c-.32-.13-.81-.28-1.71-.32-1.24-.06-1.61-.07-4.76-.07zm0 2.76a5.3 5.3 0 1 1 0 10.6 5.3 5.3 0 0 1 0-10.6zm0 1.62a3.68 3.68 0 1 0 0 7.36 3.68 3.68 0 0 0 0-7.36zm5.5-.29a1.24 1.24 0 1 1-2.48 0 1.24 1.24 0 0 1 2.48 0z"/></svg>',
+        facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>',
+        tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>',
+        youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>',
+        x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.83L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg>',
+      };
+      var SOCIAL_ORDER = ["instagram", "facebook", "tiktok", "youtube", "x"];
+
+      function placeholderImage(seed) {
+        var h = 0;
+        for (var i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+        var hue = 168 + (h % 28);
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">' +
+          '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0" stop-color="hsl(' + hue + ',42%,34%)"/>' +
+          '<stop offset="1" stop-color="hsl(' + (hue + 14) + ',44%,22%)"/></linearGradient></defs>' +
+          '<rect width="400" height="300" fill="url(#g)"/>' +
+          '<path d="M0 206 C 80 178 140 236 220 210 C 300 186 350 224 400 204 L400 300 L0 300 Z" fill="rgba(255,255,255,0.10)"/>' +
+          '<path d="M0 230 C 90 204 150 256 240 234 C 320 216 360 244 400 230 L400 300 L0 300 Z" fill="rgba(255,255,255,0.14)"/>' +
+          '</svg>';
+        return "data:image/svg+xml," + encodeURIComponent(svg);
+      }
+
+      function renderSocials(socials) {
+        if (!socials) return "";
+        var links = SOCIAL_ORDER
+          .filter(function (k) { return socials[k] && SOCIAL_ICONS[k]; })
+          .map(function (k) {
+            return '<a class="soc" href="' + esc(socials[k]) + '" target="_blank" rel="noopener" aria-label="' + k + '">' + SOCIAL_ICONS[k] + "</a>";
+          })
+          .join("");
+        return links ? '<div class="socials">' + links + "</div>" : "";
+      }
 
       var state = { country: "All", region: "All" };
       var elCountries = document.getElementById("countries");
@@ -216,14 +276,23 @@
 
         elList.innerHTML = rows.map(function (d) {
           var place = [d.town, d.region].filter(Boolean).join(", ");
+          var img = d.image ? esc(d.image) : placeholderImage(d.name);
           var levels = (d.levels || []).map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
-          var link = d.url ? '<a class="item__link" href="' + esc(d.url) + '" target="_blank" rel="noopener">Visit &rarr;</a>' : "";
-          return '<li class="item">' +
-                   '<span class="item__place">' + esc(place) + "</span>" +
-                   '<h2 class="item__name">' + esc(d.name) + "</h2>" +
-                   (d.blurb ? '<p class="item__blurb">' + esc(d.blurb) + "</p>" : "") +
-                   (levels ? '<div class="item__levels">' + levels + "</div>" : "") +
-                   link +
+          var socials = renderSocials(d.socials);
+          var visit = d.url ? '<a class="visit" href="' + esc(d.url) + '" target="_blank" rel="noopener">Visit &rarr;</a>' : "";
+          var badge = d.premium ? '<span class="badge-premium">Premium</span>' : "";
+          var actions = (socials || visit) ? '<div class="item__actions">' + socials + visit + "</div>" : "";
+          return '<li class="item' + (d.premium ? " is-premium" : "") + '">' +
+                   '<div class="item__thumb"><img src="' + img + '" alt="' + esc(d.name) + '" loading="lazy"></div>' +
+                   '<div class="item__body">' +
+                     '<span class="item__place">' + esc(place) + "</span>" +
+                     '<div class="item__head"><h2 class="item__name">' + esc(d.name) + "</h2>" + badge + "</div>" +
+                     (d.blurb ? '<p class="item__blurb">' + esc(d.blurb) + "</p>" : "") +
+                     '<div class="item__foot">' +
+                       '<div class="item__levels">' + levels + "</div>" +
+                       actions +
+                     "</div>" +
+                   "</div>" +
                  "</li>";
         }).join("");
       }

@@ -23,12 +23,27 @@ Open `listings.js` and copy one block inside the list, then change the details:
   url: "https://theirsite.com",
   levels: ["Beginner", "Intermediate"],   // any of: Beginner, Intermediate, Advanced, Kids
   blurb: "One friendly line about them.",
+
+  image: "https://.../photo.jpg",         // leave "" for an auto placeholder
+  premium: false,                          // true = pinned to the top + a "Premium" tag
+  socials: {                               // only the ones you fill in are shown
+    instagram: "https://instagram.com/them",
+    facebook: "https://facebook.com/them",
+    tiktok: "https://tiktok.com/@them",
+    youtube: "https://youtube.com/@them",
+    x: "https://x.com/them",
+  },
 },
 ```
 
-Save the file. The country and region buttons build themselves from whatever is
-in the list — add a school in a new country and its button just appears. Then
-redeploy (below). That's the whole workflow.
+Save the file. A few things happen automatically:
+
+- **Buttons build themselves** — add a school in a new country or region and its button just appears.
+- **Images** — set `image` to a photo URL, or leave it `""` and a tidy wave placeholder is drawn for you (each one slightly different).
+- **Premium** — set `premium: true` and the listing jumps to the top of the list and gets a **Premium** tag. Multiple premium listings all sit at the top.
+- **Socials** — only the platforms you include in `socials` show an icon. Delete a line (or the whole `socials` block) and it simply won't appear. Supported: `instagram`, `facebook`, `tiktok`, `youtube`, `x`.
+
+Then redeploy (below). That's the whole workflow.
 
 ## Preview it locally
 
@@ -62,7 +77,6 @@ free SSL certificate.
 
 ## Where to go next (only if you want to)
 
-- **Photos:** add an `image` URL per listing and drop an `<img>` into the item template.
 - **Search box:** the data's already in the page — a text filter is ~15 lines.
 - **Spreadsheet editing:** if hand-editing `listings.js` gets old, the list can be
   generated from Airtable or a Google Sheet at deploy time without changing the page itself.
