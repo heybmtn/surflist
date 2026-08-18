@@ -12,9 +12,16 @@
      blurb               one line about them
 
      image               photo URL. Leave "" and a placeholder is shown.
-     premium             true = pinned to the top + a "Premium" tag.
+     verified            true = a "Surflist verified" tag + pinned to the top.
      socials             only the ones you fill in are shown. Supported:
                          instagram, facebook, tiktok, youtube, x
+
+   Verified-only (these power each verified listing's own /schools/<slug>/
+   page and its schema — free listings don't need them):
+     description         a fuller paragraph shown on the listing's page
+     streetAddress       street line for the address + schema
+     lat, lng            coordinates (numbers) for the geo schema
+     priceRange          e.g. "€€" or "££" — shown and added to schema
    ============================================================ */
 
 window.LISTINGS = [
@@ -26,8 +33,14 @@ window.LISTINGS = [
     url: "https://example.com/ericeira",
     levels: ["Beginner", "Intermediate", "Advanced"],
     blurb: "Coaching in Europe's only World Surfing Reserve.",
+    description:
+      "Ericeira Wave Academy runs small-group surf lessons and multi-day courses in Ericeira, the only World Surfing Reserve in Europe. With a cluster of beach breaks and reefs within a few kilometres, coaches match every session to the conditions and your level — from first whitewater waves through to reef-break technique. Boards and wetsuits are included, and video analysis is available on the intermediate and advanced courses.",
+    streetAddress: "Rua dos Surfistas 12",
+    lat: 38.9631,
+    lng: -9.4159,
+    priceRange: "€€",
     image: "",
-    premium: true,
+    verified: true,
     socials: {
       instagram: "https://instagram.com/example",
       youtube: "https://youtube.com/@example",
@@ -42,8 +55,14 @@ window.LISTINGS = [
     url: "https://example.com/newquay",
     levels: ["Beginner", "Intermediate", "Kids"],
     blurb: "Fistral Beach lessons in the UK's surf capital.",
+    description:
+      "Newquay Surf School teaches on Fistral Beach, the heart of the UK's surf scene. Level-1 group lessons run every morning through the season with all equipment provided and qualified, lifeguard-trained coaches. It's an easy, welcoming first step into cold-water surfing, with progression courses for those ready to move beyond the whitewater.",
+    streetAddress: "Fistral Beach, Headland Road",
+    lat: 50.4165,
+    lng: -5.1004,
+    priceRange: "££",
     image: "",
-    premium: true,
+    verified: true,
     socials: {
       instagram: "https://instagram.com/example",
       tiktok: "https://tiktok.com/@example",
@@ -58,7 +77,7 @@ window.LISTINGS = [
     levels: ["Beginner", "Intermediate", "Kids"],
     blurb: "Beach-break coaching on one of Europe's most consistent stretches of sand.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {
       instagram: "https://instagram.com/example",
     },
@@ -72,7 +91,7 @@ window.LISTINGS = [
     levels: ["Beginner", "Intermediate"],
     blurb: "City-beach lessons at Zurriola, pintxos optional.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {
       instagram: "https://instagram.com/example",
       facebook: "https://facebook.com/example",
@@ -87,7 +106,7 @@ window.LISTINGS = [
     levels: ["Beginner", "Intermediate", "Advanced"],
     blurb: "A break for every wind direction, most days of the year.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {},
   },
   {
@@ -99,7 +118,7 @@ window.LISTINGS = [
     levels: ["Intermediate", "Advanced"],
     blurb: "Cold-water reef surfing at the top of the mainland.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {
       youtube: "https://youtube.com/@example",
     },
@@ -113,7 +132,7 @@ window.LISTINGS = [
     levels: ["Beginner", "Kids"],
     blurb: "Gentle Atlantic beginner waves on the Wild Atlantic Way.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {
       instagram: "https://instagram.com/example",
       facebook: "https://facebook.com/example",
@@ -129,7 +148,7 @@ window.LISTINGS = [
     levels: ["Beginner", "Intermediate", "Advanced"],
     blurb: "Ireland's surf town, with the famous Peak reef on the doorstep.",
     image: "",
-    premium: false,
+    verified: false,
     socials: {
       instagram: "https://instagram.com/example",
     },
