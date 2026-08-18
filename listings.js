@@ -47,4 +47,23 @@ window.LISTINGS = [
       tiktok: "https://tiktok.com/@example",
     },
   },
+  {
+    // FREE LISTING EXAMPLE — edit these details for a real school, then run
+    // `node build.js`. Free listings show on the homepage and link straight
+    // out to the school's own site. Leave out verified/description/address/
+    // lat/lng/priceRange (those are only for verified listings).
+    name: "Croyde Bay Surf School",
+    country: "United Kingdom",
+    region: "Devon",
+    town: "Croyde",
+    url: "https://example.com/croyde",
+    levels: ["Beginner", "Kids"],
+    blurb: "Family-friendly beach-break lessons in North Devon.",
+    image: "",
+    verified: false,
+    socials: {
+      instagram: "https://instagram.com/example",
+      facebook: "https://facebook.com/example",
+    },
+  },
 ];
