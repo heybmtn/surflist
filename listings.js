@@ -33,14 +33,8 @@ window.LISTINGS = [
     url: "https://example.com/ericeira",
     levels: ["Beginner", "Intermediate", "Advanced"],
     blurb: "Coaching in Europe's only World Surfing Reserve.",
-    description:
-      "Ericeira Wave Academy runs small-group surf lessons and multi-day courses in Ericeira, the only World Surfing Reserve in Europe. With a cluster of beach breaks and reefs within a few kilometres, coaches match every session to the conditions and your level — from first whitewater waves through to reef-break technique. Boards and wetsuits are included, and video analysis is available on the intermediate and advanced courses.",
-    streetAddress: "Rua dos Surfistas 12",
-    lat: 38.9631,
-    lng: -9.4159,
-    priceRange: "€€",
     image: "",
-    verified: true,
+    verified: false,
     socials: {
       instagram: "https://instagram.com/example",
       youtube: "https://youtube.com/@example",

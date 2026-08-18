@@ -62,17 +62,19 @@ The country/region buttons, images, verified pinning, and socials all update
 themselves from the data. If two verified listings would share a URL slug, add a
 `slug: "custom-slug"` field to one of them.
 
-## Build the verified pages
+## Build the site
 
-Whenever you add or change a **verified** listing, regenerate its page:
+The homepage and the verified pages are both generated from `listings.js`, so
+after **any** edit run:
 
 ```bash
 node build.js
 ```
 
-This (re)creates `schools/<slug>/index.html` for every verified listing, and
-rewrites `sitemap.xml` and `robots.txt`. Free-only changes don't strictly need a
-build, but running it is always safe. It has no dependencies — just Node.
+This regenerates `index.html` (with all cards + filters baked into the HTML),
+every `schools/<slug>/index.html`, `sitemap.xml`, and `robots.txt`. It has no
+dependencies — just Node. The pages ship as plain HTML with the font self-hosted
+and no client-side rendering, which is what keeps them fast and fully crawlable.
 
 > Update `SITE` at the top of `build.js` if your domain isn't `https://surflist.co`.
 
