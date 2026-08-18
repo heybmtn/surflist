@@ -234,6 +234,35 @@ function renderDetail(d, slug) {
   "  </div>\n</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+/* ---------- llms.txt (guide for LLMs, per llmstxt.org) ---------- */
+function renderLlms() {
+  var verified = LISTINGS.filter(isVerified);
+  var out = [];
+  out.push("# surflist");
+  out.push("");
+  out.push("> surflist is a directory of surf schools. Browse by country and region to find a surf school near your next break. Verified schools have a dedicated profile page with location, levels taught, and pricing.");
+  out.push("");
+  out.push("## Main pages");
+  out.push("");
+  out.push("- [Surf school directory](" + SITE + "/): every surf school, filterable by country and region.");
+  out.push("");
+  if (verified.length) {
+    out.push("## Verified surf schools");
+    out.push("");
+    verified.forEach(function (d) {
+      var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
+      var desc = String(d.blurb || "").replace(/\s+/g, " ").trim().replace(/\.+$/, "");
+      out.push("- [" + d.name + "](" + SITE + "/schools/" + slugOf(d) + "/): surf school in " + place + (desc ? " — " + desc : "") + ".");
+    });
+    out.push("");
+  }
+  out.push("## About");
+  out.push("");
+  out.push("surflist lists surf schools with their location, the levels they teach, and links to their websites and social profiles. Basic listings are free; verified listings get a dedicated page with address, coordinates, and pricing. To get listed, email hello@surflist.co.");
+  out.push("");
+  return out.join("\n");
+}
+
 /* ---------- write everything ---------- */
 fs.writeFileSync(path.join(ROOT, "index.html"), renderIndex());
 
@@ -254,5 +283,6 @@ fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(function (u) { return "  <url><loc>" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n");
 fs.writeFileSync(path.join(ROOT, "robots.txt"), "User-agent: *\nAllow: /\n\nSitemap: " + SITE + "/sitemap.xml\n");
+fs.writeFileSync(path.join(ROOT, "llms.txt"), renderLlms());
 
-console.log("Built index.html + " + LISTINGS.filter(isVerified).length + " verified page(s), sitemap.xml, robots.txt.");
+console.log("Built index.html + " + LISTINGS.filter(isVerified).length + " verified page(s), sitemap.xml, robots.txt, llms.txt.");

@@ -1,0 +1,15 @@
+# surflist
+
+> surflist is a directory of surf schools. Browse by country and region to find a surf school near your next break. Verified schools have a dedicated profile page with location, levels taught, and pricing.
+
+## Main pages
+
+- [Surf school directory](https://surflist.co/): every surf school, filterable by country and region.
+
+## Verified surf schools
+
+- [Newquay Surf School](https://surflist.co/schools/newquay-surf-school/): surf school in Newquay, Cornwall, United Kingdom — Fistral Beach lessons in the UK's surf capital.
+
+## About
+
+surflist lists surf schools with their location, the levels they teach, and links to their websites and social profiles. Basic listings are free; verified listings get a dedicated page with address, coordinates, and pricing. To get listed, email hello@surflist.co.
