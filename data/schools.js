@@ -9,20 +9,13 @@ window.LISTINGS = [
     url: "https://cornishwave.com",
     blurb: "Small-group surf coaching on Towan and Fistral from a friendly, long-running local school — plus coasteering and SUP.",
     image: "",
-    verified: true,
+    verified: false,
     socials: {
       instagram: "https://www.instagram.com/cornishwave/",
       facebook: "https://www.facebook.com/cornishwave",
       youtube: "https://www.youtube.com/c/Cornishwave"
     },
-    levels: ["Beginner", "Intermediate", "Kids"],
-    // verified-only fields below
-    description:
-      "Cornish Wave has been teaching people to surf in Newquay since 2012. Sessions run in small groups (max eight) with Surfing England–qualified coaches who are also trained beach lifeguards, and the team picks between Towan and Fistral each day depending on conditions. Alongside surf lessons they run coasteering, kayak and paddleboard tours, surf camps and surf-and-yoga retreats, with all wetsuits and boards included. The base is on Fore Street in the centre of town, a short walk from both beaches, with changing rooms, hot showers and secure storage.",
-    streetAddress: "40 Fore St, Newquay TR7 1LP",
-    lat: 50.4151105,
-    lng: -5.0871806,
-    priceRange: "££"
+    levels: ["Beginner", "Intermediate", "Kids"]
   },
   {
     name: "Escape Surf School",

@@ -9,18 +9,11 @@ window.LISTINGS = [
     url: "https://www.instagram.com/fringesurfshop/",
     blurb: "A tucked-away independent shop in Cribbar Yard trading in alternative surfcraft, old-school brands and subculture kit.",
     image: "",
-    verified: true,
+    verified: false,
     socials: {
       instagram: "https://www.instagram.com/fringesurfshop/"
     },
-    offerings: ["Surfboards", "Wetsuits", "Apparel"],
-    // verified-only fields below
-    description:
-      "Run by Stevo, the Temple of Fringe is a small, well-loved independent surf shop tucked into Cribbar Yard on Bank Street, opposite Millets. It specialises in alternative surfcraft, old-school brands and subculture surf and skate gear, and has built a reputation for knowledgeable, unhurried advice — the kind of place regulars travel back to. It trades primarily in-store and through Instagram rather than a full webshop.",
-    streetAddress: "Cribbar Yard, Bank St, Newquay TR7 1EP",
-    lat: 50.4134771,
-    lng: -5.0859907,
-    priceRange: "££"
+    offerings: ["Surfboards", "Wetsuits", "Apparel"]
   },
   {
     name: "10 Over Surf Shop",
@@ -36,8 +29,7 @@ window.LISTINGS = [
       youtube: "https://www.youtube.com/@10OverSurfShop"
     },
     offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
-    // NOTE: online shop, pickup unit is in Zelah (TR4 9JG), ~10 min from Newquay —
-    // no Newquay-town storefront. Reclassify or adjust town if needed.
+    // NOTE: online shop, pickup unit is in Zelah (TR4 9JG), ~10 min from Newquay.
   },
   {
     name: "Ann's Cottage",
@@ -54,8 +46,7 @@ window.LISTINGS = [
       x: "https://x.com/annscottagesurf"
     },
     offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
-    // NOTE: 14-store Cornwall chain; url is the brand site. Swap to the Fistral store
-    // page if you'd rather link the specific Newquay location.
+    // NOTE: 14-store Cornwall chain; url is the brand site.
   },
   {
     name: "Fat Willy's Surf Shack",
@@ -72,7 +63,6 @@ window.LISTINGS = [
       tiktok: "https://www.tiktok.com/@fatwillysnewquay"
     },
     offerings: ["Apparel", "Accessories"]
-    // NOTE: apparel/lifestyle focus (not hardware). Distinct from the separate
-    // "Fat Willy's Surf Shack Cornwall" (fatwillyscornwall.co.uk, East St + Falmouth).
+    // NOTE: apparel/lifestyle focus. Distinct from "Fat Willy's Surf Shack Cornwall" (East St + Falmouth).
   }
 ];

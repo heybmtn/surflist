@@ -9,19 +9,12 @@ window.LISTINGS = [
     url: "https://basesurflodge.co.uk",
     blurb: "Hosted surf camp overlooking Fistral — small groups, daily coaching with video analysis, breakfast and a garden BBQ.",
     image: "",
-    verified: true,
+    verified: false,
     socials: {
       instagram: "https://www.instagram.com/basesurflodge_newquay/",
       facebook: "https://www.facebook.com/basesurflodge"
     },
-    stayType: "Camp",
-    // verified-only fields below
-    description:
-      "Run by hosts Rob and Lou, Base Surf Lodge has been offering the surfer's life in Newquay since 2009. It sits a five-minute walk from both Fistral and Towan, with dorm-style rooms sleeping two to six and panoramic views over the bay. Camps combine daily two-hour lessons — with video analysis and a strong focus on individual progression — a healthy breakfast each morning and a communal garden barbecue, making it a sociable, welcoming base for beginners through to improving intermediates. Boards and wetsuits are yours to use for the length of your stay.",
-    streetAddress: "20 Tower Rd, Newquay TR7 1LR",
-    lat: 50.4163556,
-    lng: -5.0897429,
-    priceRange: "££"
+    stayType: "Camp"
   },
   {
     name: "Newquay International Backpackers",
@@ -48,9 +41,7 @@ window.LISTINGS = [
     verified: false,
     socials: {},
     stayType: "Hostel"
-    // NOTE: Google lists Breakwater at the same Tower Rd address/phone as Newquay
-    // International Backpackers, but they run separate sites. Confirm they're distinct
-    // before publishing both.
+    // NOTE: Google lists Breakwater at the same Tower Rd address/phone as Newquay International Backpackers.
   },
   {
     name: "Elemental Surf Lodge",
