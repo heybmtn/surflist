@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://surflist.co/</loc></url>
-  <url><loc>https://surflist.co/schools/newquay-surf-school/</loc></url>
+  <url><loc>https://surflist.co/surf-schools/</loc></url>
+  <url><loc>https://surflist.co/surf-schools/newquay-surf-school/</loc></url>
+  <url><loc>https://surflist.co/surf-shops/</loc></url>
+  <url><loc>https://surflist.co/surf-shops/gulf-stream-surf-shop/</loc></url>
+  <url><loc>https://surflist.co/surf-stays/</loc></url>
+  <url><loc>https://surflist.co/surf-stays/fistral-surf-camp/</loc></url>
+  <url><loc>https://surflist.co/surf-services/</loc></url>
+  <url><loc>https://surflist.co/surf-services/ding-doctor-cornwall/</loc></url>
 </urlset>

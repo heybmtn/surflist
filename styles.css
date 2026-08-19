@@ -217,3 +217,31 @@
     }
     /* keep even the smallest labels >= 12px */
     .badge-verified, .detail__eyebrow { font-size: 0.75rem; }
+
+    /* ===== multi-category: nav, hub, category head ===== */
+    .header__inner { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem 1.5rem; flex-wrap: wrap; }
+    .nav { display: flex; flex-wrap: wrap; gap: 0.15rem; }
+    .nav a { padding: 0.6rem 0.75rem; border-radius: 9px; color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; line-height: 1; }
+    .nav a:hover { color: var(--ink); background: rgba(0,0,0,0.03); }
+    .nav a[aria-current] { color: var(--accent); background: rgba(12,92,87,0.09); }
+
+    .hero { padding: 1.2rem 0 0.5rem; max-width: 640px; }
+    .hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+    .hero p { color: var(--muted); font-size: 1.12rem; line-height: 1.55; margin: 0; }
+
+    .hub-cat { margin-top: 2.8rem; }
+    .hub-cat__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+    .hub-cat__head h2 { font-size: 1.35rem; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+    .hub-cat__head a { color: var(--accent); font-weight: 600; font-size: 0.95rem; text-decoration: none; white-space: nowrap; }
+    .hub-cat__head a:hover { text-decoration: underline; }
+
+    .cat-head { margin: 1.4rem 0 0.4rem; }
+    .cat-head h1 { font-size: clamp(1.7rem, 3.5vw, 2.3rem); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.3rem; }
+    .cat-head p { color: var(--muted); margin: 0; max-width: 560px; }
+
+    /* card name renders the same at any heading level via the .card__name class */
+
+    @media (max-width: 520px) {
+      .nav a { padding: 0.7rem 0.7rem; }
+      .hub-cat { margin-top: 2rem; }
+    }

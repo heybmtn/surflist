@@ -1,15 +1,30 @@
 # surflist
 
-> surflist is a directory of surf schools. Browse by country and region to find a surf school near your next break. Verified schools have a dedicated profile page with location, levels taught, and pricing.
+> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by country and region. Verified listings have their own profile page with location and pricing.
 
-## Main pages
+## Sections
 
-- [Surf school directory](https://surflist.co/): every surf school, filterable by country and region.
+- [Surf schools](https://surflist.co/surf-schools/): Learn to surf or level up with schools and coaches near the break.
+- [Surf shops](https://surflist.co/surf-shops/): Independent surf shops for boards, wetsuits, rentals and repairs.
+- [Places to stay](https://surflist.co/surf-stays/): Surf camps, hostels, eco-pods and campervans close to the waves.
+- [Surf services](https://surflist.co/surf-services/): Board repair, ding fixes and other surf services.
 
 ## Verified surf schools
 
-- [Newquay Surf School](https://surflist.co/schools/newquay-surf-school/): surf school in Newquay, Cornwall, United Kingdom — Fistral Beach lessons in the UK's surf capital.
+- [Newquay Surf School](https://surflist.co/surf-schools/newquay-surf-school/): surf school in Newquay, Cornwall, United Kingdom — Fistral Beach lessons in the UK's surf capital.
+
+## Verified surf shops
+
+- [Gulf Stream Surf Shop](https://surflist.co/surf-shops/gulf-stream-surf-shop/): surf shop in Newquay, Cornwall, United Kingdom — Independent shop and rental just back from Fistral.
+
+## Verified places to stay
+
+- [Fistral Surf Camp](https://surflist.co/surf-stays/fistral-surf-camp/): place to stay in Newquay, Cornwall, United Kingdom — Week-long surf-and-stay packages by the beach.
+
+## Verified surf services
+
+- [Ding Doctor Cornwall](https://surflist.co/surf-services/ding-doctor-cornwall/): surf service in Newquay, Cornwall, United Kingdom — Fast ding and fin-box repairs, collection available.
 
 ## About
 
-surflist lists surf schools with their location, the levels they teach, and links to their websites and social profiles. Basic listings are free; verified listings get a dedicated page with address, coordinates, and pricing. To get listed, email hello@surflist.co.
+Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, email hello@surflist.co.
