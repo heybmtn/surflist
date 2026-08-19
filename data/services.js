@@ -1,39 +1,23 @@
-/* ============================================================
-   SURF SERVICES (misc)  —  edit this file, then run `node build.js`.
-   Category facet: `serviceType`  (e.g. "Board repair", "Ding repair",
-     "Custom shaping", "Wetsuit repair")
-   Shared + verified-only fields: see README.md
-   ============================================================ */
+// data/services.js — Newquay seed (real businesses, Aug 2026)
+// Facet field: serviceType (string) — e.g. Board repair
 window.LISTINGS = [
   {
-    name: "Ding Doctor Cornwall",
+    name: "Ring A Ding Surfboard Repairs",
     country: "United Kingdom",
     region: "Cornwall",
     town: "Newquay",
-    url: "https://example.com/dingdoctor",
-    serviceType: "Board repair",
-    blurb: "Fast ding and fin-box repairs, collection available.",
-    description:
-      "Ding Doctor Cornwall handles everything from quick ding fixes to fin-box and rail repairs on PU and epoxy boards, with local collection and drop-off around Newquay. Turnaround is usually a couple of days, so you're back in the water fast.",
-    streetAddress: "Unit 3, Trevemper Business Park",
-    lat: 50.3987,
-    lng: -5.0705,
-    priceRange: "£",
+    url: "https://www.surfboardrepairsnewquay.co.uk",
+    blurb: "Fast, high-quality ding and fin-box repairs from Grish — clear WhatsApp updates and often a next-couple-of-days turnaround.",
     image: "",
     verified: true,
-    socials: { instagram: "https://instagram.com/example" },
-  },
-  {
-    // FREE LISTING EXAMPLE
-    name: "Westcoast Ding Repair",
-    country: "United Kingdom",
-    region: "Devon",
-    town: "Croyde",
-    url: "https://example.com/westcoast",
+    socials: {},
     serviceType: "Board repair",
-    blurb: "Repairs and restorations in North Devon.",
-    image: "",
-    verified: false,
-    socials: { instagram: "https://instagram.com/example" },
-  },
+    // verified-only fields below
+    description:
+      "Ring A Ding is a Newquay surfboard repair service run by Grish, known locally for quick turnarounds and near-invisible finishes on dings, cracks and fin boxes. Communication runs mostly over WhatsApp with clear updates throughout, and the service extends to spotting smaller issues on your board while it's in and, when needed, collecting and dropping boards back to you. A reliable option when other repairers in the area are quoting weeks.",
+    streetAddress: "16 Astor Ct, Narrowcliff, Newquay TR7 2PD",
+    lat: 50.4185782,
+    lng: -5.0680997,
+    priceRange: "££"
+  }
 ];

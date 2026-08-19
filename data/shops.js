@@ -1,44 +1,78 @@
-/* ============================================================
-   SURF SHOPS  —  edit this file, then run `node build.js`.
-   Category facet: `offerings`  (free text tags, e.g. "Board rental",
-     "Ding repair", "New boards", "Used boards", "Wetsuits", "Accessories")
-   Shared + verified-only fields: see README.md
-   ============================================================ */
+// data/shops.js — Newquay seed (real businesses, Aug 2026)
+// Facet field: offerings (array) — e.g. Surfboards / Wetsuits / Apparel / Accessories
 window.LISTINGS = [
   {
-    name: "Gulf Stream Surf Shop",
+    name: "'The Temple of Fringe' Surf Shop",
     country: "United Kingdom",
     region: "Cornwall",
     town: "Newquay",
-    url: "https://example.com/gulfstream",
-    offerings: ["Board rental", "Ding repair", "Wetsuits"],
-    blurb: "Independent shop and rental just back from Fistral.",
-    description:
-      "Gulf Stream is an independent surf shop a short walk from Fistral Beach, stocking boards, wetsuits and accessories from independent brands. They rent boards and wetsuits by the day or week and run a small in-house ding-repair bench for quick fixes between sessions.",
-    streetAddress: "12 Cliff Road",
-    lat: 50.4159,
-    lng: -5.0872,
-    priceRange: "££",
+    url: "https://www.instagram.com/fringesurfshop/",
+    blurb: "A tucked-away independent shop in Cribbar Yard trading in alternative surfcraft, old-school brands and subculture kit.",
     image: "",
     verified: true,
     socials: {
-      instagram: "https://instagram.com/example",
+      instagram: "fringesurfshop"
     },
+    offerings: ["Surfboards", "Wetsuits", "Apparel"],
+    // verified-only fields below
+    description:
+      "Run by Stevo, the Temple of Fringe is a small, well-loved independent surf shop tucked into Cribbar Yard on Bank Street, opposite Millets. It specialises in alternative surfcraft, old-school brands and subculture surf and skate gear, and has built a reputation for knowledgeable, unhurried advice — the kind of place regulars travel back to. It trades primarily in-store and through Instagram rather than a full webshop.",
+    streetAddress: "Cribbar Yard, Bank St, Newquay TR7 1EP",
+    lat: 50.4134771,
+    lng: -5.0859907,
+    priceRange: "££"
   },
   {
-    // FREE LISTING EXAMPLE
-    name: "Tiki Surf Store",
+    name: "10 Over Surf Shop",
     country: "United Kingdom",
-    region: "Devon",
-    town: "Braunton",
-    url: "https://example.com/tiki",
-    offerings: ["New boards", "Wetsuits", "Accessories"],
-    blurb: "Boards and wetsuits near Saunton and Croyde.",
+    region: "Cornwall",
+    town: "Newquay",
+    url: "https://10oversurf.com",
+    blurb: "Newquay-rooted online surf shop with click-and-collect nearby — hardware, wetsuits, apparel and surf-skate.",
     image: "",
     verified: false,
     socials: {
-      instagram: "https://instagram.com/example",
-      facebook: "https://facebook.com/example",
+      instagram: "10oversurf",
+      youtube: "10OverSurfShop"
     },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
+    // NOTE: online shop, pickup unit is in Zelah (TR4 9JG), ~10 min from Newquay —
+    // no Newquay-town storefront. Reclassify or adjust town if needed.
   },
+  {
+    name: "Ann's Cottage",
+    country: "United Kingdom",
+    region: "Cornwall",
+    town: "Newquay",
+    url: "https://www.annscottage.com",
+    blurb: "Cornwall's original surf-and-lifestyle retailer since 1978 — wetsuits, hardware and 100-plus brands, with a Fistral Beach store.",
+    image: "",
+    verified: false,
+    socials: {
+      instagram: "annscottageofficial",
+      facebook: "Annscottagesurf",
+      x: "annscottagesurf"
+    },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
+    // NOTE: 14-store Cornwall chain; url is the brand site. Swap to the Fistral store
+    // page if you'd rather link the specific Newquay location.
+  },
+  {
+    name: "Fat Willy's Surf Shack",
+    country: "United Kingdom",
+    region: "Cornwall",
+    town: "Newquay",
+    url: "https://www.fatwillyssurfshack.co.uk",
+    blurb: "Iconic Newquay surf-lifestyle brand since 1985 — tees, hoodies and accessories from its Fore Street flagship.",
+    image: "",
+    verified: false,
+    socials: {
+      instagram: "fatwillysnewquay",
+      facebook: "FatWillysSurfShack",
+      tiktok: "fatwillysnewquay"
+    },
+    offerings: ["Apparel", "Accessories"]
+    // NOTE: apparel/lifestyle focus (not hardware). Distinct from the separate
+    // "Fat Willy's Surf Shack Cornwall" (fatwillyscornwall.co.uk, East St + Falmouth).
+  }
 ];
