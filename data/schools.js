@@ -11,9 +11,9 @@ window.LISTINGS = [
     image: "",
     verified: true,
     socials: {
-      instagram: "cornishwave",
-      facebook: "cornishwave",
-      youtube: "Cornishwave"
+      instagram: "https://www.instagram.com/cornishwave/",
+      facebook: "https://www.facebook.com/cornishwave",
+      youtube: "https://www.youtube.com/c/Cornishwave"
     },
     levels: ["Beginner", "Intermediate", "Kids"],
     // verified-only fields below
@@ -34,8 +34,8 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "escape.surf.school",
-      facebook: "EscapeSurfSchool"
+      instagram: "https://www.instagram.com/escape.surf.school/",
+      facebook: "https://www.facebook.com/EscapeSurfSchool"
     },
     levels: ["Beginner", "Intermediate", "Advanced", "Kids"]
   },
@@ -49,8 +49,8 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "fistralbeachsurfschool",
-      facebook: "fistralbeachsurfschool"
+      instagram: "https://www.instagram.com/fistralbeachsurfschool/",
+      facebook: "https://www.facebook.com/fistralbeachsurfschool"
     },
     levels: ["Beginner", "Intermediate", "Advanced"]
   },
@@ -64,8 +64,8 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "nqysurfschool",
-      facebook: "nqysurfschool"
+      instagram: "https://www.instagram.com/nqysurfschool/",
+      facebook: "https://www.facebook.com/nqysurfschool"
     },
     levels: ["Beginner", "Intermediate", "Kids"]
   },

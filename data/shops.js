@@ -11,7 +11,7 @@ window.LISTINGS = [
     image: "",
     verified: true,
     socials: {
-      instagram: "fringesurfshop"
+      instagram: "https://www.instagram.com/fringesurfshop/"
     },
     offerings: ["Surfboards", "Wetsuits", "Apparel"],
     // verified-only fields below
@@ -32,8 +32,8 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "10oversurf",
-      youtube: "10OverSurfShop"
+      instagram: "https://www.instagram.com/10oversurf/",
+      youtube: "https://www.youtube.com/@10OverSurfShop"
     },
     offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
     // NOTE: online shop, pickup unit is in Zelah (TR4 9JG), ~10 min from Newquay —
@@ -49,9 +49,9 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "annscottageofficial",
-      facebook: "Annscottagesurf",
-      x: "annscottagesurf"
+      instagram: "https://www.instagram.com/annscottageofficial/",
+      facebook: "https://www.facebook.com/Annscottagesurf",
+      x: "https://x.com/annscottagesurf"
     },
     offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
     // NOTE: 14-store Cornwall chain; url is the brand site. Swap to the Fistral store
@@ -67,9 +67,9 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "fatwillysnewquay",
-      facebook: "FatWillysSurfShack",
-      tiktok: "fatwillysnewquay"
+      instagram: "https://www.instagram.com/fatwillysnewquay/",
+      facebook: "https://www.facebook.com/FatWillysSurfShack",
+      tiktok: "https://www.tiktok.com/@fatwillysnewquay"
     },
     offerings: ["Apparel", "Accessories"]
     // NOTE: apparel/lifestyle focus (not hardware). Distinct from the separate

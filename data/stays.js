@@ -11,8 +11,8 @@ window.LISTINGS = [
     image: "",
     verified: true,
     socials: {
-      instagram: "basesurflodge_newquay",
-      facebook: "basesurflodge"
+      instagram: "https://www.instagram.com/basesurflodge_newquay/",
+      facebook: "https://www.facebook.com/basesurflodge"
     },
     stayType: "Camp",
     // verified-only fields below
@@ -33,7 +33,7 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      facebook: "NewquayBackpackers"
+      facebook: "https://www.facebook.com/NewquayBackpackers"
     },
     stayType: "Hostel"
   },
@@ -62,7 +62,7 @@ window.LISTINGS = [
     image: "",
     verified: false,
     socials: {
-      instagram: "elementalsurflodge"
+      instagram: "https://www.instagram.com/elementalsurflodge/"
     },
     stayType: "Hostel"
   }
