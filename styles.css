@@ -245,3 +245,28 @@
       .nav a { padding: 0.7rem 0.7rem; }
       .hub-cat { margin-top: 2rem; }
     }
+
+    /* ===== verified profile additions (surf spots, lessons, prices, season, demo) ===== */
+    /* "Verified by surflist · last checked …" line under the title/badge */
+    .verified-meta { width: 100%; margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
+
+    /* content blocks on the verified page: Surf spots / Lessons / Prices / When to go */
+    .detail__section { margin-top: 1.9rem; }
+    .detail__section h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); margin: 0 0 0.6rem; }
+
+    /* bulleted spec lists (lessons, prices) */
+    .spec-list { list-style: none; margin: 0; padding: 0; }
+    .spec-list li { position: relative; padding-left: 1.15rem; margin: 0.35rem 0; line-height: 1.5; }
+    .spec-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--accent); }
+
+    /* demo banner on /verified-demo/ (noindexed sample page) */
+    .demo-banner {
+      margin: 0 0 1.4rem; padding: 0.8rem 1rem; font-size: 0.9rem; line-height: 1.5;
+      color: #3f2600; border-radius: 12px;
+      background: color-mix(in srgb, var(--dot) 20%, #fff);
+      border: 1px solid color-mix(in srgb, var(--dot) 60%, #fff);
+    }
+    .demo-banner a { color: var(--accent); font-weight: 600; }
+
+    /* Google Business Profile icon shares the existing .soc styling (incl. 44px mobile tap target) */
+    .soc--google:hover { color: var(--accent); }
