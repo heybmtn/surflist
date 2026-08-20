@@ -39,9 +39,9 @@ const CATEGORIES = [
    array. Add a region here, then add listings with that region — nothing else
    in build.js needs editing. */
 const REGIONS = [
-  { slug: "cornwall", name: "Cornwall",
+  { slug: "cornwall", name: "Cornwall", image: "",
     intro: "Surf schools, independent shops, places to stay and board repair across Cornwall." },
-  { slug: "devon", name: "Devon",
+  { slug: "devon", name: "Devon", image: "",
     intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
 ];
 
@@ -53,6 +53,11 @@ function esc(s) {
 }
 function uniqSorted(arr) {
   return arr.filter(function (v, i) { return arr.indexOf(v) === i; }).sort(function (a, b) { return a.localeCompare(b); });
+}
+function joinWithAnd(arr) {
+  if (arr.length <= 1) return arr.join("");
+  if (arr.length === 2) return arr.join(" and ");
+  return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
 }
 function isVerified(d) { return !!(d.verified || d.premium); }
 function slugOf(d) { return d.slug || shared.slugify(d.name); }
@@ -152,7 +157,11 @@ function header(active) {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' + nav(active) + "</div></header>\n";
 }
 const FOOTER =
-  '<footer><div class="wrap">Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.</div></footer>\n';
+  '<footer><div class="wrap">Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.' +
+  '<nav class="footer-nav" aria-label="Categories">' + CATEGORIES.map(function (c) {
+    return '<a href="/' + c.slug + '/">' + esc(c.title) + "</a>";
+  }).join("") + "</nav>" +
+  "</div></footer>\n";
 
 function head(o) {
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
@@ -526,22 +535,24 @@ const SEARCH_JS =
 "document.addEventListener('click',function(e){if(!e.target.closest('.search'))box.hidden=true;});})();";
 
 /* ---------- hub ---------- */
-function renderRegionTile(region) {
+function renderRegionCard(region, index) {
   var count = CATEGORIES.reduce(function (a, c) { return a + regionItems(region.name, c).length; }, 0);
-  return '<a class="tile" href="/' + region.slug + '/"><span class="tile__name">' + esc(region.name) + '</span>' +
-    '<span class="tile__count">' + count + " listing" + (count === 1 ? "" : "s") + "</span></a>";
-}
-function renderCatTile(cat) {
-  var n = cat.items.length;
-  return '<a class="tile" href="/' + cat.slug + '/"><span class="tile__name">' + esc(cat.title) + '</span>' +
-    '<span class="tile__count">' + n + " listing" + (n === 1 ? "" : "s") + "</span></a>";
+  var name = esc(region.name);
+  var href = "/" + region.slug + "/";
+  var img = region.image ? esc(region.image) : placeholderImage(region.slug);
+  var lazy = index < 4 ? "" : ' loading="lazy"';
+  return '<li class="card">' +
+    '<div class="card__media"><a href="' + href + '" aria-label="' + name + '"><img src="' + img + '" alt="' + name + '"' + lazy + "></a></div>" +
+    '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + href + '">' + name + "</a></h3>" +
+    '<p class="card__blurb">' + count + " listing" + (count === 1 ? "" : "s") + "</p></div></li>";
 }
 function renderHub() {
   var activeRegions = REGIONS.filter(function (r) {
     return CATEGORIES.some(function (c) { return regionItems(r.name, c).length > 0; });
   });
-  var regionTiles = activeRegions.map(renderRegionTile).join("");
-  var catTiles = CATEGORIES.filter(function (c) { return c.items.length; }).map(renderCatTile).join("");
+  var regionCards = activeRegions.map(function (r, i) { return renderRegionCard(r, i); }).join("");
+  var valueProp = "Find verified " + joinWithAnd(CATEGORIES.map(function (c) { return c.plural; })) +
+    " across " + joinWithAnd(activeRegions.map(function (r) { return r.name; })) + ".";
 
   var featured = [];
   CATEGORIES.forEach(function (cat) {
@@ -561,11 +572,10 @@ function renderHub() {
   "<body>\n" + header("") +
   '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
   '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p>' +
+  "<p>" + esc(valueProp) + "</p>" +
   renderSearch() + "</section>\n" +
-  '<section class="tile-section" id="regions"><h2>Where are you surfing?</h2>' +
-  '<div class="tile-grid" aria-label="Regions">' + regionTiles + "</div></section>\n" +
-  '<section class="tile-section"><h2>Browse by category</h2>' +
-  '<div class="tile-grid" aria-label="Categories">' + catTiles + "</div></section>\n" +
+  '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where are you surfing?</h2></div>' +
+  '<ul class="grid">' + regionCards + "</ul></section>\n" +
   featuredHtml +
   "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
 }
