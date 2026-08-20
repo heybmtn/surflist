@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /verified-demo/
 
 Sitemap: https://surflist.co/sitemap.xml
