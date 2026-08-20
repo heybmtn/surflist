@@ -74,5 +74,39 @@ window.LISTINGS = [
     blurb: "Beachfront surf shop on the sand at Sennen Cove near Land's End — boards, wetsuits and kit, open daily.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/sennen_surf_co/" },
-    offerings: ["Surfboards", "Wetsuits", "Apparel"] }
+    offerings: ["Surfboards", "Wetsuits", "Apparel"] },
+  // ---- Braunton (North Devon's retail hub) ----
+  { name: "Second Skin", country: "United Kingdom", region: "Devon", town: "Braunton",
+    url: "https://secondskinsurf.com",
+    blurb: "Braunton's legendary surf shop (est. 1975) — the wetsuit specialist that pioneered the modern surfing wetsuit, plus boards and hardware.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/secondskinsurfshop/", facebook: "https://www.facebook.com/secondskinsurf", x: "https://x.com/secondskinsurf" },
+    offerings: ["Surfboards", "Wetsuits", "Accessories"] },
+  { name: "The Board Barn", country: "United Kingdom", region: "Devon", town: "Braunton",
+    url: "https://www.theboardbarn.co.uk",
+    blurb: "A no-nonsense independent in the heart of Braunton, known for honest advice, quality kit and custom boards from owner Lee.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Accessories"] },
+  // ---- Croyde ----
+  { name: "Ralphs Surf Shop", country: "United Kingdom", region: "Devon", town: "Croyde",
+    url: "https://www.ralphssurfshop.co.uk",
+    blurb: "Locally run surf-and-hire shop in the heart of Croyde village, a few minutes from the bay — run by Ralph and Shae since the '80s.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/ralphssurfshop/", facebook: "https://www.facebook.com/ralphssurfshop" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Woolacombe ----
+  { name: "The Bay Surf Shop", country: "United Kingdom", region: "Devon", town: "Woolacombe",
+    url: "https://www.thebaysurfshop.co.uk",
+    blurb: "Woolacombe's original surf shop (40+ years) and the area's biggest, owned and staffed by surfers — boards, wetsuits and hardware.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/thebaysurfshop/", facebook: "https://www.facebook.com/baysurfshop" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Westward Ho! ----
+  { name: "Ho! Surf", country: "United Kingdom", region: "Devon", town: "Westward Ho!",
+    url: "https://www.surfandkiteshop.co.uk",
+    blurb: "Family-run 'Aladdin's cave' on the village green at Westward Ho! — surf, kite, SUP and bodyboard gear plus hire and lessons.",
+    image: "", verified: false,
+    socials: { tiktok: "https://www.tiktok.com/@surfkiteshop", x: "https://x.com/surfandkiteshop" },
+    offerings: ["Surfboards", "Wetsuits", "Accessories"] }
 ];
