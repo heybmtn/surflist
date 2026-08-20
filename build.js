@@ -54,11 +54,6 @@ function esc(s) {
 function uniqSorted(arr) {
   return arr.filter(function (v, i) { return arr.indexOf(v) === i; }).sort(function (a, b) { return a.localeCompare(b); });
 }
-function joinWithAnd(arr) {
-  if (arr.length <= 1) return arr.join("");
-  if (arr.length === 2) return arr.join(" and ");
-  return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
-}
 function isVerified(d) { return !!(d.verified || d.premium); }
 function slugOf(d) { return d.slug || shared.slugify(d.name); }
 function facetVals(d, cat) {
@@ -562,8 +557,6 @@ function renderRegionCard(region, index) {
 function renderHub() {
   var regions = activeRegions();
   var regionCards = regions.map(function (r, i) { return renderRegionCard(r, i); }).join("");
-  var valueProp = "Find verified " + joinWithAnd(CATEGORIES.map(function (c) { return c.plural; })) +
-    " across " + joinWithAnd(regions.map(function (r) { return r.name; })) + ".";
 
   var featured = [];
   CATEGORIES.forEach(function (cat) {
@@ -583,7 +576,6 @@ function renderHub() {
   "<body>\n" + header() +
   '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
   '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p>' +
-  "<p>" + esc(valueProp) + "</p>" +
   renderSearch() + "</section>\n" +
   '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where are you surfing?</h2></div>' +
   '<ul class="grid">' + regionCards + "</ul></section>\n" +
