@@ -96,7 +96,7 @@ CATEGORIES.forEach(function (c) { c.items = loadData(c.data); });
 /* ---------- shared chrome ---------- */
 function nav(active) {
   return '<nav class="nav" aria-label="Categories">' + CATEGORIES.map(function (c) {
-    return '<a href="/' + c.slug + '/"' + (c.slug === active ? ' aria-current="page"' : "") + ">" + esc(c.nav) + "</a>";
+    return '<a href="/' + c.slug + '/"' + (c.slug === active ? ' aria-current="page"' : "") + ">" + esc(c.nav) + "</a>"; 
   }).join("") + "</nav>";
 }
 function header(active) {
@@ -339,6 +339,55 @@ function renderDetail(d, cat, slug, opts) {
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+/* ---------- search ---------- */
+function searchIndex() {
+  var idx = [];
+  CATEGORIES.forEach(function (cat) {
+    cat.items.forEach(function (d) {
+      var href = isVerified(d) ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
+      if (!href) return;
+      idx.push({
+        n: d.name,
+        p: [d.town, d.region, d.country].filter(Boolean).join(", "),
+        c: cat.singular,
+        u: href,
+        v: isVerified(d),
+      });
+    });
+  });
+  return idx;
+}
+function renderSearch() {
+  return '<div class="search" role="search">' +
+    '<input type="text" id="search-input" class="search__input" placeholder="Search by name, town, region or country&hellip;" ' +
+    'autocomplete="off" spellcheck="false" aria-label="Search listings" role="combobox" aria-expanded="false" ' +
+    'aria-controls="search-results" aria-autocomplete="list" />' +
+    '<ul id="search-results" class="search__results" role="listbox" hidden></ul>' +
+    '<script type="application/json" id="search-data">' + JSON.stringify(searchIndex()).replace(/</g, "\\u003c") + "</script>" +
+    "</div>";
+}
+const SEARCH_JS =
+"(function(){var input=document.getElementById('search-input');if(!input)return;var box=document.getElementById('search-results');" +
+"var items=JSON.parse(document.getElementById('search-data').textContent);var active=-1;" +
+"function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
+"function highlight(opts){opts.forEach(function(o,i){o.classList.toggle('is-active',i===active);});input.setAttribute('aria-activedescendant',active>-1?opts[active].parentElement.id:'');}" +
+"function render(list){box.innerHTML='';active=-1;" +
+"if(!list.length){box.hidden=true;input.setAttribute('aria-expanded','false');return;}" +
+"list.forEach(function(d,i){var li=document.createElement('li');li.setAttribute('role','option');li.id='search-opt-'+i;" +
+"var a=document.createElement('a');a.href=d.u;a.className='search__result';if(!d.v){a.target='_blank';a.rel='noopener';}" +
+"a.innerHTML='<span class=\"search__name\">'+esc(d.n)+'</span><span class=\"search__meta\">'+esc(d.c)+(d.p?' &middot; '+esc(d.p):'')+'</span>';" +
+"li.appendChild(a);box.appendChild(li);});" +
+"box.hidden=false;input.setAttribute('aria-expanded','true');}" +
+"function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
+"return items.filter(function(d){return (d.n+' '+d.p+' '+d.c).toLowerCase().indexOf(q)>-1;}).slice(0,8);}" +
+"input.addEventListener('input',function(){render(search(input.value));});" +
+"input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
+"if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,opts.length-1);highlight(opts);}" +
+"else if(e.key==='ArrowUp'){e.preventDefault();active=Math.max(active-1,-1);highlight(opts);}" +
+"else if(e.key==='Enter'){if(active>-1){e.preventDefault();opts[active].click();}}" +
+"else if(e.key==='Escape'){box.hidden=true;input.setAttribute('aria-expanded','false');}});" +
+"document.addEventListener('click',function(e){if(!e.target.closest('.search'))box.hidden=true;});})();";
+
 /* ---------- hub ---------- */
 function renderHub() {
   var sections = CATEGORIES.filter(function (c) { return c.items.length; }).map(function (cat) {
@@ -354,8 +403,9 @@ function renderHub() {
   }) +
   "<body>\n" + header("") +
   '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
-  '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p></section>\n' +
-  sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+  '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p>' +
+  renderSearch() + "</section>\n" +
+  sections + "\n</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
 }
 
 /* ---------- llms.txt ---------- */
