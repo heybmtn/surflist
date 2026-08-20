@@ -1,60 +1,57 @@
-// data/stays.js — Newquay seed (real businesses, Aug 2026)
+// data/stays.js — Cornwall (curated, real businesses, Aug 2026)
 // Facet field: stayType (string) — Camp / Hostel / Eco-pod / Campervan
 window.LISTINGS = [
-  {
-    name: "Base Surf Lodge",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+  // ---- Newquay ----
+  { name: "Base Surf Lodge", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://basesurflodge.co.uk",
     blurb: "Hosted surf camp overlooking Fistral — small groups, daily coaching with video analysis, breakfast and a garden BBQ.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/basesurflodge_newquay/",
-      facebook: "https://www.facebook.com/basesurflodge"
-    },
-    stayType: "Camp"
-  },
-  {
-    name: "Newquay International Backpackers",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/basesurflodge_newquay/", facebook: "https://www.facebook.com/basesurflodge" },
+    stayType: "Camp" },
+  { name: "Newquay International Backpackers", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://backpackers.co.uk",
     blurb: "Long-established, homely hostel in the heart of town with secure board storage, free breakfast and a sociable vibe.",
-    image: "",
-    verified: false,
-    socials: {
-      facebook: "https://www.facebook.com/NewquayBackpackers"
-    },
-    stayType: "Hostel"
-  },
-  {
-    name: "Breakwater Hostel",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/NewquayBackpackers" },
+    stayType: "Hostel" },
+  { name: "Breakwater Hostel", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.breakwaterhostel.com",
     blurb: "Friendly budget backpackers near Fistral with cheap board hire, comfy dorms and good communal space.",
-    image: "",
-    verified: false,
+    image: "", verified: false,
     socials: {},
-    stayType: "Hostel"
-    // NOTE: Google lists Breakwater at the same Tower Rd address/phone as Newquay International Backpackers.
-  },
-  {
-    name: "Elemental Surf Lodge",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    stayType: "Hostel" },
+  { name: "Elemental Surf Lodge", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://elementalsurflodge.com",
     blurb: "Budget surf lodge between Towan and Fistral with its own on-site surf academy and rooms sleeping one to eight.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/elementalsurflodge/"
-    },
-    stayType: "Hostel"
-  }
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/elementalsurflodge/" },
+    stayType: "Hostel" },
+  // ---- Widemouth Bay / Bude ----
+  { name: "OA Surf Club", country: "United Kingdom", region: "Cornwall", town: "Widemouth Bay",
+    url: "https://oasurfclub.co.uk",
+    blurb: "Clifftop surf-club B&B over Widemouth Bay with sea-view rooms, a communal bar and diner, and surf plus coasteering on the doorstep.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/oasurfclub/", facebook: "https://www.facebook.com/OASurfClub" },
+    stayType: "Camp" },
+  // ---- Treyarnon / Padstow ----
+  { name: "YHA Treyarnon Bay", country: "United Kingdom", region: "Cornwall", town: "Treyarnon",
+    url: "https://www.yha.org.uk/hostel/yha-treyarnon-bay",
+    blurb: "Beachfront hostel 50m from the sand near Padstow — dorms, private rooms and camping pods, with on-site watersports packages.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/YHATreyarnon" },
+    stayType: "Hostel" },
+  // ---- Perranporth ----
+  { name: "YHA Perranporth", country: "United Kingdom", region: "Cornwall", town: "Perranporth",
+    url: "https://www.yha.org.uk/hostel/yha-perranporth",
+    blurb: "Budget clifftop hostel high above Perranporth beach, right on the coast path, with a sauna, hot tub and huge Atlantic views.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Hostel" },
+  // ---- St Ives ----
+  { name: "Cohort St Ives", country: "United Kingdom", region: "Cornwall", town: "St Ives",
+    url: "https://www.stayatcohort.co.uk",
+    blurb: "Award-winning hostel in a converted chapel in central St Ives — pod dorms, private rooms and board storage, minutes from five beaches.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/cohortstives/", facebook: "https://www.facebook.com/stayatcohort" },
+    stayType: "Hostel" }
 ];

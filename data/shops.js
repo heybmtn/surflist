@@ -1,68 +1,78 @@
-// data/shops.js — Newquay seed (real businesses, Aug 2026)
+// data/shops.js — Cornwall (curated, real businesses, Aug 2026)
 // Facet field: offerings (array) — e.g. Surfboards / Wetsuits / Apparel / Accessories
 window.LISTINGS = [
-  {
-    name: "'The Temple of Fringe' Surf Shop",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+  // ---- Newquay ----
+  { name: "'The Temple of Fringe' Surf Shop", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.instagram.com/fringesurfshop/",
     blurb: "A tucked-away independent shop in Cribbar Yard trading in alternative surfcraft, old-school brands and subculture kit.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/fringesurfshop/"
-    },
-    offerings: ["Surfboards", "Wetsuits", "Apparel"]
-  },
-  {
-    name: "10 Over Surf Shop",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/fringesurfshop/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel"] },
+  { name: "10 Over Surf Shop", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://10oversurf.com",
     blurb: "Newquay-rooted online surf shop with click-and-collect nearby — hardware, wetsuits, apparel and surf-skate.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/10oversurf/",
-      youtube: "https://www.youtube.com/@10OverSurfShop"
-    },
-    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
-    // NOTE: online shop, pickup unit is in Zelah (TR4 9JG), ~10 min from Newquay.
-  },
-  {
-    name: "Ann's Cottage",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/10oversurf/", youtube: "https://www.youtube.com/@10OverSurfShop" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  { name: "Ann's Cottage", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.annscottage.com",
     blurb: "Cornwall's original surf-and-lifestyle retailer since 1978 — wetsuits, hardware and 100-plus brands, with a Fistral Beach store.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/annscottageofficial/",
-      facebook: "https://www.facebook.com/Annscottagesurf",
-      x: "https://x.com/annscottagesurf"
-    },
-    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"]
-    // NOTE: 14-store Cornwall chain; url is the brand site.
-  },
-  {
-    name: "Fat Willy's Surf Shack",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/annscottageofficial/", facebook: "https://www.facebook.com/Annscottagesurf", x: "https://x.com/annscottagesurf" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  { name: "Fat Willy's Surf Shack", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.fatwillyssurfshack.co.uk",
     blurb: "Iconic Newquay surf-lifestyle brand since 1985 — tees, hoodies and accessories from its Fore Street flagship.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/fatwillysnewquay/",
-      facebook: "https://www.facebook.com/FatWillysSurfShack",
-      tiktok: "https://www.tiktok.com/@fatwillysnewquay"
-    },
-    offerings: ["Apparel", "Accessories"]
-    // NOTE: apparel/lifestyle focus. Distinct from "Fat Willy's Surf Shack Cornwall" (East St + Falmouth).
-  }
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/fatwillysnewquay/", facebook: "https://www.facebook.com/FatWillysSurfShack", tiktok: "https://www.tiktok.com/@fatwillysnewquay" },
+    offerings: ["Apparel", "Accessories"] },
+  // ---- Bude ----
+  { name: "Zuma Jay Surf Shop", country: "United Kingdom", region: "Cornwall", town: "Bude",
+    url: "https://www.zumajay.co.uk",
+    blurb: "One of Europe's longest-established surf shops (Bude since the early '70s) and a custom board maker — a proper surfer-run shop.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/zumajaysurfshop/", facebook: "https://www.facebook.com/ZumaJaySurf", youtube: "https://www.youtube.com/@zumajaysurfshop", tiktok: "https://www.tiktok.com/@zumajaysurfshop" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Padstow / St Merryn ----
+  { name: "The Pit Surf Shop", country: "United Kingdom", region: "Cornwall", town: "St Merryn",
+    url: "https://www.thepitsurfshop.co.uk",
+    blurb: "Seven Bays surf shop and hire in St Merryn for three decades — online store, free local delivery and boards/wetsuits dropped to your door.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/themerrypit/", facebook: "https://www.facebook.com/thepitsurfstmerryn" },
+    offerings: ["Surfboards", "Wetsuits", "Accessories"] },
+  // ---- Perranporth ----
+  { name: "Bathsheba Surf", country: "United Kingdom", region: "Cornwall", town: "Perranporth",
+    url: "https://www.bathshebasurf.co.uk",
+    blurb: "Family-run Perranporth institution since 1989 — surfboards, wetsuits, hardware and its own clothing range, plus hire.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/bathshebasurf/", facebook: "https://www.facebook.com/bathshebasurf" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- St Agnes ----
+  { name: "Aggie Surf Shop", country: "United Kingdom", region: "Cornwall", town: "St Agnes",
+    url: "https://www.aggiesurfshop.com",
+    blurb: "St Agnes core surf shop since 1982, run by the Lascelles family with its own board-shaping factory in the village.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/aggiesurfshop/", facebook: "https://www.facebook.com/aggiesurfshop", x: "https://x.com/aggiesurfshop" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Hayle ----
+  { name: "Down The Line Surf Co", country: "United Kingdom", region: "Cornwall", town: "Hayle",
+    url: "https://downthelinesurf.co.uk",
+    blurb: "Hayle's core surf shop since 1993, stocking one of Europe's biggest surfboard ranges alongside wetsuits and hardware.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/downthelinesurf/", facebook: "https://www.facebook.com/downthelinesurf", youtube: "https://www.youtube.com/@downthelinesurf" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- St Ives ----
+  { name: "Tiki Surf St Ives", country: "United Kingdom", region: "Cornwall", town: "St Ives",
+    url: "https://www.tikisurf.co.uk/pages/st-ives",
+    blurb: "The British surf brand's Cornish store on the High Street — own-brand boards and wetsuits plus O'Neill, Rip Curl and more.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/tikisurfcompany/", facebook: "https://www.facebook.com/TikiSurfCoStIves" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Sennen Cove ----
+  { name: "Sennen Surf Co", country: "United Kingdom", region: "Cornwall", town: "Sennen Cove",
+    url: "https://sennensurfco.co.uk",
+    blurb: "Beachfront surf shop on the sand at Sennen Cove near Land's End — boards, wetsuits and kit, open daily.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/sennen_surf_co/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel"] }
 ];

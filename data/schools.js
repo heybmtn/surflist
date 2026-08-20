@@ -1,78 +1,103 @@
-// data/schools.js — Newquay seed (real businesses, Aug 2026)
+// data/schools.js — Cornwall (curated, real businesses, Aug 2026)
 // Facet field: levels (array) — Beginner / Intermediate / Advanced / Kids
 window.LISTINGS = [
-  {
-    name: "Cornish Wave Surf School",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+  // ---- Newquay ----
+  { name: "Cornish Wave Surf School", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://cornishwave.com",
     blurb: "Small-group surf coaching on Towan and Fistral from a friendly, long-running local school — plus coasteering and SUP.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/cornishwave/",
-      facebook: "https://www.facebook.com/cornishwave",
-      youtube: "https://www.youtube.com/c/Cornishwave"
-    },
-    levels: ["Beginner", "Intermediate", "Kids"]
-  },
-  {
-    name: "Escape Surf School",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/cornishwave/", facebook: "https://www.facebook.com/cornishwave", youtube: "https://www.youtube.com/c/Cornishwave" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Escape Surf School", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.escapesurfschool.co.uk",
     blurb: "Specialist surf-only school on the Towan cliff top, with ex-pro head coaches and daily lessons for every level.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/escape.surf.school/",
-      facebook: "https://www.facebook.com/EscapeSurfSchool"
-    },
-    levels: ["Beginner", "Intermediate", "Advanced", "Kids"]
-  },
-  {
-    name: "Fistral Beach Surf School",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/escape.surf.school/", facebook: "https://www.facebook.com/EscapeSurfSchool" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "Fistral Beach Surf School", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.fistralbeachsurfschool.co.uk",
     blurb: "Right on the sand at Fistral with one of the UK's largest surf-hire fleets — lessons for all abilities, open all year.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/fistralbeachsurfschool/",
-      facebook: "https://www.facebook.com/fistralbeachsurfschool"
-    },
-    levels: ["Beginner", "Intermediate", "Advanced"]
-  },
-  {
-    name: "NQY Surf School",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Newquay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/fistralbeachsurfschool/", facebook: "https://www.facebook.com/fistralbeachsurfschool" },
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+  { name: "NQY Surf School", country: "United Kingdom", region: "Cornwall", town: "Newquay",
     url: "https://www.newquaysurfingschool.com",
     blurb: "Beach-front school on Great Western led by four-time UK champion Adam Griffiths — lessons, hire and coasteering.",
-    image: "",
-    verified: false,
-    socials: {
-      instagram: "https://www.instagram.com/nqysurfschool/",
-      facebook: "https://www.facebook.com/nqysurfschool"
-    },
-    levels: ["Beginner", "Intermediate", "Kids"]
-  },
-  {
-    name: "Westcountry Surf School",
-    country: "United Kingdom",
-    region: "Cornwall",
-    town: "Watergate Bay",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/nqysurfschool/", facebook: "https://www.facebook.com/nqysurfschool" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Westcountry Surf School", country: "United Kingdom", region: "Cornwall", town: "Watergate Bay",
     url: "https://surfingschool.co.uk",
     blurb: "Small-group and private lessons from Watergate Bay, with a camper-van shuttle to the break and a café on site.",
-    image: "",
-    verified: false,
+    image: "", verified: false,
     socials: {},
-    levels: ["Beginner", "Intermediate"]
-    // NOTE: based at Watergate Bay (TR8), ~4 miles from Newquay town; also runs lessons at Fistral.
-  }
+    levels: ["Beginner", "Intermediate"] },
+  // ---- Bude ----
+  { name: "Big Blue Surf School", country: "United Kingdom", region: "Cornwall", town: "Bude",
+    url: "https://www.bigbluesurfschool.com",
+    blurb: "Bude's original surf school (est. 1999) on Summerleaze Beach — all abilities and adaptive lessons, open year-round.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/bigbluesurfschool/", facebook: "https://www.facebook.com/BigBlueSurfSchool" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  // ---- Polzeath ----
+  { name: "George's Surf School", country: "United Kingdom", region: "Cornwall", town: "Polzeath",
+    url: "https://www.georgessurfschool.com",
+    blurb: "Bespoke private coaching at Polzeath and Harlyn — an ISA/Surfing England Centre of Excellence with video analysis.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/GeorgesSurfSchoolPolzeath" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  // ---- Harlyn / Padstow ----
+  { name: "Harlyn Surf School", country: "United Kingdom", region: "Cornwall", town: "Harlyn",
+    url: "https://www.harlynsurfschool.co.uk",
+    blurb: "Cornwall's longest-established school (since 1994) on sheltered Harlyn Bay — surf, SUP, kayak and coasteering.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/harlynsurfschool/", facebook: "https://www.facebook.com/harlynsurfschool", x: "https://x.com/harlynsurfschl" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  // ---- Perranporth ----
+  { name: "Stoked Surf School", country: "United Kingdom", region: "Cornwall", town: "Perranporth",
+    url: "https://stokedsurfschool.co.uk",
+    blurb: "Perranporth's year-round school with a permanent base, on-site surf-and-skate shop and a structured progression system.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/stoked_surf_school/", facebook: "https://www.facebook.com/surfperranporth2022", youtube: "https://www.youtube.com/@stokedsurfschool" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "Perranporth Surf School", country: "United Kingdom", region: "Cornwall", town: "Perranporth",
+    url: "https://www.perranporthsurfschool.co.uk",
+    blurb: "Perranporth's original surf school (est. 2004) — quality, fun lessons for all abilities right on the beach.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/perransurfschool/", facebook: "https://www.facebook.com/perranporthsurfschool" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  // ---- St Agnes ----
+  { name: "Breakers Surf School", country: "United Kingdom", region: "Cornwall", town: "St Agnes",
+    url: "https://surf-lessons.co.uk",
+    blurb: "Sheltered Trevaunance Cove school with strong local knowledge — lessons, SUP and a kids' club, open all year.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/breakerssurfschool/", facebook: "https://www.facebook.com/breakerssurfsch" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  // ---- Gwithian / Hayle ----
+  { name: "Gwithian Academy of Surfing", country: "United Kingdom", region: "Cornwall", town: "Gwithian",
+    url: "https://www.surfacademy.co.uk",
+    blurb: "ASI-accredited academy (est. 1999) on gently shelving Gwithian Beach — beginner to competition coaching with video analysis.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/gwithianacademyofsurfing/", facebook: "https://www.facebook.com/Gwithian.Academy.of.Surfing" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "Shore Surf School", country: "United Kingdom", region: "Cornwall", town: "Hayle",
+    url: "https://shoresurf.com",
+    blurb: "One of St Ives Bay's longest-running schools (est. 1999), with lessons and hire across two Hayle-side locations.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  // ---- St Ives ----
+  { name: "St Ives Surf School", country: "United Kingdom", region: "Cornwall", town: "St Ives",
+    url: "https://www.stivessurfschool.co.uk",
+    blurb: "St Ives' only surf school, on blue-flag Porthmeor by the Tate — a Surfing England Centre of Excellence, plus SUP and coasteering.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/stivessurfschool/", facebook: "https://www.facebook.com/stivessurfschool", tiktok: "https://www.tiktok.com/@stivessurfschool" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  // ---- Sennen Cove ----
+  { name: "Sennen Surfing Centre", country: "United Kingdom", region: "Cornwall", town: "Sennen Cove",
+    url: "https://sennensurfingcentre.co.uk",
+    blurb: "Award-winning O'Neill academy on the golden sands of Sennen, near Land's End — one of the UK's longest-running surf schools.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/sennensurfcentre/", facebook: "https://www.facebook.com/sennensurfing" },
+    levels: ["Beginner", "Intermediate"] }
 ];
