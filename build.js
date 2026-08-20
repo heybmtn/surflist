@@ -354,7 +354,7 @@ function renderHub() {
   }) +
   "<body>\n" + header("") +
   '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
-  '<p>Everything for your next surf trip in one place — learn with a school, gear up at an independent shop, find somewhere to stay near the break, and get your board fixed.</p></section>\n' +
+  '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p></section>\n' +
   sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
