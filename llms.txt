@@ -1,0 +1,14 @@
+# surflist
+
+> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by country and region. Verified listings have their own profile page with location and pricing.
+
+## Sections
+
+- [Surf schools](https://surflist.co/surf-schools/): Learn to surf or level up with schools and coaches near the break.
+- [Surf shops](https://surflist.co/surf-shops/): Independent surf shops for boards, wetsuits, rentals and repairs.
+- [Places to stay](https://surflist.co/surf-stays/): Surf camps, hostels, eco-pods and campervans close to the waves.
+- [Surf services](https://surflist.co/surf-services/): Board repair, ding fixes and other surf services.
+
+## About
+
+Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, email hello@surflist.co.
