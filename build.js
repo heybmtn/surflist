@@ -70,6 +70,8 @@ const COUNTRIES = [
     intro: "Surf England's south-west — from Cornwall's Atlantic beach breaks to the long sands of North Devon." },
   { name: "Wales", bucket: "United Kingdom",
     intro: "Surf Wales — the consistent beaches and sheltered bays of the Gower Peninsula, near Swansea." },
+  { name: "Portugal", bucket: "Europe",
+    intro: "Surf Portugal's Atlantic coast — consistent beach breaks and world-class waves from the Lisbon region down to the Algarve." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
@@ -82,6 +84,12 @@ const REGIONS = [
     intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
   { name: "Swansea",
     intro: "Surf schools, shops, stays and repairs across the Gower Peninsula and Swansea." },
+  { name: "Lisbon",
+    intro: "Surf schools and spots around the Lisbon coast — from Ericeira's World Surfing Reserve to the beach breaks of Costa da Caparica and Cascais." },
+  { name: "Peniche",
+    intro: "Surf schools on the Peniche peninsula and Baleal — some of Europe's most consistent, all-swell surf." },
+  { name: "Algarve",
+    intro: "Surf schools across the Algarve — powerful west-coast Atlantic breaks and the sheltered south around Lagos and Sagres." },
 ];
 
 /* ---------- town editorial (the "Surfing in <town>" copy) ----------
@@ -896,6 +904,72 @@ function renderLlms() {
   out.push("");
   return out.join("\n");
 }
+
+/* ---------- place integrity report ----------
+   Locations are derived from the data (a place exists because a listing names
+   it), so a typo silently forks a new town/region. This report catches that.
+
+     node build.js --check     print the whole place tree with counts, flag
+                               towns below the 2-listing hub threshold, and fail
+                               (exit 1) on any spelling that forks one place into
+                               two slugs — without writing any files.
+
+   Every normal build also prints a passive warning for such collisions. */
+function q(s) { return '"' + s + '"'; }
+function slugForks(names, slugFn) {
+  // group raw names by their slug; return [{slug, names:[...]}] where >1 distinct raw name shares a slug
+  var by = {};
+  names.forEach(function (n) { (by[slugFn(n)] = by[slugFn(n)] || []).push(n); });
+  return Object.keys(by).map(function (s) { return { slug: s, names: uniqSorted(by[s]) }; })
+    .filter(function (g) { return g.names.length > 1; });
+}
+function placeReport() {
+  var lines = ["", "Place tree — " + countries().length + " countr" + (countries().length === 1 ? "y" : "ies") +
+    ", " + ALL.length + " listings:"];
+  var collisions = [], singletons = [];
+
+  slugForks(countries(), cSlug).forEach(function (g) {
+    collisions.push('country slug "' + g.slug + '" is fed by ' + g.names.map(q).join(" and "));
+  });
+  countries().forEach(function (c) {
+    lines.push("  " + c + "  (" + countCountry(c) + ")");
+    slugForks(regionsIn(c), rSlug).forEach(function (g) {
+      collisions.push('region slug "' + g.slug + '" in ' + c + ' is fed by ' + g.names.map(q).join(" and "));
+    });
+    regionsIn(c).forEach(function (r) {
+      lines.push("    " + r + "  (" + countRegion(c, r) + ")");
+      slugForks(townsIn(c, r), tSlug).forEach(function (g) {
+        collisions.push('town slug "' + g.slug + '" in ' + r + ", " + c + ' is fed by ' + g.names.map(q).join(" and "));
+      });
+      townsIn(c, r).forEach(function (t) {
+        var n = countTown(c, r, t);
+        if (n < 2) singletons.push(t + " (" + r + ", " + c + ")");
+        lines.push("      " + t + "  (" + n + ")" + (n < 2 ? "   <- 1 listing, below hub threshold" : ""));
+      });
+    });
+  });
+
+  var out = [lines.join("\n"), ""];
+  out.push(singletons.length
+    ? "Towns below the hub threshold (need >=2 for their own page): " + singletons.length +
+      " — " + singletons.join("; ")
+    : "Every town has >=2 listings (all get a hub).");
+  out.push(collisions.length
+    ? "\n! " + collisions.length + " duplicate place(s) from inconsistent spelling:\n  - " + collisions.join("\n  - ") +
+      "\n  Fix the spelling in data/*.js so each place resolves to one slug."
+    : "No duplicate-spelling collisions.");
+  return { report: out.join("\n"), collisions: collisions, singletons: singletons };
+}
+(function () {
+  var r = placeReport();
+  // passive warning on every build
+  r.collisions.forEach(function (c) { console.warn("  ! " + c); });
+  // --check: print the full report and stop before writing anything
+  if (process.argv.indexOf("--check") > -1) {
+    process.stdout.write(r.report + "\n");
+    process.exit(r.collisions.length ? 1 : 0);
+  }
+})();
 
 /* ---------- write everything ---------- */
 function writePage(rel, html) {
