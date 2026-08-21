@@ -34,18 +34,28 @@ const CATEGORIES = [
     schemaType: function () { return "LocalBusiness"; } },
 ];
 
-/* ---------- region registry ----------
-   The `region` field on every listing (data/*.js) is the join key into this
-   array. Add a region here, then add listings with that region — nothing else
-   in build.js needs editing. */
-const REGIONS = [
-  { slug: "cornwall", name: "Cornwall", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across Cornwall." },
-  { slug: "devon", name: "Devon", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
-  { slug: "swansea", name: "Swansea", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across the Gower Peninsula and Swansea." },
+/* ---------- destination registry ----------
+   Every listing has a `destination` (e.g. "England", "Wales", "Portugal", "Bali")
+   — the tile + landing page it belongs to. The registry maps each to a URL slug
+   and an ISO country code (used for schema addressCountry, so a destination need
+   not be a country: Bali -> ID). Add a destination by adding a line here and using
+   its label in the data. A "Where are you surfing?" tile and a /<slug>/ landing
+   page ("Surfing in <label>") appear automatically once it has listings. */
+const DESTINATIONS = [
+  { slug: "england", label: "England", iso: "GB",
+    intro: "Surf schools, shops, stays and repairs across England — from Cornwall's Atlantic coast to the beaches of north Devon." },
+  { slug: "wales", label: "Wales", iso: "GB",
+    intro: "Learn, gear up and stay on the Welsh surf coast — the Gower peninsula and beyond." },
+  { slug: "scotland", label: "Scotland", iso: "GB",
+    intro: "Cold-water surf schools, shops and stays along Scotland's coasts." },
+  { slug: "portugal", label: "Portugal", iso: "PT",
+    intro: "Surf schools, shops and places to stay all along Portugal's Atlantic coast." },
+  { slug: "bali", label: "Bali", iso: "ID",
+    intro: "Surf Bali's fabled reefs and beach breaks, from the Bukit peninsula to Canggu." },
 ];
+var DEST_BY_LABEL = {};
+DESTINATIONS.forEach(function (dd) { DEST_BY_LABEL[dd.label] = dd; });
+function destOf(d) { return DEST_BY_LABEL[d.destination] || null; }
 
 /* ---------- helpers ---------- */
 function esc(s) {
@@ -99,74 +109,24 @@ function loadData(file) {
   var code = fs.readFileSync(path.join(ROOT, "data", file), "utf8");
   var win = {};
   new Function("window", code)(win);
-  return (win.LISTINGS || []).slice().map(function (d) {
-    if (typeof d.region === "string") d.region = d.region.trim();
-    return d;
-  }).sort(function (a, b) {
+  return (win.LISTINGS || []).slice().sort(function (a, b) {
     return (isVerified(b) ? 1 : 0) - (isVerified(a) ? 1 : 0) ||
-      a.country.localeCompare(b.country) || a.region.localeCompare(b.region) || a.name.localeCompare(b.name);
+      String(a.destination || "").localeCompare(String(b.destination || "")) || String(a.region || "").localeCompare(String(b.region || "")) || a.name.localeCompare(b.name);
   });
 }
 CATEGORIES.forEach(function (c) { c.items = loadData(c.data); });
 
-/* ---------- region validation ----------
-   Every listing's (trimmed) `region` must match a REGIONS entry's `name`
-   exactly, or it would silently vanish from every region-scoped page. Fail
-   loudly instead. */
-(function validateRegions() {
-  var known = new Set(REGIONS.map(function (r) { return r.name; }));
-  var bad = [];
-  CATEGORIES.forEach(function (cat) {
-    cat.items.forEach(function (d) {
-      if (!known.has(d.region)) bad.push(cat.data + ': "' + d.name + '" has region "' + d.region + '"');
-    });
-  });
-  if (bad.length) {
-    throw new Error(
-      "Unknown region(s) — not in the REGIONS registry (add a REGIONS entry or fix the typo in data/*.js):\n" +
-      bad.join("\n")
-    );
-  }
-})();
-
-/* ---------- region helpers ---------- */
-function regionItems(regionName, cat) {
-  return cat.items.filter(function (d) { return d.region === regionName; });
-}
-function regionCatPageExists(region, cat) {
-  return regionItems(region.name, cat).length >= 2;
-}
-function regionCountryCode(region) {
-  for (var i = 0; i < CATEGORIES.length; i++) {
-    var found = CATEGORIES[i].items.find(function (d) { return d.region === region.name; });
-    if (found) return shared.countryCode(found.country);
-  }
-  return "";
-}
-function activeRegions() {
-  return REGIONS.filter(function (r) {
-    return CATEGORIES.some(function (c) { return regionItems(r.name, c).length > 0; });
-  });
-}
-
 /* ---------- shared chrome ---------- */
-function nav() {
-  return '<nav class="nav" aria-label="Regions"><a href="/#regions">Regions</a></nav>';
+function nav(active) {
+  return '<nav class="nav" aria-label="Categories">' + CATEGORIES.map(function (c) {
+    return '<a href="/' + c.slug + '/"' + (c.slug === active ? ' aria-current="page"' : "") + ">" + esc(c.nav) + "</a>"; 
+  }).join("") + "</nav>";
 }
-function header() {
-  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' + nav() + "</div></header>\n";
+function header(active) {
+  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' + nav(active) + "</div></header>\n";
 }
 const FOOTER =
-  '<footer><div class="wrap footer-grid">' +
-  '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
-  '<p>Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.</p></div>' +
-  '<div class="footer-col"><p class="filter-label">Regions</p><nav class="footer-nav" aria-label="Regions">' +
-  activeRegions().map(function (r) { return '<a href="/' + r.slug + '/">' + esc(r.name) + "</a>"; }).join("") +
-  "</nav></div>" +
-  '<div class="footer-col"><p class="filter-label">Browse by type</p><nav class="footer-nav" aria-label="Categories">' +
-  CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.title) + "</a>"; }).join("") +
-  "</nav></div>" +
-  "</div></footer>\n";
+  '<footer><div class="wrap">Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.</div></footer>\n';
 
 function head(o) {
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
@@ -213,7 +173,7 @@ function renderCard(d, cat, nameTag) {
     ? "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">"
     : "<" + nameTag + ' class="card__name">' + name + "</" + nameTag + ">";
   var dataFacet = vals.length ? ' data-facet="|' + esc(vals.join("|")) + '|"' : "";
-  return '<li class="card' + (verified ? " is-verified" : "") + '" data-country="' + esc(d.country) + '" data-region="' + esc(d.region) + '"' + dataFacet + ">" +
+  return '<li class="card' + (verified ? " is-verified" : "") + '" data-destination="' + esc(d.destination) + '" data-region="' + esc(d.region) + '"' + dataFacet + ">" +
     '<div class="card__media">' + media + badge + "</div>" +
     '<div class="card__body"><span class="card__place">' + esc(place) + "</span>" + nameHtml +
     (d.blurb ? '<p class="card__blurb">' + esc(d.blurb) + "</p>" : "") +
@@ -225,9 +185,8 @@ function opt(attr, val, label, count, active) {
   return '<button class="side-opt' + (active ? " is-active" : "") + '" type="button" ' + attr + '="' + esc(val) + '">' +
     esc(label) + (count == null ? "" : ' <span class="n">' + count + "</span>") + "</button>";
 }
-function renderSidebar(cat, opts) {
-  opts = opts || {};
-  var items = opts.items || cat.items;
+function renderSidebar(cat) {
+  var items = cat.items;
   var html = "";
   // facet filter
   var allVals = [];
@@ -241,139 +200,47 @@ function renderSidebar(cat, opts) {
     });
     html += '<p class="filter-label">' + esc(cat.facetLabel) + '</p><div class="side-list" id="facets">' + fbtn + "</div>";
   }
-  if (opts.scoped) return '<aside class="sidebar" aria-label="Filter listings">' + html + "</aside>";
-  // region filter — standalone, always visible, ANDs with facet (and country below)
-  var regions = uniqSorted(items.map(function (d) { return d.region; }));
-  if (regions.length > 1) {
-    var rbtn = opt("data-region", "All", "All", items.length, true);
+  // destination + region
+  var dests = uniqSorted(items.map(function (d) { return d.destination; }).filter(Boolean));
+  var dbtn = opt("data-destination", "All", "All", items.length, true);
+  dests.forEach(function (c) {
+    dbtn += opt("data-destination", c, c, items.filter(function (d) { return d.destination === c; }).length, false);
+  });
+  html += '<p class="filter-label">Destination</p><div class="side-list" id="destinations">' + dbtn + "</div>";
+  dests.forEach(function (c) {
+    var inC = items.filter(function (d) { return d.destination === c; });
+    var regions = uniqSorted(inC.map(function (d) { return d.region; }).filter(Boolean));
+    var rbtn = opt("data-region", "All", "All", inC.length, true);
     regions.forEach(function (r) {
-      rbtn += opt("data-region", r, r, items.filter(function (d) { return d.region === r; }).length, false);
+      rbtn += opt("data-region", r, r, inC.filter(function (d) { return d.region === r; }).length, false);
     });
-    html += '<p class="filter-label">Region</p><div class="side-list" id="regions">' + rbtn + "</div>";
-  }
-  // country filter — standalone, ANDs with region + facet
-  var countries = uniqSorted(items.map(function (d) { return d.country; }));
-  if (countries.length > 1) {
-    var cbtn = opt("data-country", "All", "All", items.length, true);
-    countries.forEach(function (c) {
-      cbtn += opt("data-country", c, c, items.filter(function (d) { return d.country === c; }).length, false);
-    });
-    html += '<p class="filter-label">Country</p><div class="side-list" id="countries">' + cbtn + "</div>";
-  }
+    html += '<div class="region-block" data-region-for="' + esc(c) + '" hidden><p class="filter-label">Region</p><div class="side-list">' + rbtn + "</div></div>";
+  });
   return '<aside class="sidebar" aria-label="Filter listings">' + html + "</aside>";
 }
 const FILTER_JS =
-"(function(){var box=document.querySelector('.sidebar');if(!box)return;" +
-"var F=document.getElementById('facets'),R=document.getElementById('regions'),C=document.getElementById('countries')," +
-"cards=[].slice.call(document.querySelectorAll('#list .card'))," +
-"el=document.getElementById('count'),noun=el.getAttribute('data-noun'),nounp=el.getAttribute('data-nounp')," +
-"st={country:'All',region:'All',facet:'All'};" +
+"(function(){var box=document.querySelector('.sidebar');if(!box)return;var F=document.getElementById('facets'),D=document.getElementById('destinations'),cards=[].slice.call(document.querySelectorAll('#list .card')),blocks=[].slice.call(document.querySelectorAll('[data-region-for]')),el=document.getElementById('count'),noun=el.getAttribute('data-noun'),nounp=el.getAttribute('data-nounp'),st={destination:'All',region:'All',facet:'All'};" +
 "function act(b,a,v){[].slice.call(b.querySelectorAll('.side-opt')).forEach(function(x){x.classList.toggle('is-active',x.getAttribute(a)===v);});}" +
-"function apply(){var n=0;cards.forEach(function(c){var ok=(st.country==='All'||c.getAttribute('data-country')===st.country)&&(st.region==='All'||c.getAttribute('data-region')===st.region)&&(st.facet==='All'||(c.getAttribute('data-facet')||'').indexOf('|'+st.facet+'|')>-1);c.hidden=!ok;if(ok)n++;});" +
-"var bits=[];if(st.region!=='All')bits.push(st.region);if(st.country!=='All')bits.push(st.country);var where=bits.length?' in '+bits.join(', '):'';" +
-"el.textContent=n+' '+(n===1?noun:nounp)+where;}" +
-"if(F){F.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.facet=b.getAttribute('data-facet');act(F,'data-facet',st.facet);apply();});}" +
-"if(R){R.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.region=b.getAttribute('data-region');act(R,'data-region',st.region);apply();});}" +
-"if(C){C.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.country=b.getAttribute('data-country');act(C,'data-country',st.country);apply();});}" +
-"})();";
+"function apply(){var n=0;cards.forEach(function(c){var ok=(st.destination==='All'||c.getAttribute('data-destination')===st.destination)&&(st.region==='All'||c.getAttribute('data-region')===st.region)&&(st.facet==='All'||(c.getAttribute('data-facet')||'').indexOf('|'+st.facet+'|')>-1);c.hidden=!ok;if(ok)n++;});var where=st.destination==='All'?'':' in '+(st.region==='All'?st.destination:st.region+', '+st.destination);el.textContent=n+' '+(n===1?noun:nounp)+where;}" +
+"if(D){D.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.destination=b.getAttribute('data-destination');st.region='All';act(D,'data-destination',st.destination);blocks.forEach(function(rb){rb.hidden=rb.getAttribute('data-region-for')!==st.destination;});apply();});}" +
+"blocks.forEach(function(rb){rb.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.region=b.getAttribute('data-region');act(rb,'data-region',st.region);apply();});});" +
+"if(F){F.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.facet=b.getAttribute('data-facet');act(F,'data-facet',st.facet);apply();});}})();";
 
-/* ---------- category directory ----------
-   Renders either the all-region category page (/<cat>/) or, when opts.region
-   is set, a region-scoped variant (/<region>/<cat>/) — same markup, same
-   filter, just a narrower item list and unique metadata. */
-function renderCategory(cat, opts) {
-  opts = opts || {};
-  var region = opts.region;
-  var items = region ? regionItems(region.name, cat) : cat.items;
-  var n = items.length;
-  var title = region ? cat.title + " in " + region.name : cat.title;
-  var desc = region
-    ? cat.intro + " Browse " + cat.plural + " in " + region.name + " on surflist."
-    : cat.intro + " Filter by country and region on surflist.";
-  var canonical = region ? SITE + "/" + region.slug + "/" + cat.slug + "/" : SITE + "/" + cat.slug + "/";
-  var backLink = region ? '<a class="back" href="/' + region.slug + '/">&larr; Surfing in ' + esc(region.name) + "</a>\n" : "";
+/* ---------- category directory ---------- */
+function renderCategory(cat) {
+  var n = cat.items.length;
   return head({
-    title: title + " — surflist",
-    desc: desc,
-    canonical: canonical,
-    jsonld: region ? regionCategoryJsonLd(region, cat, canonical) : undefined,
+    title: cat.title + " — surflist",
+    desc: cat.intro + " Filter by destination and region on surflist.",
+    canonical: SITE + "/" + cat.slug + "/",
   }) +
-  "<body>\n" + header() +
-  '<main class="wrap">' + backLink + '<div class="cat-head"><h1>' + esc(title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
-  '<div class="layout">' + renderSidebar(cat, { items: items, scoped: !!region }) +
+  "<body>\n" + header(cat.slug) +
+  '<main class="wrap"><div class="cat-head"><h1>' + esc(cat.title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
+  '<div class="layout">' + renderSidebar(cat) +
   '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
   n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
-  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
+  '<ul class="grid" id="list">' + cat.items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
   FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
-}
-
-/* ---------- region hub ---------- */
-function regionPlace(region) {
-  var place = {
-    "@type": "Place",
-    "@id": SITE + "/" + region.slug + "/#place",
-    name: region.name,
-    address: { "@type": "PostalAddress", addressRegion: region.name },
-  };
-  var cc = regionCountryCode(region);
-  if (cc) place.address.addressCountry = cc;
-  return place;
-}
-function regionHubJsonLd(region) {
-  var pageUrl = SITE + "/" + region.slug + "/";
-  var place = regionPlace(region);
-  var page = {
-    "@type": "CollectionPage",
-    "@id": pageUrl,
-    url: pageUrl,
-    name: "Surfing in " + region.name + " — surflist",
-    isPartOf: { "@id": SITE + "/#surflist" },
-    about: { "@id": place["@id"] },
-    mainEntity: { "@id": place["@id"] },
-    reviewedBy: { "@id": SITE + "/#surflist" },
-  };
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), place, page] }, null, 2);
-}
-function regionCategoryJsonLd(region, cat, pageUrl) {
-  var place = regionPlace(region);
-  var page = {
-    "@type": "CollectionPage",
-    "@id": pageUrl,
-    url: pageUrl,
-    name: cat.title + " in " + region.name + " — surflist",
-    isPartOf: { "@id": SITE + "/#surflist" },
-    about: { "@id": place["@id"] },
-    mainEntity: { "@id": place["@id"] },
-    areaServed: { "@id": place["@id"] },
-    reviewedBy: { "@id": SITE + "/#surflist" },
-  };
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), place, page] }, null, 2);
-}
-function renderRegionHub(region) {
-  var sectionCats = CATEGORIES.filter(function (cat) { return regionItems(region.name, cat).length > 0; });
-  var jumpNav = sectionCats.length > 1
-    ? '<nav class="jump-nav" aria-label="Jump to a section">' +
-      sectionCats.map(function (cat) { return '<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"; }).join("") +
-      "</nav>"
-    : "";
-  var sections = sectionCats.map(function (cat) {
-    var items = regionItems(region.name, cat);
-    var viewAll = regionCatPageExists(region, cat)
-      ? '<a href="/' + region.slug + '/' + cat.slug + '/">All ' + esc(cat.plural) + " &rarr;</a>"
-      : "";
-    return '<section class="hub-cat" id="' + cat.slug + '"><div class="hub-cat__head"><h2>' + esc(cat.title) + "</h2>" + viewAll + "</div>" +
-      '<ul class="grid">' + items.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
-  }).join("\n");
-  return head({
-    title: "Surfing in " + region.name + " — surflist",
-    desc: (region.intro || ("Surf schools, shops, stays and repairs in " + region.name + ".")) + " Browse by category on surflist.",
-    canonical: SITE + "/" + region.slug + "/",
-    jsonld: regionHubJsonLd(region),
-  }) +
-  "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Surfing in ' + esc(region.name) + "</h1>" +
-  "<p>" + esc(region.intro || "") + "</p>" + jumpNav + "</section>\n" +
-  sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
 /* ---------- verified detail ---------- */
@@ -391,7 +258,7 @@ function jsonLd(d, cat, pageUrl) {
   if (d.streetAddress) address.streetAddress = d.streetAddress;
   if (d.town) address.addressLocality = d.town;
   if (d.region) address.addressRegion = d.region;
-  var cc = shared.countryCode(d.country); if (cc) address.addressCountry = cc;
+  var dest = destOf(d); if (dest && dest.iso) address.addressCountry = dest.iso;
 
   var biz = { "@type": cat.schemaType(d), "@id": pageUrl + "#business", name: d.name, address: address };
   if (d.description || d.blurb) biz.description = d.description || d.blurb;
@@ -443,7 +310,7 @@ function detailSection(title, inner) {
 function renderDetail(d, cat, slug, opts) {
   opts = opts || {};
   var pageUrl = SITE + "/" + (opts.demo ? "verified-demo" : cat.slug + "/" + slug) + "/";
-  var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
+  var place = [d.town, d.region, d.destination].filter(Boolean).join(", ");
   var img = d.image ? esc(d.image) : placeholderImage(d.name);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
@@ -455,7 +322,7 @@ function renderDetail(d, cat, slug, opts) {
   function fact(dt, dd) { return "<div><dt>" + dt + "</dt><dd>" + dd + "</dd></div>"; }
   var addrLine = [d.streetAddress, d.town, d.region].filter(Boolean).join(", ");
   if (addrLine) facts += fact("Location", esc(addrLine));
-  if (d.country) facts += fact("Country", esc(d.country));
+  if (d.destination) facts += fact("Destination", esc(d.destination));
   if (d.priceRange) facts += fact("Price", esc(d.priceRange));
   if (vals.length) facts += fact(esc(cat.facetLabel), esc(vals.join(", ")));
   if (typeof d.lat === "number" && typeof d.lng === "number") facts += fact("Coordinates", d.lat.toFixed(4) + ", " + d.lng.toFixed(4));
@@ -477,11 +344,11 @@ function renderDetail(d, cat, slug, opts) {
     : "";
 
   return head({
-    title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.country + " | surflist",
+    title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.destination + " | surflist",
     desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl),
     noindex: !!opts.demo,
   }) +
-  "<body>\n" + header() +
+  "<body>\n" + header(cat.slug) +
   '<main class="wrap detail">' + demoBanner +
   (opts.demo ? "" : '<a class="back" href="/' + cat.slug + '/">&larr; All ' + esc(cat.plural) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
@@ -495,113 +362,90 @@ function renderDetail(d, cat, slug, opts) {
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
-/* ---------- search ---------- */
-function searchIndex() {
-  var idx = [];
-  CATEGORIES.forEach(function (cat) {
-    cat.items.forEach(function (d) {
-      var href = isVerified(d) ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
-      if (!href) return;
-      idx.push({
-        n: d.name,
-        p: [d.town, d.region, d.country].filter(Boolean).join(", "),
-        c: cat.singular,
-        u: href,
-        v: isVerified(d),
-      });
-    });
-  });
-  return idx;
+/* ---------- destination landing pages ---------- */
+function destItems(dest, cat) {
+  return cat.items.filter(function (d) { return d.destination === dest.label; });
 }
-function renderSearch() {
-  return '<div class="search" role="search">' +
-    '<input type="text" id="search-input" class="search__input" placeholder="Search by name, town, region or country&hellip;" ' +
-    'autocomplete="off" spellcheck="false" aria-label="Search listings" role="combobox" aria-expanded="false" ' +
-    'aria-controls="search-results" aria-autocomplete="list" />' +
-    '<ul id="search-results" class="search__results" role="listbox" hidden></ul>' +
-    '<script type="application/json" id="search-data">' + JSON.stringify(searchIndex()).replace(/</g, "\\u003c") + "</script>" +
-    "</div>";
+function destTotal(dest) {
+  return CATEGORIES.reduce(function (a, c) { return a + destItems(dest, c).length; }, 0);
 }
-const SEARCH_JS =
-"(function(){var input=document.getElementById('search-input');if(!input)return;var box=document.getElementById('search-results');" +
-"var items=JSON.parse(document.getElementById('search-data').textContent);var active=-1;" +
-"function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
-"function highlight(opts){opts.forEach(function(o,i){o.classList.toggle('is-active',i===active);});input.setAttribute('aria-activedescendant',active>-1?opts[active].parentElement.id:'');}" +
-"function render(list){box.innerHTML='';active=-1;" +
-"if(!list.length){box.hidden=true;input.setAttribute('aria-expanded','false');return;}" +
-"list.forEach(function(d,i){var li=document.createElement('li');li.setAttribute('role','option');li.id='search-opt-'+i;" +
-"var a=document.createElement('a');a.href=d.u;a.className='search__result';if(!d.v){a.target='_blank';a.rel='noopener';}" +
-"a.innerHTML='<span class=\"search__name\">'+esc(d.n)+'</span><span class=\"search__meta\">'+esc(d.c)+(d.p?' &middot; '+esc(d.p):'')+'</span>';" +
-"li.appendChild(a);box.appendChild(li);});" +
-"box.hidden=false;input.setAttribute('aria-expanded','true');}" +
-"function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
-"return items.filter(function(d){return (d.n+' '+d.p+' '+d.c).toLowerCase().indexOf(q)>-1;}).slice(0,8);}" +
-"input.addEventListener('input',function(){render(search(input.value));});" +
-"input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
-"if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,opts.length-1);highlight(opts);}" +
-"else if(e.key==='ArrowUp'){e.preventDefault();active=Math.max(active-1,-1);highlight(opts);}" +
-"else if(e.key==='Enter'){if(active>-1){e.preventDefault();opts[active].click();}}" +
-"else if(e.key==='Escape'){box.hidden=true;input.setAttribute('aria-expanded','false');}});" +
-"document.addEventListener('click',function(e){if(!e.target.closest('.search'))box.hidden=true;});})();";
+function destJsonLd(dest, pageUrl) {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      surflistEntity(),
+      {
+        "@type": "CollectionPage",
+        "@id": pageUrl,
+        url: pageUrl,
+        name: "Surfing in " + dest.label,
+        description: dest.intro,
+        isPartOf: { "@id": SITE + "/#surflist" },
+        about: { "@type": "Place", name: dest.label },
+        reviewedBy: { "@id": SITE + "/#surflist" },
+      },
+    ],
+  }, null, 2);
+}
+function renderDestination(dest) {
+  var pageUrl = SITE + "/" + dest.slug + "/";
+  var sections = CATEGORIES.map(function (cat) {
+    var items = destItems(dest, cat);
+    if (!items.length) return "";
+    return '<section class="hub-cat"><div class="hub-cat__head"><h2>' + esc(cat.title) + " in " + esc(dest.label) + "</h2>" +
+      '<a href="/' + cat.slug + '/">All ' + esc(cat.plural) + " &rarr;</a></div>" +
+      '<ul class="grid">' + items.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
+  }).join("\n");
+  return head({
+    title: "Surfing in " + dest.label + " — schools, shops, stays & repairs | surflist",
+    desc: dest.intro,
+    canonical: pageUrl,
+    jsonld: destJsonLd(dest, pageUrl),
+  }) +
+  "<body>\n" + header("") +
+  '<main class="wrap"><section class="hero"><p class="detail__eyebrow">Destination</p><h1>Surfing in ' + esc(dest.label) + "</h1>" +
+  "<p>" + esc(dest.intro) + "</p></section>\n" +
+  sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+}
 
 /* ---------- hub ---------- */
-function renderRegionCard(region, index) {
-  var count = CATEGORIES.reduce(function (a, c) { return a + regionItems(region.name, c).length; }, 0);
-  var name = esc(region.name);
-  var href = "/" + region.slug + "/";
-  var img = region.image ? esc(region.image) : placeholderImage(region.slug);
-  var lazy = index < 4 ? "" : ' loading="lazy"';
-  return '<li class="card">' +
-    '<div class="card__media"><a href="' + href + '" aria-label="' + name + '"><img src="' + img + '" alt="' + name + '"' + lazy + "></a></div>" +
-    '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + href + '">' + name + "</a></h3>" +
-    '<p class="card__blurb">' + count + " listing" + (count === 1 ? "" : "s") + "</p></div></li>";
-}
 function renderHub() {
-  var regions = activeRegions();
-  var regionCards = regions.map(function (r, i) { return renderRegionCard(r, i); }).join("");
-
-  var featured = [];
-  CATEGORIES.forEach(function (cat) {
-    cat.items.filter(isVerified).forEach(function (d) { featured.push({ d: d, cat: cat }); });
-  });
-  featured = featured.slice(0, 6);
-  var featuredHtml = featured.length
-    ? '<section class="hub-cat"><div class="hub-cat__head"><h2>Verified picks</h2></div>' +
-      '<ul class="grid">' + featured.map(function (f) { return renderCard(f.d, f.cat, "h3"); }).join("") + "</ul></section>\n"
+  var sections = CATEGORIES.filter(function (c) { return c.items.length; }).map(function (cat) {
+    var featured = cat.items.slice(0, 6);
+    return '<section class="hub-cat"><div class="hub-cat__head"><h2>' + esc(cat.title) + '</h2>' +
+      '<a href="/' + cat.slug + '/">All ' + esc(cat.plural) + " &rarr;</a></div>" +
+      '<ul class="grid">' + featured.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
+  }).join("\n");
+  var live = DESTINATIONS.filter(function (dd) { return destTotal(dd) > 0; });
+  var tiles = live.length
+    ? '<section class="where"><h2 class="where__title">Where are you surfing?</h2><ul class="dest-tiles">' +
+      live.map(function (dd) {
+        var t = destTotal(dd);
+        return '<li><a class="dest-tile" href="/' + dd.slug + '/"><span class="dest-tile__name">' + esc(dd.label) +
+          '</span><span class="dest-tile__count">' + t + " listing" + (t === 1 ? "" : "s") + "</span></a></li>";
+      }).join("") + "</ul></section>\n"
     : "";
-
   return head({
     title: "surflist — surf schools, shops, stays & repairs",
-    desc: "surflist is a directory for your next surf trip: find surf schools, independent shops, places to stay, and board repair — browse by region or by category.",
+    desc: "surflist is a directory for your next surf trip: find surf schools, independent shops, places to stay, and board repair — browse by destination and region.",
     canonical: SITE + "/",
   }) +
-  "<body>\n" + header() +
+  "<body>\n" + header("") +
   '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
-  '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p>' +
-  renderSearch() + "</section>\n" +
-  '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where are you surfing?</h2></div>' +
-  '<ul class="grid">' + regionCards + "</ul></section>\n" +
-  featuredHtml +
-  "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
+  '<p>Everything for your next surf trip in one place — learn with a school, gear up at an independent shop, find somewhere to stay near the break, and get your board fixed.</p></section>\n' +
+  tiles + sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
 /* ---------- llms.txt ---------- */
 function renderLlms() {
-  var out = ["# surflist", "", "> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by region or category. Verified listings have their own profile page with location and pricing.", "", "## Sections", ""];
+  var out = ["# surflist", "", "> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by country and region. Verified listings have their own profile page with location and pricing.", "", "## Sections", ""];
   CATEGORIES.forEach(function (c) { out.push("- [" + c.title + "](" + SITE + "/" + c.slug + "/): " + c.intro); });
   out.push("");
-  var regions = activeRegions();
-  if (regions.length) {
-    out.push("## Regions");
+  var liveD = DESTINATIONS.filter(function (dd) { return destTotal(dd) > 0; });
+  if (liveD.length) {
+    out.push("## Destinations");
     out.push("");
-    regions.forEach(function (region) {
-      var cats = CATEGORIES.filter(function (c) { return regionItems(region.name, c).length > 0; });
-      var count = cats.reduce(function (a, c) { return a + regionItems(region.name, c).length; }, 0);
-      var breakdown = cats.map(function (c) {
-        return regionItems(region.name, c).length + " " + (regionItems(region.name, c).length === 1 ? c.singular : c.plural);
-      }).join(", ");
-      out.push("- [" + region.name + "](" + SITE + "/" + region.slug + "/): " + count + " listings — " + breakdown + ".");
-    });
+    liveD.forEach(function (dd) { out.push("- [Surfing in " + dd.label + "](" + SITE + "/" + dd.slug + "/): " + dd.intro); });
     out.push("");
   }
   CATEGORIES.forEach(function (cat) {
@@ -610,7 +454,7 @@ function renderLlms() {
     out.push("## Verified " + cat.plural);
     out.push("");
     verified.forEach(function (d) {
-      var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
+      var place = [d.town, d.region, d.destination].filter(Boolean).join(", ");
       var desc = String(d.blurb || "").replace(/\s+/g, " ").trim().replace(/\.+$/, "");
       out.push("- [" + d.name + "](" + SITE + "/" + cat.slug + "/" + slugOf(d) + "/): " + cat.singular + " in " + place + (desc ? " — " + desc : "") + ".");
     });
@@ -629,13 +473,10 @@ function writePage(rel, html) {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), html);
 }
-// clean old generated category + region dirs, and legacy schools/
-["schools", "verified-demo"]
-  .concat(CATEGORIES.map(function (c) { return c.slug; }))
-  .concat(REGIONS.map(function (r) { return r.slug; }))
-  .forEach(function (s) {
-    fs.rmSync(path.join(ROOT, s), { recursive: true, force: true });
-  });
+// clean old generated category dirs + legacy schools/
+["schools", "verified-demo"].concat(CATEGORIES.map(function (c) { return c.slug; })).concat(DESTINATIONS.map(function (d) { return d.slug; })).forEach(function (s) {
+  fs.rmSync(path.join(ROOT, s), { recursive: true, force: true });
+});
 
 fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
 var urls = [SITE + "/"];
@@ -649,16 +490,11 @@ CATEGORIES.forEach(function (cat) {
   });
 });
 
-REGIONS.forEach(function (region) {
-  var hasAny = CATEGORIES.some(function (cat) { return regionItems(region.name, cat).length > 0; });
-  if (!hasAny) return; // no listings yet for this region — skip its hub/pages
-  writePage(region.slug, renderRegionHub(region));
-  urls.push(SITE + "/" + region.slug + "/");
-  CATEGORIES.forEach(function (cat) {
-    if (!regionCatPageExists(region, cat)) return; // thin-content guard: needs >=2 listings
-    writePage(region.slug + "/" + cat.slug, renderCategory(cat, { region: region }));
-    urls.push(SITE + "/" + region.slug + "/" + cat.slug + "/");
-  });
+/* destination landing pages — one per destination that has listings */
+DESTINATIONS.forEach(function (dest) {
+  if (destTotal(dest) < 1) return;
+  writePage(dest.slug, renderDestination(dest));
+  urls.push(SITE + "/" + dest.slug + "/");
 });
 
 /* ---------- verified profile demo ----------
@@ -667,7 +503,7 @@ REGIONS.forEach(function (region) {
    and disallowed in robots.txt below. */
 var DEMO_LISTING = {
   name: "Blue Horizon Surf Co",
-  country: "United Kingdom", region: "Cornwall", town: "Sennen",
+  destination: "England", region: "Cornwall", town: "Sennen",
   url: "https://example.com",
   blurb: "A friendly, all-abilities surf school on Cornwall's far-west coast. (Sample listing.)",
   image: "",
@@ -713,3 +549,4 @@ fs.writeFileSync(path.join(ROOT, "_redirects"), "/schools/* /surf-schools/:splat
 var totalV = CATEGORIES.reduce(function (a, c) { return a + c.items.filter(isVerified).length; }, 0);
 console.log("Built hub + " + CATEGORIES.length + " categories, " + totalV + " verified page(s), sitemap.xml, robots.txt, llms.txt, _redirects.");
 CATEGORIES.forEach(function (c) { console.log("  /" + c.slug + "/  (" + c.items.length + " listings, " + c.items.filter(isVerified).length + " verified)"); });
+DESTINATIONS.filter(function (dd) { return destTotal(dd) > 0; }).forEach(function (dd) { console.log("  /" + dd.slug + "/  (Surfing in " + dd.label + " — " + destTotal(dd) + " listings)"); });

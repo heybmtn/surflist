@@ -325,3 +325,28 @@
 
     /* Google Business Profile icon shares the existing .soc styling (incl. 44px mobile tap target) */
     .soc--google:hover { color: var(--accent); }
+
+/* ===== destination tiles ("Where are you surfing?") — append to styles.css ===== */
+.where { margin-top: 2.4rem; }
+.where__title {
+  font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em;
+  margin: 0 0 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line);
+}
+.dest-tiles {
+  list-style: none; margin: 0 0 1rem; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem;
+}
+.dest-tile {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 104px; padding: 1rem;
+  background: #fffdf8; border: 1px solid var(--line); border-radius: 14px;
+  text-decoration: none; color: var(--ink);
+  transition: border-color .12s, transform .12s, box-shadow .12s;
+}
+.dest-tile:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  transform: translateY(-3px); box-shadow: 0 14px 28px -20px rgba(19,48,44,.45);
+}
+.dest-tile__name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+.dest-tile__count { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+.dest-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
