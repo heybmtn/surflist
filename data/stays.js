@@ -53,5 +53,25 @@ window.LISTINGS = [
     blurb: "Award-winning hostel in a converted chapel in central St Ives — pod dorms, private rooms and board storage, minutes from five beaches.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/cohortstives/", facebook: "https://www.facebook.com/stayatcohort" },
-    stayType: "Hostel" }
+    stayType: "Hostel" },
+  // ---- Croyde ----
+  { name: "Baggy's", country: "United Kingdom", region: "Devon", town: "Croyde",
+    url: "https://baggys.co.uk",
+    blurb: "Boutique surf lodge 30m from Croyde Beach with sea-view rooms, a wood-fired sauna and cold plunge, and an on-site surf school and cafe.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/baggyscroyde/", facebook: "https://www.facebook.com/BaggyLodgeCroyde", x: "https://x.com/baggylodge" },
+    stayType: "Hostel" },
+  { name: "Ocean Pitch Campsite", country: "United Kingdom", region: "Devon", town: "Croyde",
+    url: "https://oceanpitch.co.uk",
+    blurb: "Croyde's top-rated campsite, right above the beach — grass and glamping pitches, on-site surf hire, hot showers and a surf-food van, two minutes from the break.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/oceanpitch/", facebook: "https://www.facebook.com/OceanPitch", x: "https://x.com/oceanpitch" },
+    stayType: "Camp" },
+  // ---- Braunton / Saunton ----
+  { name: "Lobb Fields Caravan & Camping Park", country: "United Kingdom", region: "Devon", town: "Braunton",
+    url: "https://lobbfields.com",
+    blurb: "Relaxed, surfer-friendly camping and glamping near Saunton Sands and Braunton, with on-site surf hire and easy reach of Croyde and Woolacombe.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/lobbfields" },
+    stayType: "Camp" }
 ];
