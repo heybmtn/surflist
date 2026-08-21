@@ -5,7 +5,7 @@
   function slugify(s) {
     return String(s == null ? "" : s)
       .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // strip accents
+      .normalize("NFD").replace(/[̀-ͯ]/g, "") // strip accents
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 80);
@@ -13,7 +13,7 @@
 
   // Country name -> ISO 3166-1 alpha-2, for the schema's addressCountry.
   var COUNTRY_CODES = {
-    "united kingdom": "GB", "uk": "GB", "england": "GB", "scotland": "GB", "wales": "GB",
+    "united kingdom": "GB", "uk": "GB", "england": "GB", "scotland": "GB", "wales": "GB", "northern ireland": "GB",
     "ireland": "IE", "france": "FR", "spain": "ES", "portugal": "PT", "germany": "DE",
     "netherlands": "NL", "italy": "IT", "morocco": "MA", "united states": "US", "usa": "US",
     "australia": "AU", "new zealand": "NZ", "south africa": "ZA", "indonesia": "ID",
