@@ -1,8 +1,34 @@
 /* build.js — generates the whole static site from the data files.
-   Multi-category: schools, shops, stays, services. Add a category by adding a
-   data/<x>.js file and one entry to CATEGORIES below — nothing else changes.
-   Everything is real pre-rendered HTML (no client rendering, no layout shift,
-   self-hosted font). Zero dependencies. Run:  node build.js  */
+
+   DESTINATION-FIRST ARCHITECTURE
+   ------------------------------
+   The canonical hub for every place is its geographic page:
+
+       /<country>/                         e.g. /england/
+       /<country>/<region>/                e.g. /england/cornwall/
+       /<country>/<region>/<town>/         e.g. /england/cornwall/newquay/   <- core SEO asset
+       /<country>/<region>/<town>/<cat>/   e.g. /england/cornwall/newquay/surf-schools/
+
+   Alongside the tree, each category also has a browse-all page and a page per
+   VERIFIED business (kept flat + canonical, so a business has one stable URL no
+   matter which town/region pages link to it):
+
+       /surf-schools/            (browse all schools everywhere)
+       /surf-schools/<slug>/     (a verified school's own page)
+
+   Country → Region → Town come straight from the data (the country/region/town
+   fields on each listing). "United Kingdom / Europe / Worldwide" is only a
+   homepage grouping (see COUNTRIES.bucket), never a URL segment, so every
+   canonical path is a real place.
+
+   Add a category .......... add data/<x>.js + one CATEGORIES entry
+   Add a country/region .... just add listings; optionally add a COUNTRIES /
+                             REGIONS entry for an intro + custom slug
+   Add town editorial ...... add a TOWN_CONTENT["<c>/<r>/<t>"] entry (beaches,
+                             when-to-surf, FAQ). Town hubs render slots for these.
+
+   Real pre-rendered HTML, self-hosted font, zero dependencies. Run: node build.js
+*/
 
 const fs = require("fs");
 const path = require("path");
@@ -14,38 +40,75 @@ const SITE = "https://surflist.co"; // change if your domain differs
 /* ---------- category registry ---------- */
 const CATEGORIES = [
   { slug: "surf-schools", title: "Surf schools", singular: "surf school", plural: "surf schools",
-    nav: "Schools", data: "schools.js", facetField: "levels", facetLabel: "Level",
+    nav: "Surf schools", data: "schools.js", facetField: "levels", facetLabel: "Level",
     intro: "Learn to surf or level up with schools and coaches near the break.",
     schemaType: function () { return "SportsActivityLocation"; } },
 
   { slug: "surf-shops", title: "Surf shops", singular: "surf shop", plural: "surf shops",
-    nav: "Shops", data: "shops.js", facetField: "offerings", facetLabel: "Offers",
+    nav: "Surf shops", data: "shops.js", facetField: "offerings", facetLabel: "Offers",
     intro: "Independent surf shops for boards, wetsuits, rentals and repairs.",
     schemaType: function () { return "SportingGoodsStore"; } },
 
   { slug: "surf-stays", title: "Places to stay", singular: "place to stay", plural: "places to stay",
-    nav: "Stays", data: "stays.js", facetField: "stayType", facetLabel: "Type",
+    nav: "Surf stays", data: "stays.js", facetField: "stayType", facetLabel: "Type",
     intro: "Surf camps, hostels, eco-pods and campervans close to the waves.",
     schemaType: function (d) { return ({ Camp: "Campground", Hostel: "Hostel" })[d.stayType] || "LodgingBusiness"; } },
 
   { slug: "surf-services", title: "Surf services", singular: "surf service", plural: "surf services",
-    nav: "Repairs", data: "services.js", facetField: "serviceType", facetLabel: "Service",
+    nav: "Surf services", data: "services.js", facetField: "serviceType", facetLabel: "Service",
     intro: "Board repair, ding fixes and other surf services.",
     schemaType: function () { return "LocalBusiness"; } },
 ];
 
-/* ---------- region registry ----------
-   The `region` field on every listing (data/*.js) is the join key into this
-   array. Add a region here, then add listings with that region — nothing else
-   in build.js needs editing. */
-const REGIONS = [
-  { slug: "cornwall", name: "Cornwall", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across Cornwall." },
-  { slug: "devon", name: "Devon", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
-  { slug: "swansea", name: "Swansea", image: "",
-    intro: "Surf schools, independent shops, places to stay and board repair across the Gower Peninsula and Swansea." },
+/* ---------- country registry ----------
+   `bucket` groups countries on the homepage only (never in a URL). Add a country
+   here to give it an intro and put it in the right homepage group; countries not
+   listed still work and default to the "Worldwide" bucket. */
+const BUCKET_ORDER = ["United Kingdom", "Europe", "Worldwide"];
+const COUNTRIES = [
+  { name: "England", bucket: "United Kingdom",
+    intro: "Surf England's south-west — from Cornwall's Atlantic beach breaks to the long sands of North Devon." },
+  { name: "Wales", bucket: "United Kingdom",
+    intro: "Surf Wales — the consistent beaches and sheltered bays of the Gower Peninsula, near Swansea." },
 ];
+
+/* ---------- region registry (optional metadata) ----------
+   Regions are discovered from the data automatically; this just lets you set a
+   nicer intro or a custom slug. */
+const REGIONS = [
+  { name: "Cornwall",
+    intro: "Surf schools, independent shops, places to stay and board repair across Cornwall." },
+  { name: "Devon",
+    intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
+  { name: "Swansea",
+    intro: "Surf schools, shops, stays and repairs across the Gower Peninsula and Swansea." },
+];
+
+/* ---------- town editorial (the "Surfing in <town>" copy) ----------
+   Key each entry by its URL path without slashes at the ends:
+       "<country-slug>/<region-slug>/<town-slug>"   e.g. "england/cornwall/newquay"
+   All fields are optional. Whatever you provide renders on the town hub; whatever
+   you leave out shows as an HTML comment slot in the page source, ready to fill.
+
+     intro:      string — replaces the auto-generated hero intro
+     beaches:    [{ name, note }]   -> "Best beaches in <town>"
+     whenToSurf: string (paragraphs separated by \n\n) -> "When to surf <town>"
+     faq:        [{ q, a }]         -> "<town> FAQ" (also emits FAQPage schema)
+
+   Newquay below is a worked example. Copy the shape for other towns. */
+const TOWN_CONTENT = {
+  "england/cornwall/newquay": {
+    // intro: "Newquay is Cornwall's best-known surf town...",   // <- optional override
+    beaches: [
+      { name: "Fistral", note: "The town's marquee beach break and the heart of UK surf culture — consistent, punchy and busy." },
+      { name: "Watergate Bay", note: "Two miles of open sand just north of town, with room to spread out at most tides." },
+      { name: "Crantock", note: "A river-mouth beach across the Gannel, quieter and good for longboarding on its day." },
+      { name: "Porth", note: "A sheltered, more forgiving cove that's kinder for beginners when Fistral is maxing out." },
+    ],
+    // whenToSurf: "…",   // <- slot: add a paragraph or two
+    // faq: [ { q: "…", a: "…" } ],   // <- slot: add Q&As
+  },
+};
 
 /* ---------- helpers ---------- */
 function esc(s) {
@@ -100,68 +163,95 @@ function loadData(file) {
   var win = {};
   new Function("window", code)(win);
   return (win.LISTINGS || []).slice().map(function (d) {
+    if (typeof d.country === "string") d.country = d.country.trim();
     if (typeof d.region === "string") d.region = d.region.trim();
+    if (typeof d.town === "string") d.town = d.town.trim();
     return d;
   }).sort(function (a, b) {
     return (isVerified(b) ? 1 : 0) - (isVerified(a) ? 1 : 0) ||
-      a.country.localeCompare(b.country) || a.region.localeCompare(b.region) || a.name.localeCompare(b.name);
+      a.country.localeCompare(b.country) || a.region.localeCompare(b.region) ||
+      a.town.localeCompare(b.town) || a.name.localeCompare(b.name);
   });
 }
 CATEGORIES.forEach(function (c) { c.items = loadData(c.data); });
 
-/* ---------- region validation ----------
-   Every listing's (trimmed) `region` must match a REGIONS entry's `name`
-   exactly, or it would silently vanish from every region-scoped page. Fail
-   loudly instead. */
-(function validateRegions() {
-  var known = new Set(REGIONS.map(function (r) { return r.name; }));
+/* every (listing, category) pair, for whole-tree passes */
+var ALL = [];
+CATEGORIES.forEach(function (cat) { cat.items.forEach(function (d) { ALL.push({ d: d, cat: cat }); }); });
+
+/* ---------- data validation ---------- */
+(function validate() {
   var bad = [];
   CATEGORIES.forEach(function (cat) {
     cat.items.forEach(function (d) {
-      if (!known.has(d.region)) bad.push(cat.data + ': "' + d.name + '" has region "' + d.region + '"');
+      if (!d.country) bad.push(cat.data + ': "' + d.name + '" has no country');
+      if (!d.region) bad.push(cat.data + ': "' + d.name + '" has no region');
+      if (!d.town) bad.push(cat.data + ': "' + d.name + '" has no town');
     });
   });
-  if (bad.length) {
-    throw new Error(
-      "Unknown region(s) — not in the REGIONS registry (add a REGIONS entry or fix the typo in data/*.js):\n" +
-      bad.join("\n")
-    );
-  }
+  if (bad.length) throw new Error("Every listing needs country, region and town:\n" + bad.join("\n"));
+  // warn (don't fail) on countries with no homepage bucket
+  uniqSorted(ALL.map(function (x) { return x.d.country; })).forEach(function (c) {
+    if (!COUNTRIES.find(function (m) { return m.name === c; }))
+      console.warn('  note: country "' + c + '" has no COUNTRIES entry — defaulting to the "Worldwide" homepage group.');
+  });
 })();
 
-/* ---------- region helpers ---------- */
-function regionItems(regionName, cat) {
-  return cat.items.filter(function (d) { return d.region === regionName; });
-}
-function regionCatPageExists(region, cat) {
-  return regionItems(region.name, cat).length >= 2;
-}
-function regionCountryCode(region) {
-  for (var i = 0; i < CATEGORIES.length; i++) {
-    var found = CATEGORIES[i].items.find(function (d) { return d.region === region.name; });
-    if (found) return shared.countryCode(found.country);
-  }
-  return "";
-}
-function activeRegions() {
-  return REGIONS.filter(function (r) {
-    return CATEGORIES.some(function (c) { return regionItems(r.name, c).length > 0; });
-  });
-}
+/* ---------- place model ---------- */
+function countryMeta(name) { return COUNTRIES.find(function (m) { return m.name === name; }) || { name: name, bucket: "Worldwide" }; }
+function regionMeta(name) { return REGIONS.find(function (m) { return m.name === name; }) || { name: name }; }
+function cSlug(name) { var m = countryMeta(name); return m.slug || shared.slugify(name); }
+function rSlug(name) { var m = regionMeta(name); return m.slug || shared.slugify(name); }
+function tSlug(name) { return shared.slugify(name); }
+
+function countryUrl(c) { return "/" + cSlug(c) + "/"; }
+function regionUrl(c, r) { return "/" + cSlug(c) + "/" + rSlug(r) + "/"; }
+function townUrl(c, r, t) { return "/" + cSlug(c) + "/" + rSlug(r) + "/" + tSlug(t) + "/"; }
+function townCatUrl(c, r, t, cat) { return townUrl(c, r, t) + cat.slug + "/"; }
+
+function countries() { return uniqSorted(ALL.map(function (x) { return x.d.country; })); }
+function regionsIn(c) { return uniqSorted(ALL.filter(function (x) { return x.d.country === c; }).map(function (x) { return x.d.region; })); }
+function townsIn(c, r) { return uniqSorted(ALL.filter(function (x) { return x.d.country === c && x.d.region === r; }).map(function (x) { return x.d.town; })); }
+
+function itemsInCountry(c, cat) { return cat.items.filter(function (d) { return d.country === c; }); }
+function itemsInRegion(c, r, cat) { return cat.items.filter(function (d) { return d.country === c && d.region === r; }); }
+function itemsInTown(c, r, t, cat) { return cat.items.filter(function (d) { return d.country === c && d.region === r && d.town === t; }); }
+
+function countTown(c, r, t) { return CATEGORIES.reduce(function (a, cat) { return a + itemsInTown(c, r, t, cat).length; }, 0); }
+function countRegion(c, r) { return CATEGORIES.reduce(function (a, cat) { return a + itemsInRegion(c, r, cat).length; }, 0); }
+function countCountry(c) { return CATEGORIES.reduce(function (a, cat) { return a + itemsInCountry(c, cat).length; }, 0); }
+
+/* thin-content guards: a town hub needs >=2 listings; a town-category page needs >=2 */
+function townHubExists(c, r, t) { return countTown(c, r, t) >= 2; }
+function townCatPageExists(c, r, t, cat) { return itemsInTown(c, r, t, cat).length >= 2; }
+function townContent(c, r, t) { return TOWN_CONTENT[cSlug(c) + "/" + rSlug(r) + "/" + tSlug(t)] || {}; }
+function townsWithHub(c, r) { return townsIn(c, r).filter(function (t) { return townHubExists(c, r, t); }); }
 
 /* ---------- shared chrome ---------- */
 function nav() {
-  return '<nav class="nav" aria-label="Regions"><a href="/#regions">Regions</a></nav>';
+  return '<nav class="nav" aria-label="Primary"><a href="/#destinations">Destinations</a>' +
+    CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
+    "</nav>";
 }
 function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' + nav() + "</div></header>\n";
+}
+function destinationFooterLinks() {
+  // country hubs, grouped by bucket, with their regions beneath
+  var out = [];
+  BUCKET_ORDER.forEach(function (bucket) {
+    countries().filter(function (c) { return countryMeta(c).bucket === bucket; }).forEach(function (c) {
+      out.push('<a href="' + countryUrl(c) + '">' + esc(c) + "</a>");
+    });
+  });
+  return out.join("");
 }
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.</p></div>' +
-  '<div class="footer-col"><p class="filter-label">Regions</p><nav class="footer-nav" aria-label="Regions">' +
-  activeRegions().map(function (r) { return '<a href="/' + r.slug + '/">' + esc(r.name) + "</a>"; }).join("") +
+  '<div class="footer-col"><p class="filter-label">Destinations</p><nav class="footer-nav" aria-label="Destinations">' +
+  destinationFooterLinks() +
   "</nav></div>" +
   '<div class="footer-col"><p class="filter-label">Browse by type</p><nav class="footer-nav" aria-label="Categories">' +
   CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.title) + "</a>"; }).join("") +
@@ -188,6 +278,26 @@ function head(o) {
     '<link rel="stylesheet" href="/styles.css" />\n' +
     (o.jsonld ? '<script type="application/ld+json">\n' + o.jsonld + "\n</script>\n" : "") +
     "</head>\n";
+}
+
+/* ---------- breadcrumbs ---------- */
+function crumbs(trail) {
+  return '<nav class="crumbs" aria-label="Breadcrumb">' + trail.map(function (c, i) {
+    var last = i === trail.length - 1;
+    var el = last ? '<span aria-current="page">' + esc(c.name) + "</span>"
+      : '<a href="' + esc(c.href) + '">' + esc(c.name) + "</a>";
+    return el + (last ? "" : '<span class="crumbs__sep" aria-hidden="true">/</span>');
+  }).join("") + "</nav>";
+}
+function breadcrumbJsonLd(trail) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map(function (c, i) {
+      var item = { "@type": "ListItem", position: i + 1, name: c.name };
+      if (c.href) item.item = SITE + c.href;
+      return item;
+    }),
+  };
 }
 
 /* ---------- card ---------- */
@@ -220,7 +330,17 @@ function renderCard(d, cat, nameTag) {
     (tags ? '<div class="card__levels">' + tags + "</div>" : "") + foot + "</div></li>";
 }
 
-/* ---------- sidebar + filter ---------- */
+/* a plain place card (country / region / town) */
+function placeCard(name, href, count, index) {
+  var lazy = (index != null && index < 4) ? "" : ' loading="lazy"';
+  var img = placeholderImage(href);
+  return '<li class="card"><div class="card__media"><a href="' + esc(href) + '" aria-label="' + esc(name) + '">' +
+    '<img src="' + img + '" alt="' + esc(name) + '"' + lazy + "></a></div>" +
+    '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + esc(name) + "</a></h3>" +
+    '<p class="card__blurb">' + count + " listing" + (count === 1 ? "" : "s") + "</p></div></li>";
+}
+
+/* ---------- sidebar + filter (browse-all + town-category) ---------- */
 function opt(attr, val, label, count, active) {
   return '<button class="side-opt' + (active ? " is-active" : "") + '" type="button" ' + attr + '="' + esc(val) + '">' +
     esc(label) + (count == null ? "" : ' <span class="n">' + count + "</span>") + "</button>";
@@ -229,7 +349,6 @@ function renderSidebar(cat, opts) {
   opts = opts || {};
   var items = opts.items || cat.items;
   var html = "";
-  // facet filter
   var allVals = [];
   items.forEach(function (d) { allVals = allVals.concat(facetVals(d, cat)); });
   var facets = uniqSorted(allVals);
@@ -242,7 +361,6 @@ function renderSidebar(cat, opts) {
     html += '<p class="filter-label">' + esc(cat.facetLabel) + '</p><div class="side-list" id="facets">' + fbtn + "</div>";
   }
   if (opts.scoped) return '<aside class="sidebar" aria-label="Filter listings">' + html + "</aside>";
-  // region filter — standalone, always visible, ANDs with facet (and country below)
   var regions = uniqSorted(items.map(function (d) { return d.region; }));
   if (regions.length > 1) {
     var rbtn = opt("data-region", "All", "All", items.length, true);
@@ -251,11 +369,10 @@ function renderSidebar(cat, opts) {
     });
     html += '<p class="filter-label">Region</p><div class="side-list" id="regions">' + rbtn + "</div>";
   }
-  // country filter — standalone, ANDs with region + facet
-  var countries = uniqSorted(items.map(function (d) { return d.country; }));
-  if (countries.length > 1) {
+  var cs = uniqSorted(items.map(function (d) { return d.country; }));
+  if (cs.length > 1) {
     var cbtn = opt("data-country", "All", "All", items.length, true);
-    countries.forEach(function (c) {
+    cs.forEach(function (c) {
       cbtn += opt("data-country", c, c, items.filter(function (d) { return d.country === c; }).length, false);
     });
     html += '<p class="filter-label">Country</p><div class="side-list" id="countries">' + cbtn + "</div>";
@@ -277,106 +394,7 @@ const FILTER_JS =
 "if(C){C.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.country=b.getAttribute('data-country');act(C,'data-country',st.country);apply();});}" +
 "})();";
 
-/* ---------- category directory ----------
-   Renders either the all-region category page (/<cat>/) or, when opts.region
-   is set, a region-scoped variant (/<region>/<cat>/) — same markup, same
-   filter, just a narrower item list and unique metadata. */
-function renderCategory(cat, opts) {
-  opts = opts || {};
-  var region = opts.region;
-  var items = region ? regionItems(region.name, cat) : cat.items;
-  var n = items.length;
-  var title = region ? cat.title + " in " + region.name : cat.title;
-  var desc = region
-    ? cat.intro + " Browse " + cat.plural + " in " + region.name + " on surflist."
-    : cat.intro + " Filter by country and region on surflist.";
-  var canonical = region ? SITE + "/" + region.slug + "/" + cat.slug + "/" : SITE + "/" + cat.slug + "/";
-  var backLink = region ? '<a class="back" href="/' + region.slug + '/">&larr; Surfing in ' + esc(region.name) + "</a>\n" : "";
-  return head({
-    title: title + " — surflist",
-    desc: desc,
-    canonical: canonical,
-    jsonld: region ? regionCategoryJsonLd(region, cat, canonical) : undefined,
-  }) +
-  "<body>\n" + header() +
-  '<main class="wrap">' + backLink + '<div class="cat-head"><h1>' + esc(title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
-  '<div class="layout">' + renderSidebar(cat, { items: items, scoped: !!region }) +
-  '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
-  n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
-  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
-  FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
-}
-
-/* ---------- region hub ---------- */
-function regionPlace(region) {
-  var place = {
-    "@type": "Place",
-    "@id": SITE + "/" + region.slug + "/#place",
-    name: region.name,
-    address: { "@type": "PostalAddress", addressRegion: region.name },
-  };
-  var cc = regionCountryCode(region);
-  if (cc) place.address.addressCountry = cc;
-  return place;
-}
-function regionHubJsonLd(region) {
-  var pageUrl = SITE + "/" + region.slug + "/";
-  var place = regionPlace(region);
-  var page = {
-    "@type": "CollectionPage",
-    "@id": pageUrl,
-    url: pageUrl,
-    name: "Surfing in " + region.name + " — surflist",
-    isPartOf: { "@id": SITE + "/#surflist" },
-    about: { "@id": place["@id"] },
-    mainEntity: { "@id": place["@id"] },
-    reviewedBy: { "@id": SITE + "/#surflist" },
-  };
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), place, page] }, null, 2);
-}
-function regionCategoryJsonLd(region, cat, pageUrl) {
-  var place = regionPlace(region);
-  var page = {
-    "@type": "CollectionPage",
-    "@id": pageUrl,
-    url: pageUrl,
-    name: cat.title + " in " + region.name + " — surflist",
-    isPartOf: { "@id": SITE + "/#surflist" },
-    about: { "@id": place["@id"] },
-    mainEntity: { "@id": place["@id"] },
-    areaServed: { "@id": place["@id"] },
-    reviewedBy: { "@id": SITE + "/#surflist" },
-  };
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), place, page] }, null, 2);
-}
-function renderRegionHub(region) {
-  var sectionCats = CATEGORIES.filter(function (cat) { return regionItems(region.name, cat).length > 0; });
-  var jumpNav = sectionCats.length > 1
-    ? '<nav class="jump-nav" aria-label="Jump to a section">' +
-      sectionCats.map(function (cat) { return '<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"; }).join("") +
-      "</nav>"
-    : "";
-  var sections = sectionCats.map(function (cat) {
-    var items = regionItems(region.name, cat);
-    var viewAll = regionCatPageExists(region, cat)
-      ? '<a href="/' + region.slug + '/' + cat.slug + '/">All ' + esc(cat.plural) + " &rarr;</a>"
-      : "";
-    return '<section class="hub-cat" id="' + cat.slug + '"><div class="hub-cat__head"><h2>' + esc(cat.title) + "</h2>" + viewAll + "</div>" +
-      '<ul class="grid">' + items.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
-  }).join("\n");
-  return head({
-    title: "Surfing in " + region.name + " — surflist",
-    desc: (region.intro || ("Surf schools, shops, stays and repairs in " + region.name + ".")) + " Browse by category on surflist.",
-    canonical: SITE + "/" + region.slug + "/",
-    jsonld: regionHubJsonLd(region),
-  }) +
-  "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Surfing in ' + esc(region.name) + "</h1>" +
-  "<p>" + esc(region.intro || "") + "</p>" + jumpNav + "</section>\n" +
-  sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
-}
-
-/* ---------- verified detail ---------- */
+/* ---------- schema.org helpers ---------- */
 function surflistEntity() {
   return {
     "@type": ["Organization", "WebSite"],
@@ -386,6 +404,237 @@ function surflistEntity() {
     description: "surflist verifies and lists surf schools, shops, places to stay and surf services worldwide.",
   };
 }
+function placeNode(o) {
+  // o: {id, name, region, country, town}
+  var addr = { "@type": "PostalAddress" };
+  if (o.town) addr.addressLocality = o.town;
+  if (o.region) addr.addressRegion = o.region;
+  var cc = shared.countryCode(o.country); if (cc) addr.addressCountry = cc;
+  return { "@type": "Place", "@id": o.id, name: o.name, address: addr };
+}
+function collectionJsonLd(o) {
+  // o: {pageUrl, name, place, trail, extra?}
+  var graph = [surflistEntity(), o.place, {
+    "@type": "CollectionPage",
+    "@id": o.pageUrl,
+    url: o.pageUrl,
+    name: o.name,
+    isPartOf: { "@id": SITE + "/#surflist" },
+    about: { "@id": o.place["@id"] },
+    mainEntity: { "@id": o.place["@id"] },
+    reviewedBy: { "@id": SITE + "/#surflist" },
+  }, breadcrumbJsonLd(o.trail)];
+  if (o.extra) graph.push(o.extra);
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
+}
+
+/* ---------- country hub ---------- */
+function renderCountryHub(country) {
+  var pageUrl = SITE + countryUrl(country);
+  var meta = countryMeta(country);
+  var intro = meta.intro || ("Surf destinations across " + country + " — browse by region, then by town.");
+  var regions = regionsIn(country);
+  var trail = [{ name: "Home", href: "/" }, { name: country }];
+  var place = placeNode({ id: pageUrl + "#place", name: country, country: country });
+
+  var cards = regions.map(function (r, i) {
+    return placeCard(r, regionUrl(country, r), countRegion(country, r), i);
+  }).join("");
+
+  return head({
+    title: "Surfing in " + country + " — surflist",
+    desc: intro + " Surf schools, shops, places to stay and services on surflist.",
+    canonical: pageUrl,
+    jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + country + " — surflist", place: place, trail: trail }),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<section class="hero"><h1>Surfing in ' + esc(country) + "</h1><p>" + esc(intro) + "</p></section>\n" +
+  '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where in ' + esc(country) + "?</h2></div>" +
+  '<ul class="grid">' + cards + "</ul></section>\n" +
+  "</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+
+/* ---------- region hub ---------- */
+function renderRegionHub(country, region) {
+  var pageUrl = SITE + regionUrl(country, region);
+  var meta = regionMeta(region);
+  var intro = meta.intro || ("Surf schools, shops, places to stay and board repair across " + region + ".");
+  var trail = [{ name: "Home", href: "/" }, { name: country, href: countryUrl(country) }, { name: region }];
+  var place = placeNode({ id: pageUrl + "#place", name: region, region: region, country: country });
+
+  var hubTowns = townsWithHub(country, region);
+  var townSection = hubTowns.length
+    ? '<section class="hub-cat" id="towns"><div class="hub-cat__head"><h2>Surf towns in ' + esc(region) + "</h2></div>" +
+      '<ul class="grid">' + hubTowns.map(function (t, i) { return placeCard(t, townUrl(country, region, t), countTown(country, region, t), i); }).join("") + "</ul></section>"
+    : "";
+
+  var sectionCats = CATEGORIES.filter(function (cat) { return itemsInRegion(country, region, cat).length > 0; });
+  var sections = sectionCats.map(function (cat) {
+    var items = itemsInRegion(country, region, cat);
+    return '<section class="hub-cat" id="' + cat.slug + '"><div class="hub-cat__head"><h2>' + esc(cat.title) + '</h2><a href="/' + cat.slug + '/">All ' + esc(cat.plural) + " &rarr;</a></div>" +
+      '<ul class="grid">' + items.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
+  }).join("\n");
+
+  var jump = [];
+  if (hubTowns.length) jump.push('<a href="#towns">Towns</a>');
+  sectionCats.forEach(function (cat) { jump.push('<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"); });
+  var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
+
+  return head({
+    title: "Surfing in " + region + " — surflist",
+    desc: intro + " Browse surf towns and businesses in " + region + " on surflist.",
+    canonical: pageUrl,
+    jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + region + " — surflist", place: place, trail: trail }),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<section class="hero"><h1>Surfing in ' + esc(region) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
+  townSection + "\n" + sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+
+/* ---------- town hub (the core asset) ---------- */
+function editorialSlot(label, key) {
+  return "\n<!-- EDITORIAL SLOT · " + label + " — add TOWN_CONTENT[\"" + key + "\"]." + label + " -->\n";
+}
+function renderTownHub(country, region, town) {
+  var pageUrl = SITE + townUrl(country, region, town);
+  var key = cSlug(country) + "/" + rSlug(region) + "/" + tSlug(town);
+  var ed = townContent(country, region, town);
+  var placeStr = [region, country].filter(Boolean).join(", ");
+  var trail = [
+    { name: "Home", href: "/" },
+    { name: country, href: countryUrl(country) },
+    { name: region, href: regionUrl(country, region) },
+    { name: town },
+  ];
+  var place = placeNode({ id: pageUrl + "#place", name: town, town: town, region: region, country: country });
+
+  var autoIntro = town + " is a surf spot in " + placeStr + ". Find surf schools, shops, places to stay and board repair in " + town + " below.";
+  var intro = ed.intro || autoIntro;
+
+  // category sections
+  var sectionCats = CATEGORIES.filter(function (cat) { return itemsInTown(country, region, town, cat).length > 0; });
+  var sections = sectionCats.map(function (cat) {
+    var items = itemsInTown(country, region, town, cat);
+    var viewAll = townCatPageExists(country, region, town, cat)
+      ? '<a href="' + townCatUrl(country, region, town, cat) + '">All ' + esc(cat.plural) + " in " + esc(town) + " &rarr;</a>"
+      : "";
+    return '<section class="hub-cat" id="' + cat.slug + '"><div class="hub-cat__head"><h2>' + esc(cat.title) + "</h2>" + viewAll + "</div>" +
+      '<ul class="grid">' + items.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>";
+  }).join("\n");
+
+  // editorial: beaches
+  var beachesHtml, faqExtra = null;
+  if (Array.isArray(ed.beaches) && ed.beaches.length) {
+    beachesHtml = '<section class="town-ed" id="beaches"><h2>Best beaches in ' + esc(town) + "</h2><div class=\"ed-list\">" +
+      ed.beaches.map(function (b) {
+        return '<div class="ed-item"><h3>' + esc(b.name) + "</h3>" + (b.note ? "<p>" + esc(b.note) + "</p>" : "") + "</div>";
+      }).join("") + "</div></section>";
+  } else {
+    beachesHtml = editorialSlot("beaches", key);
+  }
+
+  // editorial: when to surf
+  var whenHtml;
+  if (ed.whenToSurf) {
+    whenHtml = '<section class="town-ed" id="when"><h2>When to surf ' + esc(town) + "</h2>" +
+      String(ed.whenToSurf).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</section>";
+  } else {
+    whenHtml = editorialSlot("whenToSurf", key);
+  }
+
+  // editorial: FAQ (+ FAQPage schema)
+  var faqHtml;
+  if (Array.isArray(ed.faq) && ed.faq.length) {
+    faqHtml = '<section class="town-ed" id="faq"><h2>Surfing in ' + esc(town) + " FAQ</h2><div class=\"faq\">" +
+      ed.faq.map(function (f) {
+        return '<details class="faq-item"><summary>' + esc(f.q) + "</summary><div><p>" + esc(f.a) + "</p></div></details>";
+      }).join("") + "</div></section>";
+    faqExtra = {
+      "@type": "FAQPage",
+      "@id": pageUrl + "#faq",
+      mainEntity: ed.faq.map(function (f) {
+        return { "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } };
+      }),
+    };
+  } else {
+    faqHtml = editorialSlot("faq", key);
+  }
+
+  // jump nav
+  var jump = sectionCats.map(function (cat) { return '<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"; });
+  if (Array.isArray(ed.beaches) && ed.beaches.length) jump.push('<a href="#beaches">Beaches</a>');
+  if (ed.whenToSurf) jump.push('<a href="#when">When to surf</a>');
+  if (Array.isArray(ed.faq) && ed.faq.length) jump.push('<a href="#faq">FAQ</a>');
+  var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
+
+  return head({
+    title: "Surfing in " + town + ", " + region + " — surflist",
+    desc: (ed.intro ? ed.intro : ("Surf schools, shops, places to stay and board repair in " + town + ", " + placeStr + ".")).slice(0, 155),
+    canonical: pageUrl,
+    jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + town + " — surflist", place: place, trail: trail, extra: faqExtra }),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
+  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+
+/* ---------- town-category page ---------- */
+function renderTownCategory(country, region, town, cat) {
+  var pageUrl = SITE + townCatUrl(country, region, town, cat);
+  var items = itemsInTown(country, region, town, cat);
+  var n = items.length;
+  var title = cat.title + " in " + town;
+  var trail = [
+    { name: "Home", href: "/" },
+    { name: country, href: countryUrl(country) },
+    { name: region, href: regionUrl(country, region) },
+    { name: town, href: townUrl(country, region, town) },
+    { name: cat.title },
+  ];
+  var place = placeNode({ id: pageUrl + "#place", name: town, town: town, region: region, country: country });
+
+  return head({
+    title: title + " — surflist",
+    desc: cat.intro + " " + cat.title + " in " + town + ", " + region + " on surflist.",
+    canonical: pageUrl,
+    jsonld: collectionJsonLd({ pageUrl: pageUrl, name: title + " — surflist", place: place, trail: trail }),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<a class="back" href="' + townUrl(country, region, town) + '">&larr; Surfing in ' + esc(town) + "</a>\n" +
+  '<div class="cat-head"><h1>' + esc(title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
+  '<div class="layout">' + renderSidebar(cat, { items: items, scoped: true }) +
+  '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
+  n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
+  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
+  FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
+}
+
+/* ---------- browse-all category page (/surf-schools/) ---------- */
+function renderCategory(cat) {
+  var items = cat.items;
+  var n = items.length;
+  var trail = [{ name: "Home", href: "/" }, { name: cat.title }];
+  return head({
+    title: cat.title + " — surflist",
+    desc: cat.intro + " Filter by country and region on surflist.",
+    canonical: SITE + "/" + cat.slug + "/",
+    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), breadcrumbJsonLd(trail)] }, null, 2),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<div class="cat-head"><h1>' + esc(cat.title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
+  '<div class="layout">' + renderSidebar(cat, { items: items }) +
+  '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
+  n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
+  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
+  FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
+}
+
+/* ---------- verified business detail (flat, canonical) ---------- */
 function jsonLd(d, cat, pageUrl) {
   var address = { "@type": "PostalAddress" };
   if (d.streetAddress) address.streetAddress = d.streetAddress;
@@ -406,7 +655,6 @@ function jsonLd(d, cat, pageUrl) {
   if (d.googleBusiness) sameAs.push(d.googleBusiness);
   if (sameAs.length) biz.sameAs = sameAs;
 
-  // WebPage node ties the business to surflist as the verifying source/entity.
   var page = {
     "@type": "WebPage",
     "@id": pageUrl,
@@ -418,7 +666,6 @@ function jsonLd(d, cat, pageUrl) {
     reviewedBy: { "@id": SITE + "/#surflist" },
   };
   if (d.lastVerified) page.lastReviewed = d.lastVerified;
-
   return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), biz, page] }, null, 2);
 }
 function fmtDate(s) {
@@ -476,6 +723,12 @@ function renderDetail(d, cat, slug, opts) {
     ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="mailto:hello@surflist.co">Claim your verified listing &rarr;</a></div>'
     : "";
 
+  // link "back" to the business's town hub when it exists, else its category page
+  var backHref = (!opts.demo && townHubExists(d.country, d.region, d.town))
+    ? townUrl(d.country, d.region, d.town) : "/" + cat.slug + "/";
+  var backText = (!opts.demo && townHubExists(d.country, d.region, d.town))
+    ? "Surfing in " + d.town : "All " + cat.plural;
+
   return head({
     title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.country + " | surflist",
     desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl),
@@ -483,7 +736,7 @@ function renderDetail(d, cat, slug, opts) {
   }) +
   "<body>\n" + header() +
   '<main class="wrap detail">' + demoBanner +
-  (opts.demo ? "" : '<a class="back" href="/' + cat.slug + '/">&larr; All ' + esc(cat.plural) + "</a>\n") +
+  (opts.demo ? "" : '<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
   '<span class="badge-verified inline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' + verifiedMeta + "</div>\n" +
   '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
@@ -495,28 +748,33 @@ function renderDetail(d, cat, slug, opts) {
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
-/* ---------- search ---------- */
+/* ---------- search (businesses + destinations) ---------- */
 function searchIndex() {
   var idx = [];
+  // destinations first so a place match ranks visibly
+  countries().forEach(function (c) {
+    idx.push({ n: c, p: "Country", c: "destination", u: countryUrl(c), v: true });
+    regionsIn(c).forEach(function (r) {
+      idx.push({ n: r, p: c, c: "destination", u: regionUrl(c, r), v: true });
+      townsWithHub(c, r).forEach(function (t) {
+        idx.push({ n: t, p: [r, c].join(", "), c: "destination", u: townUrl(c, r, t), v: true });
+      });
+    });
+  });
+  // businesses
   CATEGORIES.forEach(function (cat) {
     cat.items.forEach(function (d) {
       var href = isVerified(d) ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
       if (!href) return;
-      idx.push({
-        n: d.name,
-        p: [d.town, d.region, d.country].filter(Boolean).join(", "),
-        c: cat.singular,
-        u: href,
-        v: isVerified(d),
-      });
+      idx.push({ n: d.name, p: [d.town, d.region, d.country].filter(Boolean).join(", "), c: cat.singular, u: href, v: isVerified(d) });
     });
   });
   return idx;
 }
 function renderSearch() {
   return '<div class="search" role="search">' +
-    '<input type="text" id="search-input" class="search__input" placeholder="Search by name, town, region or country&hellip;" ' +
-    'autocomplete="off" spellcheck="false" aria-label="Search listings" role="combobox" aria-expanded="false" ' +
+    '<input type="text" id="search-input" class="search__input" placeholder="Search a destination, town or surf business&hellip;" ' +
+    'autocomplete="off" spellcheck="false" aria-label="Search destinations and listings" role="combobox" aria-expanded="false" ' +
     'aria-controls="search-results" aria-autocomplete="list" />' +
     '<ul id="search-results" class="search__results" role="listbox" hidden></ul>' +
     '<script type="application/json" id="search-data">' + JSON.stringify(searchIndex()).replace(/</g, "\\u003c") + "</script>" +
@@ -535,7 +793,8 @@ const SEARCH_JS =
 "li.appendChild(a);box.appendChild(li);});" +
 "box.hidden=false;input.setAttribute('aria-expanded','true');}" +
 "function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
-"return items.filter(function(d){return (d.n+' '+d.p+' '+d.c).toLowerCase().indexOf(q)>-1;}).slice(0,8);}" +
+"var r=items.filter(function(d){return (d.n+' '+d.p+' '+d.c).toLowerCase().indexOf(q)>-1;});" +
+"r.sort(function(a,b){var ad=a.c==='destination'?0:1,bd=b.c==='destination'?0:1;return ad-bd;});return r.slice(0,8);}" +
 "input.addEventListener('input',function(){render(search(input.value));});" +
 "input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
 "if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,opts.length-1);highlight(opts);}" +
@@ -544,66 +803,81 @@ const SEARCH_JS =
 "else if(e.key==='Escape'){box.hidden=true;input.setAttribute('aria-expanded','false');}});" +
 "document.addEventListener('click',function(e){if(!e.target.closest('.search'))box.hidden=true;});})();";
 
-/* ---------- hub ---------- */
-function renderRegionCard(region, index) {
-  var count = CATEGORIES.reduce(function (a, c) { return a + regionItems(region.name, c).length; }, 0);
-  var name = esc(region.name);
-  var href = "/" + region.slug + "/";
-  var img = region.image ? esc(region.image) : placeholderImage(region.slug);
-  var lazy = index < 4 ? "" : ' loading="lazy"';
-  return '<li class="card">' +
-    '<div class="card__media"><a href="' + href + '" aria-label="' + name + '"><img src="' + img + '" alt="' + name + '"' + lazy + "></a></div>" +
-    '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + href + '">' + name + "</a></h3>" +
-    '<p class="card__blurb">' + count + " listing" + (count === 1 ? "" : "s") + "</p></div></li>";
+/* ---------- homepage ---------- */
+function renderDestinations() {
+  var groups = BUCKET_ORDER.map(function (bucket) {
+    var cs = countries().filter(function (c) { return countryMeta(c).bucket === bucket; });
+    if (!cs.length) return "";
+    var rows = cs.map(function (c) {
+      var regionLinks = regionsIn(c).map(function (r) {
+        return '<a href="' + regionUrl(c, r) + '">' + esc(r) + "</a>";
+      }).join('<span class="dest-dot">&middot;</span>');
+      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + esc(c) + "</a>" +
+        '<div class="dest-regions">' + regionLinks + "</div></div>";
+    }).join("");
+    return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
+  }).join("");
+  return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
+    '<div class="dest-groups">' + groups + "</div></section>\n";
+}
+function renderPopularTowns() {
+  var towns = [];
+  countries().forEach(function (c) {
+    regionsIn(c).forEach(function (r) {
+      townsWithHub(c, r).forEach(function (t) {
+        towns.push({ name: t, href: townUrl(c, r, t), count: countTown(c, r, t) });
+      });
+    });
+  });
+  towns.sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
+  towns = towns.slice(0, 8);
+  if (!towns.length) return "";
+  return '<section class="hub-cat" id="popular"><div class="hub-cat__head"><h2>Popular surf destinations</h2></div>' +
+    '<nav class="chip-nav" aria-label="Popular destinations">' +
+    towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
+    "</nav></section>\n";
+}
+function renderFindWhatYouNeed() {
+  return '<section class="hub-cat" id="types"><div class="hub-cat__head"><h2>Find what you need</h2></div>' +
+    '<ul class="grid">' + CATEGORIES.map(function (cat, i) {
+      return placeCard(cat.title, "/" + cat.slug + "/", cat.items.length, i);
+    }).join("") + "</ul></section>\n";
 }
 function renderHub() {
-  var regions = activeRegions();
-  var regionCards = regions.map(function (r, i) { return renderRegionCard(r, i); }).join("");
-
-  var featured = [];
-  CATEGORIES.forEach(function (cat) {
-    cat.items.filter(isVerified).forEach(function (d) { featured.push({ d: d, cat: cat }); });
-  });
-  featured = featured.slice(0, 6);
-  var featuredHtml = featured.length
-    ? '<section class="hub-cat"><div class="hub-cat__head"><h2>Verified picks</h2></div>' +
-      '<ul class="grid">' + featured.map(function (f) { return renderCard(f.d, f.cat, "h3"); }).join("") + "</ul></section>\n"
-    : "";
-
   return head({
-    title: "surflist — surf schools, shops, stays & repairs",
-    desc: "surflist is a directory for your next surf trip: find surf schools, independent shops, places to stay, and board repair — browse by region or by category.",
+    title: "surflist — plan your next surf trip",
+    desc: "Find everything you need for your next surf trip: surf schools, shops, places to stay and board repair, by destination.",
     canonical: SITE + "/",
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Surf schools, shops, stays &amp; repairs</h1>' +
-  '<p>Everything you need for your next surf trip, all in one place. Find a surf school, discover independent shops, stay close to the break, and get your board repaired by local experts.</p>' +
+  '<main class="wrap"><section class="hero"><h1>Plan your next surf trip.</h1>' +
+  "<p>Find everything you need for your next surf trip — surf schools, shops, places to stay and board repair, by destination.</p>" +
   renderSearch() + "</section>\n" +
-  '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where are you surfing?</h2></div>' +
-  '<ul class="grid">' + regionCards + "</ul></section>\n" +
-  featuredHtml +
+  renderDestinations() +
+  renderPopularTowns() +
+  renderFindWhatYouNeed() +
   "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
 }
 
 /* ---------- llms.txt ---------- */
 function renderLlms() {
-  var out = ["# surflist", "", "> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by region or category. Verified listings have their own profile page with location and pricing.", "", "## Sections", ""];
+  var out = ["# surflist", "",
+    "> surflist is a directory for surf trips, organised by destination. Each surf town has a hub page (\"Surfing in <town>\") linking to its surf schools, surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse from country to region to town, or by category.",
+    "", "## Destinations", ""];
+  countries().forEach(function (c) {
+    out.push("- [Surfing in " + c + "](" + SITE + countryUrl(c) + "): " + countCountry(c) + " listings across " + regionsIn(c).join(", ") + ".");
+    regionsIn(c).forEach(function (r) {
+      out.push("  - [Surfing in " + r + "](" + SITE + regionUrl(c, r) + "): " + countRegion(c, r) + " listings.");
+      townsWithHub(c, r).forEach(function (t) {
+        out.push("    - [Surfing in " + t + "](" + SITE + townUrl(c, r, t) + "): " + countTown(c, r, t) + " listings.");
+      });
+    });
+  });
+  out.push("");
+  out.push("## Browse by type");
+  out.push("");
   CATEGORIES.forEach(function (c) { out.push("- [" + c.title + "](" + SITE + "/" + c.slug + "/): " + c.intro); });
   out.push("");
-  var regions = activeRegions();
-  if (regions.length) {
-    out.push("## Regions");
-    out.push("");
-    regions.forEach(function (region) {
-      var cats = CATEGORIES.filter(function (c) { return regionItems(region.name, c).length > 0; });
-      var count = cats.reduce(function (a, c) { return a + regionItems(region.name, c).length; }, 0);
-      var breakdown = cats.map(function (c) {
-        return regionItems(region.name, c).length + " " + (regionItems(region.name, c).length === 1 ? c.singular : c.plural);
-      }).join(", ");
-      out.push("- [" + region.name + "](" + SITE + "/" + region.slug + "/): " + count + " listings — " + breakdown + ".");
-    });
-    out.push("");
-  }
   CATEGORIES.forEach(function (cat) {
     var verified = cat.items.filter(isVerified);
     if (!verified.length) return;
@@ -629,16 +903,20 @@ function writePage(rel, html) {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, "index.html"), html);
 }
-// clean old generated category + region dirs, and legacy schools/
-["schools", "verified-demo"]
-  .concat(CATEGORIES.map(function (c) { return c.slug; }))
-  .concat(REGIONS.map(function (r) { return r.slug; }))
-  .forEach(function (s) {
-    fs.rmSync(path.join(ROOT, s), { recursive: true, force: true });
-  });
+// remove previously generated top-level dirs so a restructure leaves nothing stale
+uniqSorted(
+  CATEGORIES.map(function (c) { return c.slug; })
+    .concat(countries().map(function (c) { return cSlug(c); }))
+    // legacy: old builds put regions at the root and used /schools/
+    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo"])
+).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
+// legacy redirect file no longer used (nothing is indexed to protect)
+fs.rmSync(path.join(ROOT, "_redirects"), { force: true });
 
-fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
 var urls = [SITE + "/"];
+fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
+
+// browse-all category pages + verified business pages (flat, canonical)
 CATEGORIES.forEach(function (cat) {
   writePage(cat.slug, renderCategory(cat));
   urls.push(SITE + "/" + cat.slug + "/");
@@ -649,67 +927,56 @@ CATEGORIES.forEach(function (cat) {
   });
 });
 
-REGIONS.forEach(function (region) {
-  var hasAny = CATEGORIES.some(function (cat) { return regionItems(region.name, cat).length > 0; });
-  if (!hasAny) return; // no listings yet for this region — skip its hub/pages
-  writePage(region.slug, renderRegionHub(region));
-  urls.push(SITE + "/" + region.slug + "/");
-  CATEGORIES.forEach(function (cat) {
-    if (!regionCatPageExists(region, cat)) return; // thin-content guard: needs >=2 listings
-    writePage(region.slug + "/" + cat.slug, renderCategory(cat, { region: region }));
-    urls.push(SITE + "/" + region.slug + "/" + cat.slug + "/");
+// geographic tree: country -> region -> town -> town-category
+var stats = { countries: 0, regions: 0, towns: 0, townCats: 0 };
+countries().forEach(function (c) {
+  writePage(cSlug(c), renderCountryHub(c));
+  urls.push(SITE + countryUrl(c)); stats.countries++;
+  regionsIn(c).forEach(function (r) {
+    writePage(cSlug(c) + "/" + rSlug(r), renderRegionHub(c, r));
+    urls.push(SITE + regionUrl(c, r)); stats.regions++;
+    townsIn(c, r).forEach(function (t) {
+      if (!townHubExists(c, r, t)) return; // thin-content guard
+      writePage(cSlug(c) + "/" + rSlug(r) + "/" + tSlug(t), renderTownHub(c, r, t));
+      urls.push(SITE + townUrl(c, r, t)); stats.towns++;
+      CATEGORIES.forEach(function (cat) {
+        if (!townCatPageExists(c, r, t, cat)) return; // thin-content guard
+        writePage(cSlug(c) + "/" + rSlug(r) + "/" + tSlug(t) + "/" + cat.slug, renderTownCategory(c, r, t, cat));
+        urls.push(SITE + townCatUrl(c, r, t, cat)); stats.townCats++;
+      });
+    });
   });
 });
 
-/* ---------- verified profile demo ----------
-   A non-indexed sample of a verified listing, for showing prospective
-   businesses what they get. Fictional data. Excluded from sitemap + llms.txt
-   and disallowed in robots.txt below. */
+/* ---------- verified profile demo (noindex sales sample) ---------- */
 var DEMO_LISTING = {
   name: "Blue Horizon Surf Co",
-  country: "United Kingdom", region: "Cornwall", town: "Sennen",
+  country: "England", region: "Cornwall", town: "Sennen Cove",
   url: "https://example.com",
   blurb: "A friendly, all-abilities surf school on Cornwall's far-west coast. (Sample listing.)",
-  image: "",
-  verified: true,
-  socials: {
-    instagram: "https://www.instagram.com/",
-    facebook: "https://www.facebook.com/",
-  },
+  image: "", verified: true,
+  socials: { instagram: "https://www.instagram.com/", facebook: "https://www.facebook.com/" },
   googleBusiness: "https://www.google.com/maps",
   levels: ["Beginner", "Intermediate", "Advanced", "Kids"],
   description: "Blue Horizon is a sample profile showing what a Surflist verified listing looks like: a fuller description, the spots you cover, the lessons you run, your prices and season, and a last-verified date — all backed by structured data that names surflist as the source.",
   streetAddress: "1 Beach Road, Sennen TR19 7AD",
-  lat: 50.0757, lng: -5.6959,
-  priceRange: "££",
+  lat: 50.0757, lng: -5.6959, priceRange: "££",
   surfSpots: ["Sennen Cove", "Gwenver Beach", "Whitesand Bay"],
-  lessons: [
-    "Beginner group lessons (2 hrs)",
-    "Private 1:1 coaching",
-    "Kids club (ages 8+)",
-    "Improver & intermediate clinics",
-    "Multi-day surf courses",
-  ],
-  pricing: [
-    "Group lesson from £40 per person",
-    "Private lesson from £75",
-    "Kids club from £30",
-    "3-day course from £110",
-  ],
+  lessons: ["Beginner group lessons (2 hrs)", "Private 1:1 coaching", "Kids club (ages 8+)", "Improver & intermediate clinics", "Multi-day surf courses"],
+  pricing: ["Group lesson from £40 per person", "Private lesson from £75", "Kids club from £30", "3-day course from £110"],
   seasonal: "Open all year. Lessons run daily from Easter to October and by arrangement in winter; the cleanest learner conditions are usually late spring and early autumn.",
   lastVerified: "2026-08-19",
 };
 writePage("verified-demo", renderDetail(DEMO_LISTING, CATEGORIES[0], "verified-demo", { demo: true }));
-// NOTE: intentionally NOT pushed to `urls` (kept out of sitemap.xml).
+// intentionally NOT added to `urls` (kept out of sitemap.xml)
 
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(function (u) { return "  <url><loc>" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n");
 fs.writeFileSync(path.join(ROOT, "robots.txt"), "User-agent: *\nAllow: /\nDisallow: /verified-demo/\n\nSitemap: " + SITE + "/sitemap.xml\n");
 fs.writeFileSync(path.join(ROOT, "llms.txt"), renderLlms());
-// migration: old /schools/<slug>/ -> /surf-schools/<slug>/
-fs.writeFileSync(path.join(ROOT, "_redirects"), "/schools/* /surf-schools/:splat 301\n");
 
 var totalV = CATEGORIES.reduce(function (a, c) { return a + c.items.filter(isVerified).length; }, 0);
-console.log("Built hub + " + CATEGORIES.length + " categories, " + totalV + " verified page(s), sitemap.xml, robots.txt, llms.txt, _redirects.");
-CATEGORIES.forEach(function (c) { console.log("  /" + c.slug + "/  (" + c.items.length + " listings, " + c.items.filter(isVerified).length + " verified)"); });
+console.log("Built: homepage, " + stats.countries + " country + " + stats.regions + " region + " + stats.towns +
+  " town hubs, " + stats.townCats + " town-category pages, " + CATEGORIES.length + " browse-all pages, " +
+  totalV + " verified page(s). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt.");
