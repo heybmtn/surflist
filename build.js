@@ -43,6 +43,8 @@ const REGIONS = [
     intro: "Surf schools, independent shops, places to stay and board repair across Cornwall." },
   { slug: "devon", name: "Devon", image: "",
     intro: "Surf schools, independent shops, places to stay and board repair across Devon." },
+  { slug: "swansea", name: "Swansea", image: "",
+    intro: "Surf schools, independent shops, places to stay and board repair across the Gower Peninsula and Swansea." },
 ];
 
 /* ---------- helpers ---------- */
