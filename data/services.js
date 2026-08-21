@@ -21,5 +21,18 @@ window.LISTINGS = [
     blurb: "Hayle-based shaper and repairer — quick, well-priced ding and fin-box fixes, plus custom boards.",
     image: "", verified: false,
     socials: {},
+    serviceType: "Board repair" },
+  // ---- Braunton ----
+  { name: "Surfboard Repairs North Devon", country: "United Kingdom", region: "Devon", town: "Braunton",
+    url: "https://www.instagram.com/surfboardrepairco/",
+    blurb: "Dedicated Braunton ding-repair service at Chivenor — dings, cracks and fin boxes fixed and back in the water fast.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/surfboardrepairco/" },
+    serviceType: "Board repair" },
+  { name: "Gulf Stream Surfboards", country: "United Kingdom", region: "Devon", town: "Braunton",
+    url: "https://gulfstreamsurfboards.co.uk",
+    blurb: "North Devon shaper (since 1993) whose Braunton workshop also turns around high-quality ding and rail repairs with proper hand-finished detailing.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/gulfstreamsurfboards/", facebook: "https://www.facebook.com/gulfstreamsurf" },
     serviceType: "Board repair" }
 ];
