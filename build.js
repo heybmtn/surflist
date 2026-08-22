@@ -90,6 +90,12 @@ const REGIONS = [
     intro: "Surf schools on the Peniche peninsula and Baleal — some of Europe's most consistent, all-swell surf." },
   { name: "Algarve",
     intro: "Surf schools across the Algarve — powerful west-coast Atlantic breaks and the sheltered south around Lagos and Sagres." },
+  { name: "Silver Coast",
+    intro: "Surf schools along Portugal's Silver Coast — the powerful central Atlantic beaches around Nazare, Sao Pedro de Moel and Figueira da Foz." },
+  { name: "Porto",
+    intro: "Surf schools around Porto — the consistent beach breaks of Matosinhos, minutes from the city." },
+  { name: "Viana do Castelo",
+    intro: "Surf schools in Viana do Castelo — the Blue Flag waves of Praia do Cabedelo in Portugal's far north." },
 ];
 
 /* ---------- town editorial (the "Surfing in <town>" copy) ----------
