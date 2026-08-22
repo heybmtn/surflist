@@ -66,15 +66,15 @@ const CATEGORIES = [
    listed still work and default to the "Worldwide" bucket. */
 const BUCKET_ORDER = ["United Kingdom", "Europe", "Worldwide"];
 const COUNTRIES = [
-  { name: "England", bucket: "United Kingdom",
+  { name: "England", bucket: "United Kingdom", flag: "gb-eng",
     intro: "Surf England's south-west — from Cornwall's Atlantic beach breaks to the long sands of North Devon." },
-  { name: "Wales", bucket: "United Kingdom",
+  { name: "Wales", bucket: "United Kingdom", flag: "gb-wls",
     intro: "Surf Wales — the Gower Peninsula's beginner bays, the Blue Flag breaks of Pembrokeshire and the exposed sands of Anglesey." },
-  { name: "Scotland", bucket: "United Kingdom",
+  { name: "Scotland", bucket: "United Kingdom", flag: "gb-sct",
     intro: "Surf Scotland — cold, clean and uncrowded, from the world-class reef at Thurso to the learner bays of East Lothian and the white sands of the Hebrides." },
-  { name: "Portugal", bucket: "Europe",
+  { name: "Portugal", bucket: "Europe", flag: "pt",
     intro: "Surf Portugal's Atlantic coast — consistent beach breaks and world-class waves from the Lisbon region down to the Algarve." },
-  { name: "Spain", bucket: "Europe",
+  { name: "Spain", bucket: "Europe", flag: "es",
     intro: "Surf Spain — the powerful beach breaks and rivermouth points of the Atlantic north, and the year-round warmth of the Canary Islands, Europe's own Hawaii." },
 ];
 
@@ -237,6 +237,8 @@ CATEGORIES.forEach(function (cat) { cat.items.forEach(function (d) { ALL.push({ 
 
 /* ---------- place model ---------- */
 function countryMeta(name) { return COUNTRIES.find(function (m) { return m.name === name; }) || { name: name, bucket: "Worldwide" }; }
+function countryFlag(name) { return countryMeta(name).flag || ""; }
+function flagHtml(name) { var f = countryFlag(name); return f ? '<img class="flag" src="/flags/' + f + '.svg" width="20" height="15" alt="" loading="lazy" decoding="async" /> ' : ""; }
 function regionMeta(name) { return REGIONS.find(function (m) { return m.name === name; }) || { name: name }; }
 function cSlug(name) { var m = countryMeta(name); return m.slug || shared.slugify(name); }
 function rSlug(name) { var m = regionMeta(name); return m.slug || shared.slugify(name); }
@@ -272,14 +274,14 @@ function nav() {
     "</nav>";
 }
 function header() {
-  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' + nav() + "</div></header>\n";
+  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a></div></header>\n';
 }
 function destinationFooterLinks() {
   // country hubs, grouped by bucket, with their regions beneath
   var out = [];
   BUCKET_ORDER.forEach(function (bucket) {
     countries().filter(function (c) { return countryMeta(c).bucket === bucket; }).forEach(function (c) {
-      out.push('<a href="' + countryUrl(c) + '">' + esc(c) + "</a>");
+      out.push('<a href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a>");
     });
   });
   return out.join("");
@@ -487,7 +489,7 @@ function renderCountryHub(country) {
   }) +
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
-  '<section class="hero"><h1>Surfing in ' + esc(country) + "</h1><p>" + esc(intro) + "</p></section>\n" +
+  '<section class="hero"><h1>' + flagHtml(country) + "Surfing in " + esc(country) + "</h1><p>" + esc(intro) + "</p></section>\n" +
   '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where in ' + esc(country) + "?</h2></div>" +
   '<ul class="grid">' + cards + "</ul></section>\n" +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
@@ -850,7 +852,7 @@ function renderDestinations() {
       var regionLinks = regionsIn(c).map(function (r) {
         return '<a href="' + regionUrl(c, r) + '">' + esc(r) + "</a>";
       }).join('<span class="dest-dot">&middot;</span>');
-      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + esc(c) + "</a>" +
+      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a>" +
         '<div class="dest-regions">' + regionLinks + "</div></div>";
     }).join("");
     return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
