@@ -115,5 +115,14 @@ window.LISTINGS = [
     blurb: "Sagres surf camp, school and shop in one, a couple of minutes from the town centre, with yoga and packages built around the Costa Vicentina's year-round waves.",
     image: "", verified: false,
     socials: {},
-    stayType: "Camp" }
+    stayType: "Camp" },
+
+  // ================= UK EXPANSION =================
+  // ---- Whitesands Bay (Pembrokeshire, Wales) ----
+  { name: "YHA St Davids", country: "Wales", region: "Pembrokeshire", town: "Whitesands Bay",
+    url: "https://www.yha.org.uk/hostel/yha-st-davids",
+    blurb: "Clifftop YHA hostel above Whitesands near St Davids, a short walk from the beach and popular with surfers — simple, well-placed budget beds on the Pembrokeshire Coast Path.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Hostel" }
 ];

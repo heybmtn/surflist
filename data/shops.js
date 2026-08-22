@@ -163,5 +163,41 @@ window.LISTINGS = [
     blurb: "Technical board shop in Lagos with a 'try before you buy' rental quiver, expert fitting from owner Rik, wetsuits, accessories and ding repairs.",
     image: "", verified: false,
     socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Accessories"] },
+
+  // ================= UK EXPANSION =================
+  // ---- Scarborough (Yorkshire) ----
+  { name: "Secret Spot Surf Shop", country: "England", region: "Yorkshire", town: "Scarborough",
+    url: "https://www.secretspot.co.uk",
+    blurb: "Scarborough's town-centre surf shop since 1989 and a cold-water specialist — the warmest wetsuits, cutting-edge boards and proper advice, run by surfers for surfers.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/secretspotsurf/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  { name: "Dexters Surf Shop", country: "England", region: "Yorkshire", town: "Scarborough",
+    url: "https://dexterssurfshop.com",
+    blurb: "The biggest surf shop on the Yorkshire coast, right on Scarborough's North Bay — boards, wetsuits, hire and a well-known school, open all year.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/dexterssurfshop/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Thurso (Caithness, Scotland) ----
+  { name: "Tempest Surf", country: "Scotland", region: "Caithness", town: "Thurso",
+    url: "https://www.tempest-surf.co.uk",
+    blurb: "Thurso Harbour surf shop and cafe kitting out visitors to Scotland's cold-water mecca, with boards, wetsuits, clothing and essentials by the famous Thurso East reef.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Whitesands Bay (Pembrokeshire, Wales) ----
+  { name: "Ma Simes Surf Hut", country: "Wales", region: "Pembrokeshire", town: "Whitesands Bay",
+    url: "https://masimes.co.uk",
+    blurb: "One of Wales' oldest surf shops, founded above Whitesands in 1977 and family-run ever since from its St Davids home — boards, wetsuits, hire and decades of local knowledge.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/masimessurfhut/", facebook: "https://www.facebook.com/MaSimesSurfHut/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ---- Rhosneigr (Anglesey, Wales) ----
+  { name: "Funsport", country: "Wales", region: "Anglesey", town: "Rhosneigr",
+    url: "https://www.facebook.com/funsportwales/",
+    blurb: "Long-running Rhosneigr watersports shop and school on Anglesey, stocking surf, windsurf and SUP gear with hire and lessons on the village's beaches.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/funsportwales/" },
     offerings: ["Surfboards", "Wetsuits", "Accessories"] }
 ];
