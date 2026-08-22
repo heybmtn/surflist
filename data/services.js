@@ -34,5 +34,21 @@ window.LISTINGS = [
     blurb: "North Devon shaper (since 1993) whose Braunton workshop also turns around high-quality ding and rail repairs with proper hand-finished detailing.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/gulfstreamsurfboards/", facebook: "https://www.facebook.com/gulfstreamsurf" },
+    serviceType: "Board repair" },
+
+  // ================= PORTUGAL =================
+  // ---- Ericeira (Lisbon) ----
+  { name: "Mica Surfboards", country: "Portugal", region: "Lisbon", town: "Ericeira",
+    url: "https://micasurfboards.com",
+    blurb: "Ericeira shaper and repair shop handling dings of every size on fibreglass and epoxy boards, with pickup and delivery around the Ericeira area.",
+    image: "", verified: false,
+    socials: {},
+    serviceType: "Board repair" },
+  // ---- Lagos (Algarve) ----
+  { name: "Bob's Boards", country: "Portugal", region: "Algarve", town: "Lagos",
+    url: "https://www.bobs-boards.com",
+    blurb: "Lagos shaper making custom boards and handling ding and repair work, inspired by classic surf craft, on the western Algarve.",
+    image: "", verified: false,
+    socials: {},
     serviceType: "Board repair" }
 ];

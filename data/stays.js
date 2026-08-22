@@ -73,5 +73,47 @@ window.LISTINGS = [
     blurb: "Relaxed, surfer-friendly camping and glamping near Saunton Sands and Braunton, with on-site surf hire and easy reach of Croyde and Woolacombe.",
     image: "", verified: false,
     socials: { facebook: "https://www.facebook.com/lobbfields" },
+    stayType: "Camp" },
+
+  // ================= PORTUGAL =================
+  // ---- Ericeira (Lisbon) ----
+  { name: "Ericeira Surf Camp & Hostel", country: "Portugal", region: "Lisbon", town: "Ericeira",
+    url: "https://ericeirasurfcamp.com",
+    blurb: "Long-running surf camp and hostel (since 2005) in the centre of Ericeira, founded by a former pro — private and shared rooms, its own school, rentals and a rooftop terrace.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+  { name: "Surfer's Den Ericeira", country: "Portugal", region: "Lisbon", town: "Ericeira",
+    url: "https://www.surfersdenericeira.com",
+    blurb: "Sociable surf hostel in central Ericeira with dorms and private rooms, a pool sun-deck and BBQ area, minutes from the reserve's beaches.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Hostel" },
+  { name: "Ericeira Surf House", country: "Portugal", region: "Lisbon", town: "Ericeira",
+    url: "https://www.ericeirasurfhouse.com",
+    blurb: "Calm surf B&B (since 2015) just outside Ericeira with a garden pool and sea views — a comfortable base for surfers who've outgrown the camp scene.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Guesthouse" },
+  // ---- Baleal (Peniche) ----
+  { name: "Surfers Lodge Peniche", country: "Portugal", region: "Peniche", town: "Baleal",
+    url: "https://surferslodgepeniche.com",
+    blurb: "Design-led four-star surf lodge at Baleal with a rooftop jacuzzi, in-house restaurant and rooms from dorms to suites — Peniche's boutique end of the scale.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Lodge" },
+  // ---- Peniche (Peniche) ----
+  { name: "Peniche Surf Lodge", country: "Portugal", region: "Peniche", town: "Peniche",
+    url: "https://www.penichesurflodge.com",
+    blurb: "Family-run surf lodge in quiet Peniche old town, a short drive from Baleal and Supertubos, offering rooms or full packages with hire and video coaching.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Lodge" },
+  // ---- Sagres (Algarve) ----
+  { name: "Sagres Natura Surf Camp", country: "Portugal", region: "Algarve", town: "Sagres",
+    url: "https://sagresnatura.com",
+    blurb: "Sagres surf camp, school and shop in one, a couple of minutes from the town centre, with yoga and packages built around the Costa Vicentina's year-round waves.",
+    image: "", verified: false,
+    socials: {},
     stayType: "Camp" }
 ];
