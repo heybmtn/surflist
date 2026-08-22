@@ -124,5 +124,29 @@ window.LISTINGS = [
     blurb: "Clifftop YHA hostel above Whitesands near St Davids, a short walk from the beach and popular with surfers — simple, well-placed budget beds on the Pembrokeshire Coast Path.",
     image: "", verified: false,
     socials: {},
-    stayType: "Hostel" }
+    stayType: "Hostel" },
+
+  // ================= SPAIN =================
+  // ---- Fuerteventura (Canary Islands) ----
+  { name: "Sunwave Surfcamp", country: "Spain", region: "Canary Islands", town: "Fuerteventura",
+    url: "https://sunwavesurfcamp.com",
+    blurb: "Surf camp in Corralejo with stylish studios and villas in Corralejo and Famara, daily lessons and a skate-and-pool villa — an endless-summer base on Fuerteventura's north shore.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+  // ---- Lanzarote (Canary Islands) ----
+  { name: "Calima Surf", country: "Spain", region: "Canary Islands", town: "Lanzarote",
+    url: "https://calimasurf.com",
+    blurb: "One of the original Canary Islands surf camps (since 1996), with three surf houses steps from Famara beach, plus lessons, yoga and hire in a protected nature reserve.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+
+  // ---- Tenerife (Canary Islands) ----
+  { name: "Twin Fin Surf Camp", country: "Spain", region: "Canary Islands", town: "Tenerife",
+    url: "https://www.twinfinsurfcamp.com",
+    blurb: "Surf-and-yoga camp near El Medano and Adeje in south Tenerife, with daily lessons, breakfast, airport transfers and a sociable surf-house vibe.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" }
 ];

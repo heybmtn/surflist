@@ -50,5 +50,20 @@ window.LISTINGS = [
     blurb: "Lagos shaper making custom boards and handling ding and repair work, inspired by classic surf craft, on the western Algarve.",
     image: "", verified: false,
     socials: {},
+    serviceType: "Board repair" },
+
+  // ================= SPAIN =================
+  // ---- Fuerteventura (Canary Islands) ----
+  { name: "Surf Doctor Canarias", country: "Spain", region: "Canary Islands", town: "Fuerteventura",
+    url: "https://surfdoctorcanarias.com",
+    blurb: "Fuerteventura-based professional repair centre for boards, wetsuits, kites, wings and foils — billed as the Canaries' only dedicated ocean-sports repair shop, with fast turnaround.",
+    image: "", verified: false,
+    socials: {},
+    serviceType: "Board repair" },
+  { name: "Carricart Surfboards", country: "Spain", region: "Canary Islands", town: "Fuerteventura",
+    url: "https://carricartboards.com",
+    blurb: "Fuerteventura shaper and repair workshop turning around ding, crack and fin-box fixes with a quality guarantee, plus custom boards.",
+    image: "", verified: false,
+    socials: {},
     serviceType: "Board repair" }
 ];
