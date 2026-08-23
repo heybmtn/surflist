@@ -692,7 +692,7 @@ function renderCategory(cat) {
 }
 
 /* ---------- verified business detail (flat, canonical) ---------- */
-function jsonLd(d, cat, pageUrl, trail) {
+function jsonLd(d, cat, pageUrl, trail, extra) {
   var address = { "@type": "PostalAddress" };
   if (d.streetAddress) address.streetAddress = d.streetAddress;
   if (d.town) address.addressLocality = d.town;
@@ -705,6 +705,8 @@ function jsonLd(d, cat, pageUrl, trail) {
   if (d.image) biz.image = d.image;
   if (typeof d.lat === "number" && typeof d.lng === "number") biz.geo = { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lng };
   if (d.priceRange) biz.priceRange = d.priceRange;
+  if (d.phone) biz.telephone = d.phone;
+  if (d.email) biz.email = d.email;
   if (Array.isArray(d.surfSpots) && d.surfSpots.length) {
     biz.areaServed = d.surfSpots.map(function (s) { return { "@type": "Place", name: s }; });
   }
@@ -723,7 +725,24 @@ function jsonLd(d, cat, pageUrl, trail) {
     reviewedBy: { "@id": SITE + "/#surflist" },
   };
   if (d.lastVerified) page.lastReviewed = d.lastVerified;
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), biz, page, breadcrumbJsonLd(trail)] }, null, 2);
+  var graph = [surflistEntity(), biz, page, breadcrumbJsonLd(trail)];
+  if (extra) graph.push(extra);
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
+}
+function faqBlock(faq, title, pageUrl) {
+  if (!Array.isArray(faq) || !faq.length) return { html: "", jsonld: null };
+  var html = '<section class="detail__section" id="faq"><h2>' + esc(title) + '</h2><div class="faq">' +
+    faq.map(function (f) {
+      return '<details class="faq-item"><summary>' + esc(f.q) + "</summary><div><p>" + esc(f.a) + "</p></div></details>";
+    }).join("") + "</div></section>";
+  var jsonld = {
+    "@type": "FAQPage",
+    "@id": pageUrl + "#faq",
+    mainEntity: faq.map(function (f) {
+      return { "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } };
+    }),
+  };
+  return { html: html, jsonld: jsonld };
 }
 function fmtDate(s) {
   var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ""));
@@ -760,19 +779,28 @@ function renderDetail(d, cat, slug, opts) {
   var addrLine = [d.streetAddress, d.town, d.region].filter(Boolean).join(", ");
   if (addrLine) facts += fact("Location", esc(addrLine));
   if (d.country) facts += fact("Country", esc(d.country));
-  if (d.priceRange) facts += fact("Price", esc(d.priceRange));
+  if (d.priceRange) facts += fact("Pricing range", esc(d.priceRange));
+  if (d.groupSize) facts += fact("Group size", esc(d.groupSize));
+  if (d.minAge) facts += fact("Min age", esc(d.minAge));
+  if (d.equipment) facts += fact("Equipment", esc(d.equipment));
   if (vals.length) facts += fact(esc(cat.facetLabel), esc(vals.join(", ")));
   if (typeof d.lat === "number" && typeof d.lng === "number") facts += fact("Coordinates", d.lat.toFixed(4) + ", " + d.lng.toFixed(4));
+  if (d.phone) facts += fact("Phone", '<a href="tel:' + esc(d.phone.replace(/\s+/g, "")) + '">' + esc(d.phone) + "</a>");
+  if (d.email) facts += fact("Email", '<a href="mailto:' + esc(d.email) + '">' + esc(d.email) + "</a>");
   if (d.lastVerified) facts += fact("Last verified", fmtDate(d.lastVerified));
 
   var cta = d.url ? '<a class="btn" href="' + esc(d.url) + '" target="_blank" rel="noopener nofollow">Visit website &rarr;</a>' : "";
   var links = socialsHtml(d.socials, d.googleBusiness);
 
+  var faq = faqBlock(d.faq, "FAQs", pageUrl);
   var sections =
-    detailSection("Surf spots served", chips(d.surfSpots)) +
-    detailSection("Lessons offered", bulletList(d.lessons)) +
-    detailSection("Prices & experience levels", bulletList(d.pricing)) +
-    (d.seasonal ? detailSection("When to go", "<p>" + esc(d.seasonal) + "</p>") : "");
+    detailSection("Lessons", bulletList(d.lessons)) +
+    detailSection("Prices", bulletList(d.pricing)) +
+    detailSection("Surf spots served", chips(d.surfSpots) + bulletList(d.spotNotes)) +
+    detailSection("Logistics & amenities", bulletList(d.amenities)) +
+    detailSection("Accreditation", chips(d.accreditations)) +
+    (d.seasonal ? detailSection("When to go", "<p>" + esc(d.seasonal) + "</p>") : "") +
+    faq.html;
 
   var verifiedMeta = '<p class="verified-meta">Verified by surflist' +
     (d.lastVerified ? " &middot; last checked " + fmtDate(d.lastVerified) : "") + "</p>";
@@ -797,7 +825,7 @@ function renderDetail(d, cat, slug, opts) {
 
   return head({
     title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.country + " | surflist",
-    desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl, trail),
+    desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl, trail, faq.jsonld),
     noindex: !!opts.demo,
   }) +
   "<body>\n" + header() +
@@ -807,7 +835,7 @@ function renderDetail(d, cat, slug, opts) {
   '<span class="badge-verified inline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' + verifiedMeta + "</div>\n" +
   '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
   '  <div class="detail__grid"><div class="detail__body"><p class="detail__lead">' + esc(lead) + "</p>" +
-  (descText ? '<div class="detail__prose"><p>' + esc(descText) + "</p></div>" : "") +
+  (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
   (tags ? '<div class="tags detail__levels">' + tags + "</div>" : "") +
   sections + "</div>\n" +
   '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + "</aside>\n" +

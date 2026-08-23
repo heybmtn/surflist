@@ -344,7 +344,7 @@
     .ed-item { background: #fffdf8; border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; }
     .ed-item h3 { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 600; }
     .ed-item p { margin: 0; color: var(--muted); font-size: 0.92rem; }
-    .town-ed .faq { display: flex; flex-direction: column; gap: 0.6rem; max-width: 720px; }
+    .faq { display: flex; flex-direction: column; gap: 0.6rem; max-width: 720px; }
     .faq-item { background: #fffdf8; border: 1px solid var(--line); border-radius: 12px; padding: 0.2rem 1rem; }
     .faq-item summary { cursor: pointer; font-weight: 600; padding: 0.85rem 0; list-style: none; }
     .faq-item summary::-webkit-details-marker { display: none; }
