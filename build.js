@@ -329,23 +329,10 @@ function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
     '<a class="btn header__cta" href="/list-your-business/">+ Add Your Business</a></div></header>\n';
 }
-function destinationFooterLinks() {
-  // country hubs, grouped by bucket, with their regions beneath
-  var out = [];
-  BUCKET_ORDER.forEach(function (bucket) {
-    countries().filter(function (c) { return countryMeta(c).bucket === bucket; }).forEach(function (c) {
-      out.push('<a href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a>");
-    });
-  });
-  return out.join("");
-}
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a> — it\'s free.</p></div>' +
-  '<div class="footer-col"><p class="filter-label">Destinations</p><nav class="footer-nav" aria-label="Destinations">' +
-  destinationFooterLinks() +
-  "</nav></div>" +
   "</div></footer>\n";
 
 function head(o) {
