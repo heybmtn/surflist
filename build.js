@@ -981,6 +981,20 @@ function renderPopularTowns() {
     towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
     "</nav></section>\n";
 }
+// TODO: ranked by most-recently-verified as a stand-in until real
+// visit-count analytics exists (no tracking is set up anywhere yet).
+// Swap the sort for real numbers once that lands.
+function renderFeaturedSchools() {
+  var cat = CATEGORIES.find(function (c) { return c.slug === "surf-schools"; });
+  var featured = cat.items.filter(isVerified)
+    .slice()
+    .sort(function (a, b) { return (b.lastVerified || "").localeCompare(a.lastVerified || ""); })
+    .slice(0, 8);
+  if (!featured.length) return "";
+  return '<section class="hub-cat" id="featured"><div class="hub-cat__head"><h2>Featured surf schools</h2>' +
+    '<a href="/surf-schools/">All surf schools &rarr;</a></div>' +
+    '<ul class="grid">' + featured.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>\n";
+}
 function renderHub() {
   return head({
     title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
@@ -993,6 +1007,7 @@ function renderHub() {
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
+  renderFeaturedSchools() +
   "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
 }
 function renderListYourBusiness() {
