@@ -29,7 +29,7 @@
     }
     /* pins the footer to the viewport bottom on short pages (e.g. the
        homepage) without affecting pages already taller than the viewport */
-    main { flex: 1 0 auto; }
+    main { flex: 1 0 auto; padding-bottom: 2.5rem; }
     .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
     a { color: inherit; }
 
