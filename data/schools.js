@@ -524,6 +524,11 @@ window.LISTINGS = [
     image: "", verified: false,
     socials: {},
     levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  // ---- Bridgend (Wales) ----
+  { name: "Porthcawl Surf", country: "Wales", region: "Bridgend", town: "Porthcawl",
+    url: "https://www.porthcawlsurf.co.uk/",
+    blurb: "Surf lessons and coaching at Rest Bay, Porthcawl's well-known south Wales beach break.",
+    image: "", verified: false },
   // ---- Pembrokeshire (Wales) ----
   { name: "Cool Water Surf Adventure", country: "Wales", region: "Pembrokeshire", town: "Whitesands Bay",
     url: "https://www.coolwatersurfadventure.co.uk",

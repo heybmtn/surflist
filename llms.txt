@@ -65,9 +65,10 @@
   - [Surfing in Cantabria](https://surflist.co/spain/cantabria/): 5 listings.
     - [Surfing in Santander](https://surflist.co/spain/cantabria/santander/): 2 listings.
     - [Surfing in Somo](https://surflist.co/spain/cantabria/somo/): 3 listings.
-- [Surfing in Wales](https://surflist.co/wales/): 11 listings across Anglesey, Gower, Pembrokeshire.
+- [Surfing in Wales](https://surflist.co/wales/): 12 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
   - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
     - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.
+  - [Surfing in Bridgend](https://surflist.co/wales/bridgend/): 1 listings.
   - [Surfing in Gower](https://surflist.co/wales/gower/): 5 listings.
     - [Surfing in Caswell Bay](https://surflist.co/wales/gower/caswell-bay/): 2 listings.
     - [Surfing in Llangennith](https://surflist.co/wales/gower/llangennith/): 2 listings.

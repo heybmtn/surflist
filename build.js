@@ -102,6 +102,8 @@ const REGIONS = [
     intro: "Surf schools in Viana do Castelo — the Blue Flag waves of Praia do Cabedelo in Portugal's far north." },
   { name: "Pembrokeshire",
     intro: "Surf schools in Pembrokeshire — Blue Flag beach breaks in the Coast National Park, from Whitesands near St Davids to powerful Freshwater West." },
+  { name: "Bridgend",
+    intro: "Surf schools around Porthcawl, home to Rest Bay, one of South Wales's most consistent beach breaks." },
   { name: "Anglesey",
     intro: "Surf schools on Anglesey — the sandy, swell-catching beaches around Rhosneigr on the island's exposed west coast." },
   { name: "Yorkshire",
