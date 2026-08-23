@@ -310,9 +310,6 @@ const FOOTER =
   '<div class="footer-col"><p class="filter-label">Destinations</p><nav class="footer-nav" aria-label="Destinations">' +
   destinationFooterLinks() +
   "</nav></div>" +
-  '<div class="footer-col"><p class="filter-label">Browse by type</p><nav class="footer-nav" aria-label="Categories">' +
-  CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.title) + "</a>"; }).join("") +
-  "</nav></div>" +
   "</div></footer>\n";
 
 function head(o) {
@@ -905,11 +902,7 @@ function renderDestinations() {
     var cs = countries().filter(function (c) { return countryMeta(c).bucket === bucket; });
     if (!cs.length) return "";
     var rows = cs.map(function (c) {
-      var regionLinks = regionsIn(c).map(function (r) {
-        return '<a href="' + regionUrl(c, r) + '">' + esc(r) + "</a>";
-      }).join('<span class="dest-dot">&middot;</span>');
-      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a>" +
-        '<div class="dest-regions">' + regionLinks + "</div></div>";
+      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a></div>";
     }).join("");
     return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
   }).join("");
