@@ -342,7 +342,7 @@ function header() {
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
-  '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a> — it\'s free.</p></div>' +
+  '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
   "</div></footer>\n";
 
 function head(o) {
