@@ -23,6 +23,18 @@
     - [Surfing in Woolacombe](https://surflist.co/england/devon/woolacombe/): 2 listings.
   - [Surfing in Yorkshire](https://surflist.co/england/yorkshire/): 4 listings.
     - [Surfing in Scarborough](https://surflist.co/england/yorkshire/scarborough/): 3 listings.
+- [Surfing in France](https://surflist.co/france/): 19 listings across French Basque Country, Gironde, Landes.
+  - [Surfing in French Basque Country](https://surflist.co/france/french-basque-country/): 9 listings.
+    - [Surfing in Anglet](https://surflist.co/france/french-basque-country/anglet/): 2 listings.
+    - [Surfing in Biarritz](https://surflist.co/france/french-basque-country/biarritz/): 3 listings.
+    - [Surfing in Guéthary](https://surflist.co/france/french-basque-country/guethary/): 2 listings.
+    - [Surfing in Saint-Jean-de-Luz](https://surflist.co/france/french-basque-country/saint-jean-de-luz/): 2 listings.
+  - [Surfing in Gironde](https://surflist.co/france/gironde/): 3 listings.
+    - [Surfing in Lacanau](https://surflist.co/france/gironde/lacanau/): 3 listings.
+  - [Surfing in Landes](https://surflist.co/france/landes/): 7 listings.
+    - [Surfing in Capbreton](https://surflist.co/france/landes/capbreton/): 2 listings.
+    - [Surfing in Hossegor](https://surflist.co/france/landes/hossegor/): 3 listings.
+    - [Surfing in Seignosse](https://surflist.co/france/landes/seignosse/): 2 listings.
 - [Surfing in Portugal](https://surflist.co/portugal/): 56 listings across Algarve, Lisbon, Peniche, Porto, Silver Coast, Viana do Castelo.
   - [Surfing in Algarve](https://surflist.co/portugal/algarve/): 15 listings.
     - [Surfing in Arrifana](https://surflist.co/portugal/algarve/arrifana/): 2 listings.

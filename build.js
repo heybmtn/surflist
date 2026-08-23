@@ -76,6 +76,8 @@ const COUNTRIES = [
     intro: "Surf Portugal's Atlantic coast — consistent beach breaks and world-class waves from the Lisbon region down to the Algarve." },
   { name: "Spain", bucket: "Europe", flag: "es",
     intro: "Surf Spain — the powerful beach breaks and rivermouth points of the Atlantic north, and the year-round warmth of the Canary Islands, Europe's own Hawaii." },
+  { name: "France", bucket: "Europe", flag: "fr",
+    intro: "Surf France's southwest — the beach-break coast from the Gironde through the Landes to the Basque Country, home of Hossegor, Europe's surf capital." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
@@ -122,6 +124,12 @@ const REGIONS = [
     intro: "Surf schools on the Asturian coast — the long sands of Salinas and the contest waves of Tapia de Casariego, backed by the Picos de Europa." },
   { name: "Canary Islands",
     intro: "Surf schools across the Canaries — 'Europe's Hawaii', with warm water and world-class waves year-round on Fuerteventura, Lanzarote, Tenerife and Gran Canaria." },
+  { name: "French Basque Country",
+    intro: "Surf schools on the French Basque coast — the birthplace of European surfing, from Biarritz's Côte des Basques to the beaches of Anglet, Guéthary and Saint-Jean-de-Luz." },
+  { name: "Landes",
+    intro: "Surf schools along the Landes coast — mile after mile of powerful sandbank beach breaks around Hossegor, Europe's surf capital, plus Capbreton and Seignosse." },
+  { name: "Gironde",
+    intro: "Surf schools in the Gironde — the long Médoc beach breaks at Lacanau, a classic Atlantic surf town north of Bordeaux." },
 ];
 
 /* ---------- town editorial (the "Surfing in <town>" copy) ----------
