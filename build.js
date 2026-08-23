@@ -933,12 +933,6 @@ function renderPopularTowns() {
     towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
     "</nav></section>\n";
 }
-function renderFindWhatYouNeed() {
-  return '<section class="hub-cat" id="types"><div class="hub-cat__head"><h2>Find what you need</h2></div>' +
-    '<ul class="grid">' + CATEGORIES.map(function (cat, i) {
-      return placeCard(cat.title, "/" + cat.slug + "/", cat.items.length, i, cat.slug);
-    }).join("") + "</ul></section>\n";
-}
 function renderHub() {
   return head({
     title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
@@ -951,7 +945,6 @@ function renderHub() {
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
-  renderFindWhatYouNeed() +
   "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
 }
 function renderListYourBusiness() {
