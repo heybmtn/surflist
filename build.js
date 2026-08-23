@@ -274,7 +274,8 @@ function nav() {
     "</nav>";
 }
 function header() {
-  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a></div></header>\n';
+  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
+    '<a class="btn header__cta" href="/list-your-business/">+ Add Your Business</a></div></header>\n';
 }
 function destinationFooterLinks() {
   // country hubs, grouped by bucket, with their regions beneath
@@ -289,7 +290,7 @@ function destinationFooterLinks() {
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
-  '<p>Run a surf school, shop or stay? Email <a href="mailto:hello@surflist.co">hello@surflist.co</a> to get listed — it\'s free.</p></div>' +
+  '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a> — it\'s free.</p></div>' +
   '<div class="footer-col"><p class="filter-label">Destinations</p><nav class="footer-nav" aria-label="Destinations">' +
   destinationFooterLinks() +
   "</nav></div>" +
@@ -482,7 +483,7 @@ function renderCountryHub(country) {
   }).join("");
 
   return head({
-    title: "Surfing in " + country + " — surflist",
+    title: "Surf Schools, Shops & Stays in " + country + " | surflist",
     desc: intro + " Surf schools, shops, places to stay and services on surflist.",
     canonical: pageUrl,
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + country + " — surflist", place: place, trail: trail }),
@@ -522,7 +523,7 @@ function renderRegionHub(country, region) {
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
 
   return head({
-    title: "Surfing in " + region + " — surflist",
+    title: "Surf Schools, Shops & Stays in " + region + " | surflist",
     desc: intro + " Browse surf towns and businesses in " + region + " on surflist.",
     canonical: pageUrl,
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + region + " — surflist", place: place, trail: trail }),
@@ -610,7 +611,7 @@ function renderTownHub(country, region, town) {
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
 
   return head({
-    title: "Surfing in " + town + ", " + region + " — surflist",
+    title: "Surf Schools, Shops & Stays in " + town + ", " + region + " | surflist",
     desc: (ed.intro ? ed.intro : ("Surf schools, shops, places to stay and board repair in " + town + ", " + placeStr + ".")).slice(0, 155),
     canonical: pageUrl,
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + town + " — surflist", place: place, trail: trail, extra: faqExtra }),
@@ -675,7 +676,7 @@ function renderCategory(cat) {
 }
 
 /* ---------- verified business detail (flat, canonical) ---------- */
-function jsonLd(d, cat, pageUrl) {
+function jsonLd(d, cat, pageUrl, trail) {
   var address = { "@type": "PostalAddress" };
   if (d.streetAddress) address.streetAddress = d.streetAddress;
   if (d.town) address.addressLocality = d.town;
@@ -706,7 +707,7 @@ function jsonLd(d, cat, pageUrl) {
     reviewedBy: { "@id": SITE + "/#surflist" },
   };
   if (d.lastVerified) page.lastReviewed = d.lastVerified;
-  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), biz, page] }, null, 2);
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), biz, page, breadcrumbJsonLd(trail)] }, null, 2);
 }
 function fmtDate(s) {
   var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ""));
@@ -760,23 +761,32 @@ function renderDetail(d, cat, slug, opts) {
   var verifiedMeta = '<p class="verified-meta">Verified by surflist' +
     (d.lastVerified ? " &middot; last checked " + fmtDate(d.lastVerified) : "") + "</p>";
   var demoBanner = opts.demo
-    ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="mailto:hello@surflist.co">Claim your verified listing &rarr;</a></div>'
+    ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="/list-your-business/">Claim your verified listing &rarr;</a></div>'
     : "";
 
   // link "back" to the business's town hub when it exists, else its category page
-  var backHref = (!opts.demo && townHubExists(d.country, d.region, d.town))
-    ? townUrl(d.country, d.region, d.town) : "/" + cat.slug + "/";
-  var backText = (!opts.demo && townHubExists(d.country, d.region, d.town))
-    ? "Surfing in " + d.town : "All " + cat.plural;
+  var hasTownHub = !opts.demo && townHubExists(d.country, d.region, d.town);
+  var backHref = hasTownHub ? townUrl(d.country, d.region, d.town) : "/" + cat.slug + "/";
+  var backText = hasTownHub ? "Surfing in " + d.town : "All " + cat.plural;
+
+  var trail = [{ name: "Home", href: "/" }];
+  if (hasTownHub) {
+    trail.push({ name: d.country, href: countryUrl(d.country) });
+    trail.push({ name: d.region, href: regionUrl(d.country, d.region) });
+    trail.push({ name: d.town, href: townUrl(d.country, d.region, d.town) });
+  } else {
+    trail.push({ name: cat.title, href: "/" + cat.slug + "/" });
+  }
+  trail.push({ name: d.name });
 
   return head({
     title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.country + " | surflist",
-    desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl),
+    desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl, trail),
     noindex: !!opts.demo,
   }) +
   "<body>\n" + header() +
   '<main class="wrap detail">' + demoBanner +
-  (opts.demo ? "" : '<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
+  (opts.demo ? "" : crumbs(trail) + '\n<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
   '<span class="badge-verified inline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' + verifiedMeta + "</div>\n" +
   '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
@@ -806,7 +816,9 @@ function searchIndex() {
     cat.items.forEach(function (d) {
       var href = isVerified(d) ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
       if (!href) return;
-      idx.push({ n: d.name, p: [d.town, d.region, d.country].filter(Boolean).join(", "), c: cat.singular, u: href, v: isVerified(d) });
+      var facetVal = d[cat.facetField];
+      var f = Array.isArray(facetVal) ? facetVal.join(" ") : (facetVal || "");
+      idx.push({ n: d.name, p: [d.town, d.region, d.country].filter(Boolean).join(", "), c: cat.singular, f: f, u: href, v: isVerified(d) });
     });
   });
   return idx;
@@ -833,7 +845,7 @@ const SEARCH_JS =
 "li.appendChild(a);box.appendChild(li);});" +
 "box.hidden=false;input.setAttribute('aria-expanded','true');}" +
 "function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
-"var r=items.filter(function(d){return (d.n+' '+d.p+' '+d.c).toLowerCase().indexOf(q)>-1;});" +
+"var r=items.filter(function(d){return (d.n+' '+d.p+' '+d.c+' '+(d.f||'')).toLowerCase().indexOf(q)>-1;});" +
 "r.sort(function(a,b){var ad=a.c==='destination'?0:1,bd=b.c==='destination'?0:1;return ad-bd;});return r.slice(0,8);}" +
 "input.addEventListener('input',function(){render(search(input.value));});" +
 "input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
@@ -885,7 +897,7 @@ function renderFindWhatYouNeed() {
 }
 function renderHub() {
   return head({
-    title: "surflist — plan your next surf trip",
+    title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
     desc: "Find everything you need for your next surf trip: surf schools, shops, places to stay and board repair, by destination.",
     canonical: SITE + "/",
   }) +
@@ -897,6 +909,27 @@ function renderHub() {
   renderPopularTowns() +
   renderFindWhatYouNeed() +
   "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
+}
+function renderListYourBusiness() {
+  var pageUrl = SITE + "/list-your-business/";
+  var mailto = "mailto:hello@surflist.co?subject=List%20my%20business%20on%20surflist";
+  return head({
+    title: "Get Listed — Add Your Surf Business | surflist",
+    desc: "List your surf school, shop, stay or service on surflist for free, or claim a verified listing with its own page.",
+    canonical: pageUrl,
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
+  "<p>surflist is a free directory for surf schools, shops, places to stay and surf services. Add your business in a couple of minutes — no cost, no catch.</p></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>How it works</h2></div>' +
+  "<ol class=\"spec-list\">" +
+  "<li><strong>Basic listing (free):</strong> your business name, location and a link out to your website or socials — enough to get found.</li>" +
+  "<li><strong>Verified listing (free):</strong> a dedicated page on surflist with your description, pricing, levels or services offered, and structured data that helps you show up in Google and AI search results.</li>" +
+  "<li>Email us your details and we'll get you listed, usually within a few days.</li>" +
+  "</ol></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Ready to get listed?</h2></div>' +
+  '<p><a class="btn" href="' + mailto + '">Email hello@surflist.co &rarr;</a></p></section>\n' +
+  "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
 /* ---------- llms.txt ---------- */
@@ -932,7 +965,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, email hello@surflist.co.");
+  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email hello@surflist.co.");
   out.push("");
   return out.join("\n");
 }
@@ -1021,6 +1054,9 @@ fs.rmSync(path.join(ROOT, "_redirects"), { force: true });
 
 var urls = [SITE + "/"];
 fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
+
+writePage("list-your-business", renderListYourBusiness());
+urls.push(SITE + "/list-your-business/");
 
 // browse-all category pages + verified business pages (flat, canonical)
 CATEGORIES.forEach(function (cat) {

@@ -1,8 +1,80 @@
 # surflist
 
-> surflist is a directory for surf trips: surf schools, independent surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse by country and region. Verified listings have their own profile page with location and pricing.
+> surflist is a directory for surf trips, organised by destination. Each surf town has a hub page ("Surfing in <town>") linking to its surf schools, surf shops, places to stay (camps, hostels, eco-pods, campervans) and surf services like board repair. Browse from country to region to town, or by category.
 
-## Sections
+## Destinations
+
+- [Surfing in England](https://surflist.co/england/): 64 listings across Cornwall, Devon, Yorkshire.
+  - [Surfing in Cornwall](https://surflist.co/england/cornwall/): 40 listings.
+    - [Surfing in Bude](https://surflist.co/england/cornwall/bude/): 2 listings.
+    - [Surfing in Hayle](https://surflist.co/england/cornwall/hayle/): 3 listings.
+    - [Surfing in Newquay](https://surflist.co/england/cornwall/newquay/): 13 listings.
+    - [Surfing in Perranporth](https://surflist.co/england/cornwall/perranporth/): 5 listings.
+    - [Surfing in Polzeath](https://surflist.co/england/cornwall/polzeath/): 2 listings.
+    - [Surfing in Sennen Cove](https://surflist.co/england/cornwall/sennen-cove/): 2 listings.
+    - [Surfing in St Agnes](https://surflist.co/england/cornwall/st-agnes/): 2 listings.
+    - [Surfing in St Ives](https://surflist.co/england/cornwall/st-ives/): 3 listings.
+    - [Surfing in Watergate Bay](https://surflist.co/england/cornwall/watergate-bay/): 2 listings.
+  - [Surfing in Devon](https://surflist.co/england/devon/): 20 listings.
+    - [Surfing in Braunton](https://surflist.co/england/devon/braunton/): 5 listings.
+    - [Surfing in Croyde](https://surflist.co/england/devon/croyde/): 5 listings.
+    - [Surfing in Saunton](https://surflist.co/england/devon/saunton/): 2 listings.
+    - [Surfing in Westward Ho!](https://surflist.co/england/devon/westward-ho/): 3 listings.
+    - [Surfing in Woolacombe](https://surflist.co/england/devon/woolacombe/): 2 listings.
+  - [Surfing in Yorkshire](https://surflist.co/england/yorkshire/): 4 listings.
+    - [Surfing in Scarborough](https://surflist.co/england/yorkshire/scarborough/): 3 listings.
+- [Surfing in Portugal](https://surflist.co/portugal/): 56 listings across Algarve, Lisbon, Peniche, Porto, Silver Coast, Viana do Castelo.
+  - [Surfing in Algarve](https://surflist.co/portugal/algarve/): 15 listings.
+    - [Surfing in Arrifana](https://surflist.co/portugal/algarve/arrifana/): 2 listings.
+    - [Surfing in Lagos](https://surflist.co/portugal/algarve/lagos/): 6 listings.
+    - [Surfing in Sagres](https://surflist.co/portugal/algarve/sagres/): 6 listings.
+  - [Surfing in Lisbon](https://surflist.co/portugal/lisbon/): 21 listings.
+    - [Surfing in Carcavelos](https://surflist.co/portugal/lisbon/carcavelos/): 3 listings.
+    - [Surfing in Cascais](https://surflist.co/portugal/lisbon/cascais/): 3 listings.
+    - [Surfing in Costa da Caparica](https://surflist.co/portugal/lisbon/costa-da-caparica/): 3 listings.
+    - [Surfing in Ericeira](https://surflist.co/portugal/lisbon/ericeira/): 12 listings.
+  - [Surfing in Peniche](https://surflist.co/portugal/peniche/): 8 listings.
+    - [Surfing in Baleal](https://surflist.co/portugal/peniche/baleal/): 5 listings.
+    - [Surfing in Peniche](https://surflist.co/portugal/peniche/peniche/): 3 listings.
+  - [Surfing in Porto](https://surflist.co/portugal/porto/): 2 listings.
+    - [Surfing in Matosinhos](https://surflist.co/portugal/porto/matosinhos/): 2 listings.
+  - [Surfing in Silver Coast](https://surflist.co/portugal/silver-coast/): 8 listings.
+    - [Surfing in Figueira da Foz](https://surflist.co/portugal/silver-coast/figueira-da-foz/): 3 listings.
+    - [Surfing in Nazaré](https://surflist.co/portugal/silver-coast/nazare/): 3 listings.
+    - [Surfing in São Pedro de Moel](https://surflist.co/portugal/silver-coast/sao-pedro-de-moel/): 2 listings.
+  - [Surfing in Viana do Castelo](https://surflist.co/portugal/viana-do-castelo/): 2 listings.
+    - [Surfing in Cabedelo](https://surflist.co/portugal/viana-do-castelo/cabedelo/): 2 listings.
+- [Surfing in Scotland](https://surflist.co/scotland/): 7 listings across Argyll, Caithness, East Lothian.
+  - [Surfing in Argyll](https://surflist.co/scotland/argyll/): 2 listings.
+  - [Surfing in Caithness](https://surflist.co/scotland/caithness/): 3 listings.
+    - [Surfing in Thurso](https://surflist.co/scotland/caithness/thurso/): 2 listings.
+  - [Surfing in East Lothian](https://surflist.co/scotland/east-lothian/): 2 listings.
+    - [Surfing in Belhaven Bay](https://surflist.co/scotland/east-lothian/belhaven-bay/): 2 listings.
+- [Surfing in Spain](https://surflist.co/spain/): 39 listings across Asturias, Basque Country, Canary Islands, Cantabria.
+  - [Surfing in Asturias](https://surflist.co/spain/asturias/): 4 listings.
+    - [Surfing in Salinas](https://surflist.co/spain/asturias/salinas/): 3 listings.
+  - [Surfing in Basque Country](https://surflist.co/spain/basque-country/): 8 listings.
+    - [Surfing in San Sebastián](https://surflist.co/spain/basque-country/san-sebastian/): 3 listings.
+    - [Surfing in Sopelana](https://surflist.co/spain/basque-country/sopelana/): 2 listings.
+    - [Surfing in Zarautz](https://surflist.co/spain/basque-country/zarautz/): 2 listings.
+  - [Surfing in Canary Islands](https://surflist.co/spain/canary-islands/): 22 listings.
+    - [Surfing in Fuerteventura](https://surflist.co/spain/canary-islands/fuerteventura/): 8 listings.
+    - [Surfing in Gran Canaria](https://surflist.co/spain/canary-islands/gran-canaria/): 3 listings.
+    - [Surfing in Lanzarote](https://surflist.co/spain/canary-islands/lanzarote/): 5 listings.
+    - [Surfing in Tenerife](https://surflist.co/spain/canary-islands/tenerife/): 6 listings.
+  - [Surfing in Cantabria](https://surflist.co/spain/cantabria/): 5 listings.
+    - [Surfing in Santander](https://surflist.co/spain/cantabria/santander/): 2 listings.
+    - [Surfing in Somo](https://surflist.co/spain/cantabria/somo/): 3 listings.
+- [Surfing in Wales](https://surflist.co/wales/): 11 listings across Anglesey, Gower, Pembrokeshire.
+  - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
+    - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.
+  - [Surfing in Gower](https://surflist.co/wales/gower/): 5 listings.
+    - [Surfing in Caswell Bay](https://surflist.co/wales/gower/caswell-bay/): 2 listings.
+    - [Surfing in Llangennith](https://surflist.co/wales/gower/llangennith/): 2 listings.
+  - [Surfing in Pembrokeshire](https://surflist.co/wales/pembrokeshire/): 4 listings.
+    - [Surfing in Whitesands Bay](https://surflist.co/wales/pembrokeshire/whitesands-bay/): 4 listings.
+
+## Browse by type
 
 - [Surf schools](https://surflist.co/surf-schools/): Learn to surf or level up with schools and coaches near the break.
 - [Surf shops](https://surflist.co/surf-shops/): Independent surf shops for boards, wetsuits, rentals and repairs.
@@ -11,4 +83,4 @@
 
 ## About
 
-Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, email hello@surflist.co.
+Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see https://surflist.co/list-your-business/ or email hello@surflist.co.

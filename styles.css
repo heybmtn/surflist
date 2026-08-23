@@ -162,6 +162,7 @@
       transition: filter .12s, transform .12s;
     }
     .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .header__cta { padding: 0.55em 0.9em; font-size: 0.85rem; }
 
     /* ---- verified listing page ---- */
     .detail { padding-bottom: 3.5rem; }
