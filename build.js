@@ -173,14 +173,30 @@ const SOCIAL_ICONS = {
   x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.83L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg>',
   google: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></svg>',
 };
-function placeholderImage(seed) {
+/* each category gets its own gradient identity instead of one uniform teal */
+const CATEGORY_PALETTE = {
+  "surf-schools": { from: [189, 62, 46], to: [212, 55, 24] },  // turquoise/cyan -> deep ocean blue
+  "surf-shops": { from: [32, 78, 52], to: [14, 52, 30] },      // amber/sunset orange -> deep terracotta
+  "surf-stays": { from: [152, 36, 40], to: [166, 40, 18] },    // sage/emerald -> deep pine
+  "surf-services": { from: [232, 20, 42], to: [230, 34, 15] }, // slate/indigo -> midnight navy
+};
+function placeholderImage(seed, catSlug) {
   var h = 0; seed = String(seed || "");
   for (var i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  var hue = 168 + (h % 28);
+  var pal = CATEGORY_PALETTE[catSlug];
+  var hue1, sat1, lig1, hue2, sat2, lig2;
+  if (pal) {
+    var hj = (h % 11) - 5, lj = (h % 7) - 3;
+    hue1 = pal.from[0] + hj; sat1 = pal.from[1]; lig1 = pal.from[2] + lj;
+    hue2 = pal.to[0] + hj; sat2 = pal.to[1]; lig2 = pal.to[2] + lj;
+  } else {
+    hue1 = 168 + (h % 28); sat1 = 42; lig1 = 34;
+    hue2 = hue1 + 14; sat2 = 44; lig2 = 22;
+  }
   var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">' +
     '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-    '<stop offset="0" stop-color="hsl(' + hue + ',42%,34%)"/>' +
-    '<stop offset="1" stop-color="hsl(' + (hue + 14) + ',44%,22%)"/></linearGradient></defs>' +
+    '<stop offset="0" stop-color="hsl(' + hue1 + ',' + sat1 + '%,' + lig1 + '%)"/>' +
+    '<stop offset="1" stop-color="hsl(' + hue2 + ',' + sat2 + '%,' + lig2 + '%)"/></linearGradient></defs>' +
     '<rect width="400" height="300" fill="url(#g)"/>' +
     '<path d="M0 206 C 80 178 140 236 220 210 C 300 186 350 224 400 204 L400 300 L0 300 Z" fill="rgba(255,255,255,0.10)"/>' +
     '<path d="M0 230 C 90 204 150 256 240 234 C 320 216 360 244 400 230 L400 300 L0 300 Z" fill="rgba(255,255,255,0.14)"/></svg>';
@@ -347,7 +363,7 @@ function renderCard(d, cat, nameTag) {
   var verified = isVerified(d);
   var name = esc(d.name);
   var place = [d.town, d.region].filter(Boolean).join(", ");
-  var img = d.image ? esc(d.image) : placeholderImage(d.name);
+  var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
   var socials = socialsHtml(d.socials);
@@ -372,9 +388,9 @@ function renderCard(d, cat, nameTag) {
 }
 
 /* a plain place card (country / region / town) */
-function placeCard(name, href, count, index) {
+function placeCard(name, href, count, index, catSlug) {
   var lazy = (index != null && index < 4) ? "" : ' loading="lazy"';
-  var img = placeholderImage(href);
+  var img = placeholderImage(href, catSlug);
   return '<li class="card"><div class="card__media"><a href="' + esc(href) + '" aria-label="' + esc(name) + '">' +
     '<img src="' + img + '" alt="' + esc(name) + '"' + lazy + "></a></div>" +
     '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + esc(name) + "</a></h3>" +
@@ -732,7 +748,7 @@ function renderDetail(d, cat, slug, opts) {
   opts = opts || {};
   var pageUrl = SITE + "/" + (opts.demo ? "verified-demo" : cat.slug + "/" + slug) + "/";
   var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
-  var img = d.image ? esc(d.image) : placeholderImage(d.name);
+  var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
   var lead = d.name + " is a Surflist-verified " + cat.singular + " in " + place + ".";
@@ -892,7 +908,7 @@ function renderPopularTowns() {
 function renderFindWhatYouNeed() {
   return '<section class="hub-cat" id="types"><div class="hub-cat__head"><h2>Find what you need</h2></div>' +
     '<ul class="grid">' + CATEGORIES.map(function (cat, i) {
-      return placeCard(cat.title, "/" + cat.slug + "/", cat.items.length, i);
+      return placeCard(cat.title, "/" + cat.slug + "/", cat.items.length, i, cat.slug);
     }).join("") + "</ul></section>\n";
 }
 function renderHub() {
