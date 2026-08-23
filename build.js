@@ -1010,22 +1010,26 @@ function renderHub() {
 function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
   var mailto = "mailto:hello@surflist.co?subject=List%20my%20business%20on%20surflist";
+  var stripeLink = "https://buy.stripe.com/7sY7sDeEKeA86yS2zQ1oI00";
   return head({
     title: "Get Listed — Add Your Surf Business | surflist",
-    desc: "List your surf school, shop, stay or service on surflist for free, or claim a verified listing with its own page.",
+    desc: "List your surf school, shop, stay or service on surflist for free, or get a verified listing with its own page for £99/year.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
-  "<p>surflist is a free directory for surf schools, shops, places to stay and surf services. Add your business in a couple of minutes — no cost, no catch.</p></section>\n" +
+  "<p>surflist is a directory for surf schools, shops, places to stay and surf services. Add a free basic listing in a couple of minutes, or get verified for more visibility.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>How it works</h2></div>' +
   "<ol class=\"spec-list\">" +
   "<li><strong>Basic listing (free):</strong> your business name, location and a link out to your website or socials — enough to get found.</li>" +
-  "<li><strong>Verified listing (free):</strong> a dedicated page on surflist with your description, pricing, levels or services offered, and structured data that helps you show up in Google and AI search results.</li>" +
-  "<li>Email us your details and we'll get you listed, usually within a few days.</li>" +
+  "<li><strong>Verified listing (£99/year):</strong> a dedicated page on surflist with your description, pricing, levels or services offered, and structured data that helps you show up in Google and AI search results.</li>" +
+  "<li>Get in touch or pay below and we'll email you to collect your business details, usually within a few days.</li>" +
   "</ol></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>Ready to get listed?</h2></div>' +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Free basic listing</h2></div>' +
   '<p><a class="btn" href="' + mailto + '">Email hello@surflist.co &rarr;</a></p></section>\n' +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Verified listing — £99/year</h2></div>' +
+  "<p>Billed annually, cancel anytime. After payment we'll email you to collect your business details and get your page live.</p>" +
+  '<p><a class="btn" href="' + stripeLink + '" target="_blank" rel="noopener">Get verified — £99/year &rarr;</a></p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
