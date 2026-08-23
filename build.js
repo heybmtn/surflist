@@ -962,6 +962,22 @@ function renderListYourBusiness() {
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+/* ---------- robots.txt ---------- */
+const SEARCH_CRAWLERS = ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot"];
+const AI_CRAWLERS = [
+  "GPTBot", "ChatGPT-User", "OAI-SearchBot",
+  "ClaudeBot", "Claude-User", "Claude-SearchBot",
+  "Google-Extended", "PerplexityBot", "Perplexity-User",
+  "Meta-ExternalAgent", "Applebot-Extended", "Amazonbot", "CCBot", "Bytespider",
+];
+function renderRobots() {
+  function block(ua) { return "User-agent: " + ua + "\nAllow: /\nDisallow: /verified-demo/\n"; }
+  return "# Search engines\n" + SEARCH_CRAWLERS.map(block).join("\n") +
+    "\n# AI assistants & answer engines\n" + AI_CRAWLERS.map(block).join("\n") +
+    "\n# Everyone else\n" + block("*") +
+    "\nSitemap: " + SITE + "/sitemap.xml\n";
+}
+
 /* ---------- llms.txt ---------- */
 function renderLlms() {
   var out = ["# surflist", "",
@@ -1145,7 +1161,7 @@ writePage("verified-demo", renderDetail(DEMO_LISTING, CATEGORIES[0], "verified-d
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(function (u) { return "  <url><loc>" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n");
-fs.writeFileSync(path.join(ROOT, "robots.txt"), "User-agent: *\nAllow: /\nDisallow: /verified-demo/\n\nSitemap: " + SITE + "/sitemap.xml\n");
+fs.writeFileSync(path.join(ROOT, "robots.txt"), renderRobots());
 fs.writeFileSync(path.join(ROOT, "llms.txt"), renderLlms());
 
 var totalV = CATEGORIES.reduce(function (a, c) { return a + c.items.filter(isVerified).length; }, 0);

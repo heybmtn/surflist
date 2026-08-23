@@ -1,3 +1,78 @@
+# Search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Applebot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /verified-demo/
+
+# AI assistants & answer engines
+User-agent: GPTBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: CCBot
+Allow: /
+Disallow: /verified-demo/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /verified-demo/
+
+# Everyone else
 User-agent: *
 Allow: /
 Disallow: /verified-demo/
