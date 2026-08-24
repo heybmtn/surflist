@@ -918,6 +918,26 @@ function searchIndex() {
   });
   return idx;
 }
+function latestPool() {
+  var out = [];
+  CATEGORIES.forEach(function (cat) {
+    cat.items.forEach(function (d) {
+      var verified = isVerified(d);
+      var href = verified ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
+      if (!href) return;
+      out.push({
+        n: d.name,
+        p: [d.town, d.region].filter(Boolean).join(", "),
+        cat: cat.singular,
+        u: href,
+        v: verified,
+        img: d.image ? d.image : placeholderImage(d.name, cat.slug),
+        b: verified && d.blurb ? d.blurb : "",
+      });
+    });
+  });
+  return out;
+}
 function renderSearch() {
   return '<div class="search" role="search">' +
     '<input type="text" id="search-input" class="search__input" placeholder="Search a destination, town or surf business&hellip;" ' +
@@ -980,20 +1000,28 @@ function renderPopularTowns() {
     towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
     "</nav></section>\n";
 }
-// TODO: ranked by most-recently-verified as a stand-in until real
-// visit-count analytics exists (no tracking is set up anywhere yet).
-// Swap the sort for real numbers once that lands.
-function renderFeaturedSchools() {
-  var cat = CATEGORIES.find(function (c) { return c.slug === "surf-schools"; });
-  var featured = cat.items.filter(isVerified)
-    .slice()
-    .sort(function (a, b) { return (b.lastVerified || "").localeCompare(a.lastVerified || ""); })
-    .slice(0, 8);
-  if (!featured.length) return "";
-  return '<section class="hub-cat" id="featured"><div class="hub-cat__head"><h2>Featured surf schools</h2>' +
-    '<a href="/surf-schools/">All surf schools &rarr;</a></div>' +
-    '<ul class="grid">' + featured.map(function (d) { return renderCard(d, cat, "h3"); }).join("") + "</ul></section>\n";
+function renderLatestListings() {
+  var pool = latestPool();
+  if (!pool.length) return "";
+  return '<section class="hub-cat" id="latest"><div class="hub-cat__head"><h2>Latest listings</h2></div>' +
+    '<ul class="grid" id="latest-listings"></ul>' +
+    '<script type="application/json" id="latest-data">' + JSON.stringify(pool).replace(/</g, "\\u003c") + "</script>" +
+    "</section>\n";
 }
+const LATEST_JS =
+"(function(){var ul=document.getElementById('latest-listings');if(!ul)return;" +
+"var pool=JSON.parse(document.getElementById('latest-data').textContent);" +
+"for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}" +
+"function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
+"function card(d){var badge=d.v?'<span class=\"badge-verified\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z\"/></svg>Surflist verified</span>':'';" +
+"var attrs=d.v?'':' target=\"_blank\" rel=\"noopener\"';var text=d.v?'View':'Visit';" +
+"var name=d.v?'<a class=\"card__name-link\" href=\"'+esc(d.u)+'\">'+esc(d.n)+'</a>':esc(d.n);" +
+"return '<li class=\"card'+(d.v?' is-verified':'')+'\"><div class=\"card__media\">'+" +
+"(d.v?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">'+(d.v?'</a>':'')+badge+'</div>'+" +
+"'<div class=\"card__body\"><span class=\"card__place\">'+esc(d.p)+' &middot; '+esc(d.cat)+'</span><h3 class=\"card__name\">'+name+'</h3>'+" +
+"(d.b?'<p class=\"card__blurb\">'+esc(d.b)+'</p>':'')+" +
+"'<div class=\"card__foot\"><a class=\"visit\" href=\"'+esc(d.u)+'\"'+attrs+'>'+text+' &rarr;</a></div></div></li>';}" +
+"ul.innerHTML=pool.slice(0,8).map(card).join('');})();";
 function renderHub() {
   return head({
     title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
@@ -1006,8 +1034,8 @@ function renderHub() {
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
-  renderFeaturedSchools() +
-  "</main>\n" + FOOTER + "<script>" + SEARCH_JS + "</script>\n</body>\n</html>\n";
+  renderLatestListings() +
+  "</main>\n" + FOOTER + "<script>" + SEARCH_JS + LATEST_JS + "</script>\n</body>\n</html>\n";
 }
 function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
