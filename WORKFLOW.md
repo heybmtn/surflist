@@ -85,12 +85,20 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > to the surf-schools category unless others are named. No need to ask for
 > confirmation before researching — just do the full pass and hand off.
 >
-> **Before curating any region,** fetch the current data file you'll be adding to
-> from GitHub raw (e.g.
-> `https://raw.githubusercontent.com/heybmtn/surflist/main/data/schools.js`) and
-> the current `build.js` if you need the country/region/town lists. Curate
-> against the real current state so you match existing spelling exactly and don't
-> duplicate listings.
+> **Match the current repo state — don't rely on fetching it.** You curate
+> against the listing schema, facet fields and existing country/region/town
+> spellings. Get those two ways: (a) if the user pastes a data file's contents or
+> a working raw URL, use it as the live source for spelling and de-duplication;
+> (b) otherwise curate against the schema in CONTRIBUTING.md and the conventions
+> you can see, and state in the hand-off that Claude Code must reconcile spelling
+> and check for duplicates against the real files at apply time. You can only
+> fetch URLs actually pasted into the chat — you cannot reach arbitrary repo files
+> by editing a path, and a private repo's files aren't fetchable at all. Never
+> guess field names for shops/stays/services; if you can't see that file, say so
+> and let Code confirm against CONTRIBUTING.md. The real guardrail against
+> duplicate or forked places is Claude Code running `node build.js --check` on the
+> true checkout — so a clean schema-based pass with a clear reconcile note is
+> always enough to proceed.
 >
 > **Verification standard (non-negotiable):** verify every business against its
 > official website before including it. Attach socials only where confirmed.
@@ -156,7 +164,9 @@ For a new country, the hand-off also states the `COUNTRIES` entry
 3. **In Claude Code:** paste the hand-off (or say "apply the latest Surflist
    hand-off: …"). Code pulls latest, branches, edits the real data file, runs
    `node build.js --check` then `node build.js`, commits source + generated
-   together, pushes the branch, and **opens a PR** — it does not merge.
+   together, pushes the branch, and **opens a PR** — it does not merge. Code is
+   the authority on de-duplication and place spelling: it reconciles the hand-off
+   against the real files, and `--check` fails the build on any slug-fork typo.
 4. **You review and merge.** The PR gets a Cloudflare Pages **preview URL** —
    check it and the diff, then merge. Production deploys on merge; check
    surflist.co after a minute.
