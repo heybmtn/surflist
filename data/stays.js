@@ -148,5 +148,14 @@ window.LISTINGS = [
     blurb: "Surf-and-yoga camp near El Medano and Adeje in south Tenerife, with daily lessons, breakfast, airport transfers and a sociable surf-house vibe.",
     image: "", verified: false,
     socials: {},
-    stayType: "Camp" }
+    stayType: "Camp" },
+
+  // ================= IRELAND =================
+  // ---- Bundoran (Co. Donegal) ----
+  { name: "TurfnSurf Lodge", country: "Ireland", region: "Donegal", town: "Bundoran",
+    url: "https://www.turfnsurftours.com",
+    blurb: "Family-run surf lodge and hostel in central Bundoran (since 2006) — en-suite and dorm rooms with breakfast, sea views and a shared kitchen, plus its own ISA-approved surf school, SUP and kayak tours.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/turfnsurf/" },
+    stayType: "Hostel" }
 ];

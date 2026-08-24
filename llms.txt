@@ -35,6 +35,16 @@
     - [Surfing in Capbreton](https://surflist.co/france/landes/capbreton/): 2 listings.
     - [Surfing in Hossegor](https://surflist.co/france/landes/hossegor/): 3 listings.
     - [Surfing in Seignosse](https://surflist.co/france/landes/seignosse/): 2 listings.
+- [Surfing in Ireland](https://surflist.co/ireland/): 20 listings across Clare, Donegal, Kerry, Sligo, Waterford.
+  - [Surfing in Clare](https://surflist.co/ireland/clare/): 6 listings.
+    - [Surfing in Lahinch](https://surflist.co/ireland/clare/lahinch/): 5 listings.
+  - [Surfing in Donegal](https://surflist.co/ireland/donegal/): 6 listings.
+    - [Surfing in Bundoran](https://surflist.co/ireland/donegal/bundoran/): 5 listings.
+  - [Surfing in Kerry](https://surflist.co/ireland/kerry/): 1 listings.
+  - [Surfing in Sligo](https://surflist.co/ireland/sligo/): 4 listings.
+    - [Surfing in Strandhill](https://surflist.co/ireland/sligo/strandhill/): 4 listings.
+  - [Surfing in Waterford](https://surflist.co/ireland/waterford/): 3 listings.
+    - [Surfing in Tramore](https://surflist.co/ireland/waterford/tramore/): 3 listings.
 - [Surfing in Portugal](https://surflist.co/portugal/): 56 listings across Algarve, Lisbon, Peniche, Porto, Silver Coast, Viana do Castelo.
   - [Surfing in Algarve](https://surflist.co/portugal/algarve/): 15 listings.
     - [Surfing in Arrifana](https://surflist.co/portugal/algarve/arrifana/): 2 listings.

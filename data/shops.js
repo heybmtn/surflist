@@ -253,5 +253,14 @@ window.LISTINGS = [
     blurb: "Surf shop in Playa del Ingles stocking only the original brands, with boards, gear and local spot advice for southern Gran Canaria.",
     image: "", verified: false,
     socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ================= IRELAND =================
+  // ---- Bundoran (Co. Donegal) ----
+  { name: "Surfworld", country: "Ireland", region: "Donegal", town: "Bundoran",
+    url: "https://www.surfworld.ie",
+    blurb: "Bundoran's Main Street institution (est. 1990, Fitzgerald family) and one of the best-known core surf shops in Ireland — boards, wetsuits, hire and lessons, with a second shop in Strandhill.",
+    image: "", verified: false,
+    socials: {},
     offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] }
 ];

@@ -78,6 +78,8 @@ const COUNTRIES = [
     intro: "Surf Spain — the powerful beach breaks and rivermouth points of the Atlantic north, and the year-round warmth of the Canary Islands, Europe's own Hawaii." },
   { name: "France", bucket: "Europe", flag: "fr",
     intro: "Surf France's southwest — the beach-break coast from the Gironde through the Landes to the Basque Country, home of Hossegor, Europe's surf capital." },
+  { name: "Ireland", bucket: "Europe", flag: "ie",
+    intro: "Ireland's Wild Atlantic Way delivers cold-water Atlantic surf down the west and south coasts — from the forgiving beach breaks of Donegal and Sligo to the punchier waves of Clare and Waterford. Consistent swell, dramatic scenery, 5/4 wetsuits year-round, and a famously warm welcome." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
