@@ -262,5 +262,41 @@ window.LISTINGS = [
     blurb: "Bundoran's Main Street institution (est. 1990, Fitzgerald family) and one of the best-known core surf shops in Ireland — boards, wetsuits, hire and lessons, with a second shop in Strandhill.",
     image: "", verified: false,
     socials: {},
-    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] }
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  // ================= INDONESIA =================
+  // ---- Canggu (Bali) ----
+  { name: "Boardriders Bali", country: "Indonesia", region: "Bali", town: "Canggu",
+    blurb: "One-stop Echo Beach surf shop stocking boards (Pyzel, DHD, JS, Hayden Shapes, Native), surfwear and hardware, plus rentals and custom orders.",
+    url: "https://boardridersbali.com/",
+    image: "", verified: true,
+    socials: { instagram: "https://www.instagram.com/boardridersbali/" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"],
+    streetAddress: "Jl. Batu Mejan (Echo Beach), Canggu, Kec. Kuta Utara, Badung, Bali",
+    lastVerified: "2026-08-24" },
+  { name: "BGS Bali", country: "Indonesia", region: "Bali", town: "Canggu",
+    url: "https://bgsbali.com/",
+    blurb: "Surf shop and coffee bar (since 2013) selling boards from Pyzel, Sharpeye and others alongside apparel and skate gear.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Apparel", "Accessories"] },
+  { name: "Onboard Store", country: "Indonesia", region: "Bali", town: "Canggu",
+    url: "https://www.onboardstore.id/",
+    blurb: "Surf-hardware retailer on Batu Mejan carrying Channel Islands, Christenson and other boards plus fins, leashes and pads.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Accessories"] },
+  // ---- Kuta (Bali) ----
+  { name: "Rip Curl Kuta Square", country: "Indonesia", region: "Bali", town: "Kuta",
+    url: "https://www.ripcurl.co.id/pages/store-locator",
+    blurb: "Flagship Rip Curl store at Kuta Square for wetsuits, boardshorts, swimwear and accessories.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Wetsuits", "Apparel", "Accessories"] },
+  // ---- Kuta Lombok (Lombok) ----
+  { name: "Rama Surf Lombok", country: "Indonesia", region: "Lombok", town: "Kuta Lombok",
+    url: "https://ramasurflombok.com/",
+    blurb: "Kuta Lombok surf shop for board rental, ding repair and boards, attached to a local surf school.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Board rental", "Ding repair", "Surfboards"] }
 ];

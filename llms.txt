@@ -35,6 +35,14 @@
     - [Surfing in Capbreton](https://surflist.co/france/landes/capbreton/): 2 listings.
     - [Surfing in Hossegor](https://surflist.co/france/landes/hossegor/): 3 listings.
     - [Surfing in Seignosse](https://surflist.co/france/landes/seignosse/): 2 listings.
+- [Surfing in Indonesia](https://surflist.co/indonesia/): 27 listings across Bali, Lombok.
+  - [Surfing in Bali](https://surflist.co/indonesia/bali/): 16 listings.
+    - [Surfing in Canggu](https://surflist.co/indonesia/bali/canggu/): 7 listings.
+    - [Surfing in Kuta](https://surflist.co/indonesia/bali/kuta/): 5 listings.
+    - [Surfing in Sanur](https://surflist.co/indonesia/bali/sanur/): 4 listings.
+  - [Surfing in Lombok](https://surflist.co/indonesia/lombok/): 11 listings.
+    - [Surfing in Kuta Lombok](https://surflist.co/indonesia/lombok/kuta-lombok/): 6 listings.
+    - [Surfing in Selong Belanak](https://surflist.co/indonesia/lombok/selong-belanak/): 5 listings.
 - [Surfing in Ireland](https://surflist.co/ireland/): 20 listings across Clare, Donegal, Kerry, Sligo, Waterford.
   - [Surfing in Clare](https://surflist.co/ireland/clare/): 6 listings.
     - [Surfing in Lahinch](https://surflist.co/ireland/clare/lahinch/): 5 listings.
@@ -107,6 +115,19 @@
 ## Verified surf schools
 
 - [Cornish Wave Surf School](https://surflist.co/surf-schools/cornish-wave-surf-school/): surf school in Newquay, Cornwall, England — Small-group surf coaching on Towan and Fistral from a friendly, long-running local school — plus coasteering and SUP.
+- [Dian Surf School Canggu Bali](https://surflist.co/surf-schools/dian-surf-school-canggu-bali/): surf school in Canggu, Bali, Indonesia — Long-running Batu Bolong beach school (since 2016) offering private and semi-private lessons for all levels.
+- [Nyangko Surf School](https://surflist.co/surf-schools/nyangko-surf-school/): surf school in Canggu, Bali, Indonesia — Local instructor-led school teaching all levels on Batu Bolong and Berawa beaches.
+- [Odysseys Surf School](https://surflist.co/surf-schools/odysseys-surf-school/): surf school in Kuta, Bali, Indonesia — Established Kuta Beach school (since 2003) at the Mercure arcade, with Australian-certified, English/Japanese-speaking instructors.
+- [Heartbeach Lombok Surf Academy](https://surflist.co/surf-schools/heartbeach-lombok-surf-academy/): surf school in Kuta Lombok, Lombok, Indonesia — Well-established Kuta Lombok academy running guided lessons to spots around the south coast, with boat transfers included.
+- [Aqia Surf](https://surflist.co/surf-schools/aqia-surf/): surf school in Selong Belanak, Lombok, Indonesia — Established Selong Belanak school and board-hire spot on the beach, with a restaurant and custom south-coast surf trips.
+
+## Verified surf shops
+
+- [Boardriders Bali](https://surflist.co/surf-shops/boardriders-bali/): surf shop in Canggu, Bali, Indonesia — One-stop Echo Beach surf shop stocking boards (Pyzel, DHD, JS, Hayden Shapes, Native), surfwear and hardware, plus rentals and custom orders.
+
+## Verified places to stay
+
+- [Kima Surf Canggu](https://surflist.co/surf-stays/kima-surf-canggu/): place to stay in Canggu, Bali, Indonesia — Surf, yoga and fitness resort ~300m from the beach, with included daily surf guiding, board rental, gym and pool.
 
 ## About
 

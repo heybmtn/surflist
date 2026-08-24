@@ -80,6 +80,8 @@ const COUNTRIES = [
     intro: "Surf France's southwest — the beach-break coast from the Gironde through the Landes to the Basque Country, home of Hossegor, Europe's surf capital." },
   { name: "Ireland", bucket: "Europe", flag: "ie",
     intro: "Ireland's Wild Atlantic Way delivers cold-water Atlantic surf down the west and south coasts — from the forgiving beach breaks of Donegal and Sligo to the punchier waves of Clare and Waterford. Consistent swell, dramatic scenery, 5/4 wetsuits year-round, and a famously warm welcome." },
+  { name: "Indonesia", bucket: "Worldwide", flag: "id",
+    intro: "One of the world's great surf nations — from Bali's beach breaks and reef points to Lombok's mellow bays and long sand-bottom beaches, with warm water and rideable waves year-round." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
