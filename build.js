@@ -415,7 +415,7 @@ function renderCard(d, cat, nameTag) {
   return '<li class="card' + (verified ? " is-verified" : "") + '" data-country="' + esc(d.country) + '" data-region="' + esc(d.region) + '"' + dataFacet + ">" +
     '<div class="card__media">' + media + badge + "</div>" +
     '<div class="card__body"><span class="card__place">' + esc(place) + "</span>" + nameHtml +
-    (d.blurb ? '<p class="card__blurb">' + esc(d.blurb) + "</p>" : "") +
+    (verified && d.blurb ? '<p class="card__blurb">' + esc(d.blurb) + "</p>" : "") +
     (tags ? '<div class="card__levels">' + tags + "</div>" : "") + foot + "</div></li>";
 }
 
