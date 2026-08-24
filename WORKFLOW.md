@@ -100,14 +100,18 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > on the true checkout — so a clean schema-based pass with a clear reconcile note
 > is always enough to proceed.
 >
-> **Verification standard (non-negotiable):** verify every business against its
-> official website before including it. Attach socials only where confirmed.
-> Default every entry to `verified: false`; only mark `verified: true` and add
-> the detail fields when you've fully checked it. Never invent a business or a
-> field. Flag thin spots honestly — if a town has fewer than 2 real listings, say
-> so rather than padding; if a "beach" folds into an existing town, note it
-> rather than creating a near-duplicate. If a destination isn't really wave-surf
-> (e.g. wind/kite only), say so and recommend skipping it.
+> **Research standard (non-negotiable):** confirm every business is real by
+> checking its official website before including it — but this confirmation is
+> *not* the same as the `verified` field. Attach socials only where confirmed.
+> **Every entry you output is `verified: false`, with no exceptions.** `verified`
+> is a paid/billing state the site owner controls — it is turned on only when a
+> business pays, never as a result of your research. Never set `verified: true`
+> and never add the paid-only detail fields (see schema); a hand-off that sets
+> `verified: true` is wrong. Never invent a business or a field. Flag thin spots
+> honestly — if a town has fewer than 2 real listings, say so rather than padding;
+> if a "beach" folds into an existing town, note it rather than creating a
+> near-duplicate. If a destination isn't really wave-surf (e.g. wind/kite only),
+> say so and recommend skipping it.
 >
 > **Output a hand-off block** (format below) that Claude Code can apply verbatim.
 > Give *additive entries* in the exact schema — never a whole replacement file,
@@ -117,9 +121,10 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > **Listing schema (authoritative — use these exact field names).**
 > Every entry, all categories, shares these fields: `name`, `country`, `region`,
 > `town`, `url` (official site), `blurb` (one honest sentence), `image` (use `""`),
-> `verified` (default `false`), `socials` (object; keys only where confirmed:
-> `instagram`, `facebook`, `tiktok`, `youtube`, `x`; `{}` if none). Plus exactly
-> one category-specific field:
+> `verified` (**always `false` in a research hand-off** — it's a paid state the
+> owner sets later, not a research outcome), `socials` (object; keys only where
+> confirmed: `instagram`, `facebook`, `tiktok`, `youtube`, `x`; `{}` if none).
+> Plus exactly one category-specific field:
 >
 > - **schools** (`data/schools.js`): `levels` — array of `Beginner` /
 >   `Intermediate` / `Advanced` / `Kids`.
@@ -130,11 +135,13 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > - **services** (`data/services.js`): `serviceType` — a single string, e.g.
 >   `Board repair`.
 >
-> A `verified: true` entry may also add any of: `streetAddress`, `phone`, `email`,
+> The paid-only fields below are added **later, when a business pays and the owner
+> sets `verified: true`** — never in a research hand-off. For reference, a
+> `verified: true` entry may also carry any of: `streetAddress`, `phone`, `email`,
 > `priceRange`, `groupSize`, `minAge`, `equipment`, `description` (`\n\n` between
 > paragraphs), and the list fields `lessons`, `pricing`, `surfSpots`, `spotNotes`,
 > `amenities`, `accreditations`, `faq` (array of `{ q, a }`), plus `lastVerified`
-> (`YYYY-MM-DD`). Include only fields you have verified; omit the rest.
+> (`YYYY-MM-DD`).
 >
 > `COUNTRIES` entry (for a new country): `{ name, bucket, flag, intro }` — `bucket`
 > is `United Kingdom` / `Europe` / `Worldwide`; `flag` is a flag-icons code
@@ -183,7 +190,8 @@ For a new country, the hand-off also states the `COUNTRIES` entry
    `New country: Ireland — schools in Bundoran and Lahinch`.) Chat fetches the
    current data file, verifies each business against its official site, and ends
    with a hand-off block.
-2. **Review** the hand-off — real, verified businesses in the right shape.
+2. **Review** the hand-off — real, confirmed businesses in the right shape, all
+   as free (`verified: false`) listings.
 3. **In Claude Code:** paste the hand-off (or say "apply the latest Surflist
    hand-off: …"). Code pulls latest, branches, edits the real data file, runs
    `node build.js --check` then `node build.js`, commits source + generated

@@ -105,11 +105,14 @@ Then set `flag: "<code>"` in the `COUNTRIES` entry and **commit the SVG**
 (`git add -A` covers it). UK nations use `gb-eng` / `gb-sct` / `gb-wls`.
 `/flags/` survives the build.
 
-## Verification standard
+## `verified` is a paid state — never set it from research
 
-Enforced in chat, but respect it here: entries default to `verified: false`;
-`verified: true` only when the hand-off includes the detail fields. Never attach
-socials or details the hand-off didn't provide.
+Every listing from a research hand-off is `verified: false`, always. `verified:
+true` is a paid/billing state the site owner controls: set it only when the human
+explicitly tells you a specific business has paid (and then add the paid-only
+detail fields). A research or new-listings hand-off must never arrive with
+`verified: true` — if one does, treat it as an error and apply the entry as
+`verified: false`. Never attach socials or details the hand-off didn't provide.
 
 ## Commit message convention
 

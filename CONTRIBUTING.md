@@ -120,7 +120,9 @@ Field by field:
   true; don't hype.
 - **`image`** — leave `""` for an automatic gradient placeholder. Only put a URL
   here if you have a real, usable image.
-- **`verified`** — `false` for free listings (see Tier 2 for `true`).
+- **`verified`** — always `false` for research and free listings. `true` is a
+  **paid state** the site owner sets when a business pays (see Tier 2), never a
+  quality or research judgment.
 - **`socials`** — only handles you've **confirmed** are theirs. Valid keys:
   `instagram`, `facebook`, `tiktok`, `youtube`, `x`. Omit any you can't verify;
   `{}` is fine.
@@ -135,12 +137,15 @@ Special-field values in use:
 - stays `stayType`: `Camp`, `Hostel`, `Eco-pod`, `Campervan`
 - services `serviceType`: e.g. `Board repair`
 
-### Tier 2 — a verified listing (gets its own page)
+### Tier 2 — a verified (paid) listing (gets its own page)
 
-Set `verified: true` and the business earns its **own detail page** (e.g.
+`verified: true` is the **paid upgrade**: the site owner sets it when a business
+pays, and the business then earns its **own detail page** (e.g.
 `/surf-schools/cornish-wave-surf-school/`) with rich schema markup for SEO and
-LLMs. Do this for your best, fully-checked businesses. All the extra fields are
-optional — fill what you can verify, leave out the rest. A real one to copy from:
+LLMs. It is never set by research or as a reward for being well-checked — a new
+listing, however thoroughly confirmed, always starts free (`verified: false`).
+When you do upgrade a paid listing, the extra fields below are all optional; fill
+what's accurate and leave out the rest. A real one to copy from:
 
 ```js
 { name: "Cornish Wave Surf School", country: "England", region: "Cornwall", town: "Newquay",
@@ -180,12 +185,14 @@ optional — fill what you can verify, leave out the rest. A real one to copy fr
 
 This is what keeps Surflist trustworthy:
 
-- **Verify against the official website before adding.** Never invent a business
-  or guess details. Can't confirm it operates? Don't list it.
+- **Confirm the business is real before adding**, by checking its official
+  website — but this is *not* the `verified` field. Never invent a business or
+  guess details. Can't confirm it operates? Don't list it.
 - **Socials only where confirmed.** Attach a profile only after checking it's
   really theirs.
-- **Default to `verified: false`.** Only `true` after the full check and detail
-  fields are done.
+- **Every listing starts `verified: false`.** `verified: true` is a paid state
+  the owner sets when a business pays — never set it as a result of research,
+  confirmation, or how complete the details are.
 - **Flag thin spots honestly — don't pad.** If a town has only one real school it
   won't meet the hub threshold, and that's fine. Never invent a second listing to
   force a hub. If a "beach" is really part of an existing town, fold it into that
