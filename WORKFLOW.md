@@ -89,16 +89,16 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > against the listing schema, facet fields and existing country/region/town
 > spellings. Get those two ways: (a) if the user pastes a data file's contents or
 > a working raw URL, use it as the live source for spelling and de-duplication;
-> (b) otherwise curate against the schema in CONTRIBUTING.md and the conventions
+> (b) otherwise curate against the Listing schema below and the conventions
 > you can see, and state in the hand-off that Claude Code must reconcile spelling
 > and check for duplicates against the real files at apply time. You can only
 > fetch URLs actually pasted into the chat — you cannot reach arbitrary repo files
-> by editing a path, and a private repo's files aren't fetchable at all. Never
-> guess field names for shops/stays/services; if you can't see that file, say so
-> and let Code confirm against CONTRIBUTING.md. The real guardrail against
-> duplicate or forked places is Claude Code running `node build.js --check` on the
-> true checkout — so a clean schema-based pass with a clear reconcile note is
-> always enough to proceed.
+> by editing a path, and a private repo's files aren't fetchable at all. Use the
+> **Listing schema** below as your authoritative reference for field names — never
+> guess a field or model one category's shape on another's. The real guardrail
+> against duplicate or forked places is Claude Code running `node build.js --check`
+> on the true checkout — so a clean schema-based pass with a clear reconcile note
+> is always enough to proceed.
 >
 > **Verification standard (non-negotiable):** verify every business against its
 > official website before including it. Attach socials only where confirmed.
@@ -114,8 +114,31 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > and never a full `build.js`. For structural changes (a new feature, a registry
 > or CSS edit), describe the change precisely instead.
 >
-> The listing schema, facet fields, thresholds, registries and flag workflow are
-> in the repo's CONTRIBUTING.md — follow it as the source of truth for shape.
+> **Listing schema (authoritative — use these exact field names).**
+> Every entry, all categories, shares these fields: `name`, `country`, `region`,
+> `town`, `url` (official site), `blurb` (one honest sentence), `image` (use `""`),
+> `verified` (default `false`), `socials` (object; keys only where confirmed:
+> `instagram`, `facebook`, `tiktok`, `youtube`, `x`; `{}` if none). Plus exactly
+> one category-specific field:
+>
+> - **schools** (`data/schools.js`): `levels` — array of `Beginner` /
+>   `Intermediate` / `Advanced` / `Kids`.
+> - **shops** (`data/shops.js`): `offerings` — array of e.g. `Surfboards` /
+>   `Wetsuits` / `Apparel` / `Accessories` / `Board rental` / `Ding repair`.
+> - **stays** (`data/stays.js`): `stayType` — a single string, e.g. `Camp` /
+>   `Hostel` / `Eco-pod` / `Campervan`.
+> - **services** (`data/services.js`): `serviceType` — a single string, e.g.
+>   `Board repair`.
+>
+> A `verified: true` entry may also add any of: `streetAddress`, `phone`, `email`,
+> `priceRange`, `groupSize`, `minAge`, `equipment`, `description` (`\n\n` between
+> paragraphs), and the list fields `lessons`, `pricing`, `surfSpots`, `spotNotes`,
+> `amenities`, `accreditations`, `faq` (array of `{ q, a }`), plus `lastVerified`
+> (`YYYY-MM-DD`). Include only fields you have verified; omit the rest.
+>
+> `COUNTRIES` entry (for a new country): `{ name, bucket, flag, intro }` — `bucket`
+> is `United Kingdom` / `Europe` / `Worldwide`; `flag` is a flag-icons code
+> (`ie`, `id`, `pt`…) without `.svg`.
 
 ---
 
