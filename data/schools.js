@@ -5,7 +5,7 @@ window.LISTINGS = [
   { name: "Cornish Wave Surf School", country: "England", region: "Cornwall", town: "Newquay",
     url: "https://cornishwave.com",
     blurb: "Small-group surf coaching on Towan and Fistral from a friendly, long-running local school — plus coasteering and SUP.",
-    image: "", verified: true,
+    image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/cornishwave/", facebook: "https://www.facebook.com/cornishwave", youtube: "https://www.youtube.com/c/Cornishwave" },
     levels: ["Beginner", "Intermediate", "Kids"],
     streetAddress: "40 Fore Street, TR7 1LP",
