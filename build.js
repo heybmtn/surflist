@@ -334,26 +334,17 @@ function townContent(c, r, t) { return TOWN_CONTENT[cSlug(c) + "/" + rSlug(r) + 
 function townsWithHub(c, r) { return townsIn(c, r).filter(function (t) { return townHubExists(c, r, t); }); }
 
 /* ---------- shared chrome ---------- */
-function nav() {
-  return '<nav class="nav" aria-label="Primary"><a href="/#destinations">Destinations</a>' +
-    CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
-    '<a href="/marketplace/">Marketplace</a>' +
-    "</nav>";
-}
 function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
-    '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Menu">' +
-    '<span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span></button>' +
-    '<div class="nav-panel" id="primary-nav">' + nav() +
-    '<a class="btn header__cta" href="/list-your-business/">+ Add Your Business</a></div></div></header>\n';
+    '<nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav>' +
+    "</div></header>\n";
 }
-const NAV_JS = "(function(){var b=document.querySelector('.nav-toggle'),n=document.getElementById('primary-nav');if(!b||!n)return;function close(){b.setAttribute('aria-expanded','false');n.classList.remove('is-open');}function open(){b.setAttribute('aria-expanded','true');n.classList.add('is-open');}b.addEventListener('click',function(){n.classList.contains('is-open')?close():open();});document.addEventListener('click',function(e){if(n.classList.contains('is-open')&&!n.contains(e.target)&&!b.contains(e.target))close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});})();";
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  "</div></footer>\n" +
-  "<script>" + NAV_JS + "</script>\n";
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a></nav></div>' +
+  "</div></footer>\n";
 
 function head(o) {
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
