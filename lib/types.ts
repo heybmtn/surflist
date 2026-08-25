@@ -75,6 +75,7 @@ export interface ListingRow {
   seller_name: string;
   seller_email: string;
   seller_phone: string | null;
+  external_url: string | null;
   tier: string;
   status: string;
   promoted_until: string | null;

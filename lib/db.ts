@@ -16,9 +16,9 @@ export async function insertListing(db: D1Database, row: ListingRow): Promise<vo
     .prepare(
       `INSERT INTO marketplace_listings
         (id, title, slug, description, category, price, currency, location, region_slug,
-         images, seller_name, seller_email, seller_phone, tier, status, promoted_until,
+         images, seller_name, seller_email, seller_phone, external_url, tier, status, promoted_until,
          created_at, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     )
     .bind(
       row.id,
@@ -34,6 +34,7 @@ export async function insertListing(db: D1Database, row: ListingRow): Promise<vo
       row.seller_name,
       row.seller_email,
       row.seller_phone,
+      row.external_url,
       row.tier,
       row.status,
       row.promoted_until,

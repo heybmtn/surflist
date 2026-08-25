@@ -59,9 +59,20 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, n
     '<div id="marketplace-detail-root" data-slug="' + escapeHtml(slug) + '">' +
     '<section class="gallery">' +
     (images.length
-      ? images.map((src) => '<div class="gallery__thumb"><img src="' + escapeHtml(src) + '" alt="" loading="lazy" /></div>').join("")
+      ? images
+          .map(
+            (src, i) =>
+              '<button type="button" class="gallery__thumb" data-full="' + escapeHtml(src) +
+              '" aria-label="See full size image ' + (i + 1) + " of " + images.length + '">' +
+              '<img src="' + escapeHtml(src) + '" alt="" loading="lazy" /></button>'
+          )
+          .join("")
       : '<div class="gallery__thumb gallery__thumb--empty">No photos</div>') +
     "</section>" +
+    '<dialog id="marketplace-lightbox" class="lightbox">' +
+    '<button type="button" class="lightbox__close" aria-label="Close">&times;</button>' +
+    '<img id="marketplace-lightbox-img" src="" alt="" />' +
+    "</dialog>" +
     '<div class="detail__facts">' +
     (row.status === "sold" ? '<p class="badge-featured">Sold</p>' : "") +
     (row.tier === "promoted" ? '<p class="badge-featured">Featured</p>' : "") +
@@ -69,15 +80,22 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, n
     '<p class="price">' + priceDisplay + "</p>" +
     "<p>" + escapeHtml(row.location) + " &middot; " + escapeHtml(row.category) + "</p>" +
     "<p>Posted " + escapeHtml(postedDate) + "</p>" +
+    (row.external_url
+      ? '<a class="btn detail__buy-link" href="' + escapeHtml(row.external_url) +
+        '" target="_blank" rel="noopener nofollow">Buy directly &rarr;</a>'
+      : "") +
     "<p>" + escapeHtml(row.description).replace(/\n/g, "<br>") + "</p>" +
     (row.status === "sold"
       ? "<p><em>This item has been marked as sold.</em></p>"
-      : '<form id="marketplace-inquiry-form" class="form-field">' +
+      : '<h2 class="detail__contact-heading">Contact the seller</h2>' +
+        '<p class="detail__contact-note">Your message goes straight to ' + escapeHtml(row.seller_name) +
+        " — Surflist doesn't manage this listing or handle payment.</p>" +
+        '<form id="marketplace-inquiry-form" class="form-field">' +
         '<div class="form-row"><label for="buyer_name">Your name</label><input id="buyer_name" name="buyer_name" required /></div>' +
         '<div class="form-row"><label for="buyer_email">Your email</label><input id="buyer_email" name="buyer_email" type="email" required /></div>' +
         '<div class="form-row"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>' +
         '<div class="form-actions"><button type="submit" class="btn">Send Inquiry</button></div>' +
-        '<div class="form-success" hidden>Your message was sent directly to the seller.</div>' +
+        '<div class="form-success" hidden>Your message was sent directly to ' + escapeHtml(row.seller_name) + ".</div>" +
         "</form>") +
     "</div>" +
     "</div>" +

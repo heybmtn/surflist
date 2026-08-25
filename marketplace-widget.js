@@ -224,9 +224,31 @@
   }
 
   /* ---------- /marketplace/[slug] detail page ---------- */
+  function initLightbox(root) {
+    var dialog = document.getElementById("marketplace-lightbox");
+    var img = document.getElementById("marketplace-lightbox-img");
+    if (!dialog || !img) return;
+
+    Array.prototype.forEach.call(root.querySelectorAll(".gallery__thumb[data-full]"), function (thumb) {
+      thumb.addEventListener("click", function () {
+        img.src = thumb.getAttribute("data-full");
+        img.alt = thumb.getAttribute("aria-label") || "";
+        dialog.showModal();
+      });
+    });
+
+    var closeBtn = dialog.querySelector(".lightbox__close");
+    if (closeBtn) closeBtn.addEventListener("click", function () { dialog.close(); });
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+
   function initDetailPage() {
     var root = document.getElementById("marketplace-detail-root");
     if (!root) return;
+
+    initLightbox(root);
 
     var form = document.getElementById("marketplace-inquiry-form");
     if (!form) return;

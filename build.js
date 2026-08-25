@@ -1146,6 +1146,9 @@ function renderMarketplaceSell() {
   '<div class="form-row"><label for="mp-location">Location</label><input id="mp-location" name="location" maxlength="140" required></div>' +
   '<div class="form-row"><label for="mp-region">Region / directory tag</label><select id="mp-region" name="region_slug"><option value="">— none —</option>' +
   marketplaceRegionOptions() + "</select></div>" +
+  '<div class="form-row"><label for="mp-external-url">Link to buy directly (optional)</label>' +
+  '<input id="mp-external-url" name="external_url" type="url" maxlength="500" placeholder="https://www.ebay.co.uk/itm/...">' +
+  '<p class="form-hint">Already listed on eBay, Depop, or elsewhere? Buyers can click straight through.</p></div>' +
   '<div class="form-row"><label for="mp-photos">Photos (up to 4)</label><input id="mp-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple></div>' +
   '<div class="form-row"><label for="mp-seller-name">Your name</label><input id="mp-seller-name" name="seller_name" maxlength="140" required></div>' +
   '<div class="form-row"><label for="mp-seller-email">Your email</label><input id="mp-seller-email" name="seller_email" type="email" required></div>' +
