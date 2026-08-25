@@ -24,7 +24,8 @@ export interface ShellOptions {
 
 const HEADER =
   '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
-  '<a class="btn header__cta" href="/list-your-business/">+ Add Your Business</a></div></header>\n';
+  '<nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav>' +
+  "</div></header>\n";
 
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
