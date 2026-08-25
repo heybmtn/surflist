@@ -20,21 +20,6 @@
       --shadow-sm: 0 14px 28px -20px rgba(19,48,44,.45);
       --shadow-md: 0 14px 28px -16px rgba(19,48,44,.35);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #0f1a18;
-        --ink: #eef3f1;
-        --muted: #9db0ab;
-        --line: #253431;
-        --accent: #2fae9f;
-        --accent-ink: #06211d;
-        --dot: #f4b25c;
-        --surface: #16211f;
-        --shadow-xs: 0 2px 6px rgba(0,0,0,.45);
-        --shadow-sm: 0 14px 28px -20px rgba(0,0,0,.7);
-        --shadow-md: 0 14px 28px -16px rgba(0,0,0,.6);
-      }
-    }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; height: 100%; }
     body {
@@ -366,7 +351,6 @@
       border: 1px solid color-mix(in srgb, var(--dot) 60%, var(--surface));
     }
     .demo-banner a { color: var(--accent); font-weight: 600; }
-    @media (prefers-color-scheme: dark) { .demo-banner { color: var(--ink); } }
 
     /* Google Business Profile icon shares the existing .soc styling (incl. 44px mobile tap target) */
     .soc--google:hover { color: var(--accent); }
@@ -484,7 +468,6 @@
       background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
     .form-success a { color: var(--accent); font-weight: 600; }
     .form-error { color: #9a2b2b; font-size: 0.9rem; margin: 0; }
-    @media (prefers-color-scheme: dark) { .form-error { color: #e08585; } }
 
     /* free/promoted tier radio cards on the sell form */
     .tier-options { display: flex; flex-direction: column; gap: 0.7rem; }
