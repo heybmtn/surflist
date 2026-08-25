@@ -571,6 +571,7 @@ function renderRegionHub(country, region) {
   if (hubTowns.length) jump.push('<a href="#towns">Towns</a>');
   sectionCats.forEach(function (cat) { jump.push('<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"); });
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
+  var marketplaceSection = marketplaceWidgetSection(region);
 
   return head({
     title: "Surf Schools, Shops & Stays in " + region + " | surflist",
@@ -581,7 +582,20 @@ function renderRegionHub(country, region) {
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(region) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
-  townSection + "\n" + sections + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+  townSection + "\n" + sections + "\n" + marketplaceSection + "\n</main>\n" + FOOTER +
+  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+}
+
+/* ---------- marketplace cross-promotion widget (client-fetched; see marketplace-widget.js) ----------
+   Region-scoped: cross-promotion filters by region_slug, not town, so a town
+   hub's widget shows the same region-wide listings as its region hub — just
+   labelled with the town's name for relevance. */
+function marketplaceWidgetSection(region, town) {
+  var slug = rSlug(region);
+  var label = town || region;
+  return '<section class="hub-cat" id="marketplace"><div class="marketplace-widget" id="marketplace-widget" ' +
+    'data-region-slug="' + esc(slug) + '" data-title="Local Gear for Sale in ' + esc(label) + '" ' +
+    'data-sell-region="' + esc(slug) + '"></div></section>';
 }
 
 /* ---------- town hub (the core asset) ---------- */
@@ -676,7 +690,9 @@ function renderTownHub(country, region, town) {
   if (Array.isArray(ed.beaches) && ed.beaches.length) jump.push('<a href="#beaches">Beaches</a>');
   if (ed.whenToSurf) jump.push('<a href="#when">When to surf</a>');
   if (Array.isArray(ed.faq) && ed.faq.length) jump.push('<a href="#faq">FAQ</a>');
+  jump.push('<a href="#marketplace">Gear for sale</a>');
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
+  var marketplaceSection = marketplaceWidgetSection(region, town);
 
   return head({
     title: "Surf Schools, Shops & Stays in " + town + ", " + region + " | surflist",
@@ -688,7 +704,8 @@ function renderTownHub(country, region, town) {
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
   renderTownOverview(country, region, town, ed) + "\n" +
-  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER + "</body>\n</html>\n";
+  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n" + marketplaceSection + "\n</main>\n" + FOOTER +
+  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
 }
 
 /* ---------- town-category page ---------- */
@@ -719,8 +736,10 @@ function renderTownCategory(country, region, town, cat) {
   '<div class="layout">' + renderSidebar(cat, { items: items, scoped: true }) +
   '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
   n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
-  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div></main>\n" +
-  FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
+  '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div>" +
+  marketplaceWidgetSection(region, town) +
+  "</main>\n" + FOOTER + "<script>" + FILTER_JS + "</script>\n" +
+  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
 }
 
 /* ---------- browse-all category page (/surf-schools/) ---------- */
@@ -860,6 +879,10 @@ function renderDetail(d, cat, slug, opts) {
   var demoBanner = opts.demo
     ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="/list-your-business/">Claim your verified listing &rarr;</a></div>'
     : "";
+  var gearCallout = (!opts.demo && d.region)
+    ? '<div class="gear-callout">Looking for gear? <a href="/marketplace/?region_slug=' + esc(rSlug(d.region)) +
+      '">Check out recent surfboard &amp; gear listings near ' + esc(d.town || d.region) + ".</a></div>"
+    : "";
 
   // link "back" to the business's town hub when it exists, else its category page
   var hasTownHub = !opts.demo && townHubExists(d.country, d.region, d.town);
@@ -891,7 +914,7 @@ function renderDetail(d, cat, slug, opts) {
   (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
   (tags ? '<div class="tags detail__levels">' + tags + "</div>" : "") +
   sections + "</div>\n" +
-  '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + "</aside>\n" +
+  '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + gearCallout + "</aside>\n" +
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
@@ -1065,6 +1088,82 @@ function renderListYourBusiness() {
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+/* ---------- marketplace: index + sell (data lives in D1, fetched client-side by
+   marketplace-widget.js; these are just static shells, same as every other page) ---------- */
+function marketplaceRegionOptions() {
+  return countries().map(function (c) {
+    var regions = regionsIn(c);
+    if (!regions.length) return "";
+    return '<optgroup label="' + esc(c) + '">' +
+      regions.map(function (r) { return '<option value="' + esc(rSlug(r)) + '">' + esc(r) + "</option>"; }).join("") +
+      "</optgroup>";
+  }).join("");
+}
+function renderMarketplaceIndex() {
+  var pageUrl = SITE + "/marketplace/";
+  var trail = [{ name: "Home", href: "/" }, { name: "Marketplace" }];
+  return head({
+    title: "Marketplace — Buy & Sell Surf Gear | surflist",
+    desc: "Buy and sell secondhand surfboards, wetsuits and surf gear directly with other surfers on surflist.",
+    canonical: pageUrl,
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap" id="marketplace-index-root">' + crumbs(trail) +
+  '<section class="hero"><h1>Surflist Marketplace</h1>' +
+  "<p>Buy and sell secondhand surfboards, wetsuits and gear directly with other surfers — no middleman, straight to your inbox.</p>" +
+  '<a class="btn" href="/marketplace/sell/">+ Sell your gear</a></section>\n' +
+  '<div class="marketplace-filterbar">' +
+  '<div class="chip-nav" id="marketplace-category-tabs">' +
+  '<a href="#" class="is-active" data-value="">All</a>' +
+  '<a href="#" data-value="surfboards">Surfboards</a>' +
+  '<a href="#" data-value="wetsuits">Wetsuits</a>' +
+  '<a href="#" data-value="accessories">Accessories</a>' +
+  '<a href="#" data-value="other">Other</a>' +
+  "</div>" +
+  '<select id="marketplace-region-select" class="search__input" aria-label="Filter by region"><option value="">All regions</option>' +
+  marketplaceRegionOptions() + "</select>" +
+  '<input id="marketplace-search-input" class="search__input" type="search" placeholder="Search listings…" aria-label="Search listings" />' +
+  "</div>\n" +
+  '<ul class="grid" id="marketplace-grid"></ul>' +
+  '<p id="marketplace-empty" hidden>No listings match your filters yet — <a href="/marketplace/sell/">be the first to list something</a>.</p>' +
+  "</main>\n" + FOOTER + '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+}
+function renderMarketplaceSell() {
+  var pageUrl = SITE + "/marketplace/sell/";
+  var trail = [{ name: "Home", href: "/" }, { name: "Marketplace", href: "/marketplace/" }, { name: "Sell" }];
+  return head({
+    title: "Sell Your Surf Gear — surflist Marketplace",
+    desc: "List a surfboard, wetsuit or other surf gear for sale on surflist. Free listings, or get featured for £5/30 days.",
+    canonical: pageUrl,
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<section class="hero"><h1>Sell your gear</h1><p>List a surfboard, wetsuit or other gear for sale. Buyers message you directly — no account needed.</p></section>\n' +
+  '<form id="marketplace-sell-form" class="form-field">' +
+  '<div class="form-row"><label for="mp-title">Title</label><input id="mp-title" name="title" maxlength="140" required></div>' +
+  '<div class="form-row"><label for="mp-category">Category</label><select id="mp-category" name="category" required>' +
+  '<option value="surfboards">Surfboards</option><option value="wetsuits">Wetsuits</option>' +
+  '<option value="accessories">Accessories</option><option value="other">Other</option></select></div>' +
+  '<div class="form-row"><label for="mp-price">Price (£)</label><input id="mp-price" name="price" type="number" min="0.50" step="0.01" required></div>' +
+  '<div class="form-row"><label for="mp-description">Description</label><textarea id="mp-description" name="description" required></textarea></div>' +
+  '<div class="form-row"><label for="mp-location">Location</label><input id="mp-location" name="location" maxlength="140" required></div>' +
+  '<div class="form-row"><label for="mp-region">Region / directory tag</label><select id="mp-region" name="region_slug"><option value="">— none —</option>' +
+  marketplaceRegionOptions() + "</select></div>" +
+  '<div class="form-row"><label for="mp-photos">Photos (up to 4)</label><input id="mp-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple></div>' +
+  '<div class="form-row"><label for="mp-seller-name">Your name</label><input id="mp-seller-name" name="seller_name" maxlength="140" required></div>' +
+  '<div class="form-row"><label for="mp-seller-email">Your email</label><input id="mp-seller-email" name="seller_email" type="email" required></div>' +
+  '<div class="form-row"><label for="mp-seller-phone">Phone (optional)</label><input id="mp-seller-phone" name="seller_phone"></div>' +
+  '<div class="tier-options">' +
+  '<label class="tier-option"><input type="radio" name="tier" value="free" checked><span><strong>Free listing</strong> — standard ranking, basic visibility</span></label>' +
+  '<label class="tier-option is-featured"><input type="radio" name="tier" value="promoted"><span><span class="badge-featured">Featured</span> <strong>Promoted listing — £5 for 30 days</strong> — pinned to the top of category &amp; region pages</span></label>' +
+  "</div>" +
+  '<div class="form-actions"><button type="submit" class="btn">List it</button></div>' +
+  '<p class="form-error" id="marketplace-sell-error" hidden></p>' +
+  "</form>" +
+  '<div class="form-success" hidden></div>' +
+  "</main>\n" + FOOTER + '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+}
+
 /* ---------- robots.txt ---------- */
 const SEARCH_CRAWLERS = ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot"];
 const AI_CRAWLERS = [
@@ -1206,6 +1305,11 @@ fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
 
 writePage("list-your-business", renderListYourBusiness());
 urls.push(SITE + "/list-your-business/");
+
+writePage("marketplace", renderMarketplaceIndex());
+urls.push(SITE + "/marketplace/");
+writePage("marketplace/sell", renderMarketplaceSell());
+urls.push(SITE + "/marketplace/sell/");
 
 // browse-all category pages + verified business pages (flat, canonical)
 CATEGORIES.forEach(function (cat) {

@@ -375,3 +375,75 @@
       padding: 0.4em 1.1em; transition: border-color .12s, background .12s;
     }
     .chip-nav a:hover { border-color: var(--accent); }
+
+    /* ===== MARKETPLACE ===== */
+    /* "Featured" badge — same visual recipe as .badge-verified, distinct copy/accent so the two are never confused */
+    .badge-featured {
+      display: inline-flex; align-items: center; gap: 0.34em;
+      font-size: 0.68rem; letter-spacing: 0.01em; font-weight: 700;
+      color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 88%, #000);
+      border: 1px solid var(--accent);
+      padding: 0.3em 0.62em; border-radius: var(--radius);
+    }
+    .card__media .badge-featured { position: absolute; top: 0.6rem; left: 0.6rem; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+    .card.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+    .card__media-placeholder { width: 100%; height: 100%; background: var(--line); }
+    .card__price { font-weight: 700; color: var(--ink); margin: 0.1rem 0 0; }
+
+    /* filter bar on /marketplace/ */
+    .marketplace-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin: 1.6rem 0; }
+    .marketplace-filterbar .chip-nav a.is-active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .marketplace-filterbar select, .marketplace-filterbar input { max-width: 260px; }
+
+    /* CTA card injected by marketplace-widget.js when a region has <2 listings */
+    .widget-cta-card {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 0.7rem;
+      background: #fffdf8; border: 1px dashed var(--line); border-radius: 14px;
+      padding: 1.4rem; grid-column: 1 / -1;
+    }
+    .widget-cta-card p { margin: 0; color: var(--muted); }
+
+    /* first real <form> in the codebase: generic layout primitives, borrowing .search__input's look */
+    .form-field { display: flex; flex-direction: column; gap: 1rem; max-width: 560px; }
+    .form-row { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-row label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .form-row input, .form-row select, .form-row textarea {
+      font: inherit; font-size: 1rem; color: var(--ink);
+      padding: 0.75em 1em; border-radius: 10px;
+      border: 1px solid var(--line); background: #fffdf8;
+      transition: border-color .12s, box-shadow .12s;
+    }
+    .form-row textarea { min-height: 8rem; resize: vertical; }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+    .form-actions { margin-top: 0.2rem; }
+    .form-success { margin-top: 1rem; padding: 0.9rem 1.1rem; border-radius: 12px; color: var(--ink);
+      background: color-mix(in srgb, var(--accent) 12%, #fff); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
+    .form-success a { color: var(--accent); font-weight: 600; }
+    .form-error { color: #9a2b2b; font-size: 0.9rem; margin: 0; }
+
+    /* free/promoted tier radio cards on the sell form */
+    .tier-options { display: flex; flex-direction: column; gap: 0.7rem; }
+    .tier-option {
+      display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer;
+      border: 1px solid var(--line); border-radius: 12px; padding: 0.9rem 1rem; background: #fffdf8;
+    }
+    .tier-option input { margin-top: 0.2rem; }
+    .tier-option.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, #fff); }
+    .tier-option .badge-featured { margin-right: 0.4em; }
+
+    /* "Looking for gear?" callout on verified business detail pages — lighter-weight demo-banner */
+    .gear-callout {
+      margin-top: 1rem; padding: 0.7rem 0.9rem; font-size: 0.88rem; line-height: 1.45;
+      color: var(--muted); border-radius: 10px; background: color-mix(in srgb, var(--accent) 7%, #fff);
+      border: 1px solid var(--line);
+    }
+    .gear-callout a { color: var(--accent); font-weight: 600; }
+
+    /* /marketplace/[slug] image gallery */
+    .gallery { list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; }
+    .gallery__thumb { aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: var(--line); }
+    .gallery__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery__thumb--empty { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem; }
+    .detail__facts .price { font-size: 1.4rem; font-weight: 700; margin: 0.3rem 0; }
