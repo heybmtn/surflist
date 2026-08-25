@@ -56,6 +56,7 @@ export interface EventContext<E> {
   env: E;
   params: Record<string, string | string[]>;
   waitUntil(promise: Promise<unknown>): void;
+  next(): Promise<Response>;
 }
 
 export type PagesFunction<E = Env> = (context: EventContext<E>) => Response | Promise<Response>;
