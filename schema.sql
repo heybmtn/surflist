@@ -27,12 +27,22 @@ CREATE TABLE IF NOT EXISTS marketplace_listings (
   seller_name    TEXT NOT NULL,
   seller_email   TEXT NOT NULL,
   seller_phone   TEXT,
+  external_url   TEXT,
   tier           TEXT NOT NULL DEFAULT 'free' CHECK (tier IN ('free', 'promoted')),
   status         TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'pending_payment', 'sold', 'expired')),
   promoted_until TEXT,
   created_at     TEXT NOT NULL,
   updated_at     TEXT NOT NULL
 );
+
+-- external_url (optional link to an existing listing elsewhere, e.g. eBay/Depop)
+-- was added after the table above first shipped. On a database created before
+-- this column existed, run this once against the LIVE D1 database (schema.sql
+-- itself is never auto-applied — see the file header):
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "ALTER TABLE marketplace_listings ADD COLUMN IF NOT EXISTS external_url TEXT;"
+-- A fresh database created from this file already has the column via the
+-- CREATE TABLE above, so this statement is a no-op there.
 
 CREATE INDEX IF NOT EXISTS idx_listings_status_region   ON marketplace_listings(status, region_slug);
 CREATE INDEX IF NOT EXISTS idx_listings_status_category ON marketplace_listings(status, category);

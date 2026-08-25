@@ -12,6 +12,7 @@ import {
   isValidCategory,
   isValidEmail,
   isValidImageFile,
+  isValidUrl,
   parsePricePence,
   requireNonEmpty,
 } from "../../../lib/validate";
@@ -48,6 +49,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const sellerEmail = String(form.get("seller_email") ?? "").trim();
   const sellerPhoneRaw = form.get("seller_phone");
   const sellerPhone = sellerPhoneRaw ? requireNonEmpty(sellerPhoneRaw, 40) : null;
+  const externalUrlRaw = String(form.get("external_url") ?? "").trim();
+  const externalUrl = externalUrlRaw ? externalUrlRaw : null;
   const tier = String(form.get("tier") ?? "free") === "promoted" ? "promoted" : "free";
   const pricePence = parsePricePence(String(form.get("price") ?? ""));
 
@@ -59,6 +62,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!sellerName) fieldErrors.seller_name = "Your name is required.";
   if (!isValidEmail(sellerEmail)) fieldErrors.seller_email = "A valid email is required.";
   if (pricePence === null) fieldErrors.price = "Enter a valid price.";
+  if (externalUrl && !isValidUrl(externalUrl)) fieldErrors.external_url = "Enter a valid http(s) link.";
 
   const photos = form.getAll("photos").filter((p): p is File => p instanceof File && p.size > 0);
   if (photos.length > MAX_PHOTOS) fieldErrors.photos = `Up to ${MAX_PHOTOS} photos allowed.`;
@@ -108,6 +112,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     seller_name: sellerName as string,
     seller_email: sellerEmail,
     seller_phone: sellerPhone,
+    external_url: externalUrl,
     tier: "free",
     status: "active",
     promoted_until: null,

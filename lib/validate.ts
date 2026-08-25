@@ -9,9 +9,15 @@ export const CATEGORIES = ["surfboards", "wetsuits", "accessories", "other"] as 
 export type Category = (typeof CATEGORIES)[number];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const URL_RE = /^https?:\/\/.+/i;
 
 export function isValidEmail(email: string): boolean {
   return typeof email === "string" && email.length <= 254 && EMAIL_RE.test(email.trim());
+}
+
+/** Optional-field URL check (e.g. a seller's external listing link) — http(s) only. */
+export function isValidUrl(url: string): boolean {
+  return typeof url === "string" && url.length <= 500 && URL_RE.test(url.trim());
 }
 
 export function isValidCategory(category: string): category is Category {
