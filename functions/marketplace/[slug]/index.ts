@@ -6,13 +6,24 @@
 // <title>/OG meta (important for link previews when a listing is shared),
 // plus an embedded hydration blob so marketplace-widget.js doesn't need a
 // second network round trip. Existing static directory pages are untouched.
+//
+// Cloudflare Pages Functions intercept a matching request before static
+// assets are checked, so this dynamic [slug] route would otherwise shadow
+// the real static page at /marketplace/sell/ (build.js's renderMarketplaceSell)
+// — "sell" is a syntactically valid slug as far as routing is concerned.
+// Reserved path segments must fall through via next() to let the static
+// asset serve instead.
 
 import type { Env, PagesFunction } from "../../../lib/types";
 import { getListingBySlug } from "../../../lib/db";
 import { renderShell, escapeHtml } from "../../../lib/html";
 
-export const onRequestGet: PagesFunction<Env> = async ({ request, env, params }) => {
+const RESERVED_SLUGS = new Set(["sell"]);
+
+export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, next }) => {
   const slug = String(params.slug ?? "");
+  if (RESERVED_SLUGS.has(slug)) return next();
+
   const canonical = new URL(request.url).origin + "/marketplace/" + slug + "/";
 
   const row = slug ? await getListingBySlug(env.DB, slug) : null;
