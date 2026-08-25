@@ -1051,8 +1051,8 @@ function renderHub() {
     canonical: SITE + "/",
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Plan your next surf trip.</h1>' +
-  "<p>Find everything you need for your next surf trip — surf schools, shops, places to stay and board repair, by destination.</p>" +
+  '<main class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
+  "<p>Find surf schools, shops, stays and board repair by destination.</p>" +
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
