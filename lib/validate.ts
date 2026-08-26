@@ -24,6 +24,20 @@ export function isValidCategory(category: string): category is Category {
   return (CATEGORIES as readonly string[]).includes(category);
 }
 
+export const CONDITIONS = ["mint", "minor_dings_repaired", "needs_repair", "beater"] as const;
+export type Condition = (typeof CONDITIONS)[number];
+
+export function isValidCondition(condition: string): condition is Condition {
+  return (CONDITIONS as readonly string[]).includes(condition);
+}
+
+export const CONDITION_LABELS: Record<Condition, string> = {
+  mint: "Mint",
+  minor_dings_repaired: "Minor Dings (Repaired)",
+  needs_repair: "Needs Repair",
+  beater: "Beater",
+};
+
 /** Parses a pounds-decimal string (e.g. "24.99") into validated pence, or null. */
 export function parsePricePence(poundsInput: string): number | null {
   const pounds = Number(poundsInput);

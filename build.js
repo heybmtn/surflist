@@ -1143,9 +1143,26 @@ function renderMarketplaceSell() {
   '<div class="form-row"><label for="mp-category">Category</label><select id="mp-category" name="category" required>' +
   '<option value="surfboards">Surfboards</option><option value="wetsuits">Wetsuits</option>' +
   '<option value="accessories">Accessories</option><option value="other">Other</option></select></div>' +
+  '<fieldset id="mp-surfboard-fields" class="form-surfboard-fields"><legend>Surfboard details</legend>' +
+  '<div class="form-row"><label for="mp-board-type">Type / shape</label>' +
+  '<input id="mp-board-type" name="board_type" maxlength="80" required placeholder="e.g. Shortboard, Fish, Longboard, Funboard, Gun, SUP"></div>' +
+  '<div class="form-row"><label id="mp-dimensions-label">Dimensions</label>' +
+  '<div class="dimensions-grid" role="group" aria-labelledby="mp-dimensions-label">' +
+  '<div><label for="mp-dim-length" class="form-hint">Length</label><input id="mp-dim-length" name="dimension_length" maxlength="40" placeholder="6&#39;2&quot;"></div>' +
+  '<div><label for="mp-dim-width" class="form-hint">Width</label><input id="mp-dim-width" name="dimension_width" maxlength="40" placeholder="19&quot;"></div>' +
+  '<div><label for="mp-dim-thickness" class="form-hint">Thickness</label><input id="mp-dim-thickness" name="dimension_thickness" maxlength="40" placeholder="2 3/8&quot;"></div>' +
+  '<div><label for="mp-dim-volume" class="form-hint">Volume</label><input id="mp-dim-volume" name="dimension_volume" maxlength="40" placeholder="32L"></div>' +
+  "</div></div>" +
+  '<div class="form-row"><label for="mp-condition">Condition</label><select id="mp-condition" name="condition" required>' +
+  '<option value="">— select —</option><option value="mint">Mint</option>' +
+  '<option value="minor_dings_repaired">Minor Dings (Repaired)</option>' +
+  '<option value="needs_repair">Needs Repair</option><option value="beater">Beater</option></select></div>' +
+  "</fieldset>" +
   '<div class="form-row"><label for="mp-price">Price (£)</label><input id="mp-price" name="price" type="number" min="0.50" step="0.01" required></div>' +
   '<div class="form-row"><label for="mp-description">Description</label><textarea id="mp-description" name="description" required></textarea></div>' +
   '<div class="form-row"><label for="mp-location">Location</label><input id="mp-location" name="location" maxlength="140" required></div>' +
+  '<div class="form-row form-row--checkbox"><label for="mp-local-pickup"><input id="mp-local-pickup" type="checkbox" name="local_pickup_only"> Local pickup only</label>' +
+  '<p class="form-hint">Buyers can&#39;t arrange shipping — pickup near "Location" only.</p></div>' +
   '<div class="form-row"><label for="mp-region">Region / directory tag</label><select id="mp-region" name="region_slug"><option value="">— none —</option>' +
   marketplaceRegionOptions() + "</select></div>" +
   '<div class="form-row"><label for="mp-external-url">Link to buy directly (optional)</label>' +

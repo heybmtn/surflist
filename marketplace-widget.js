@@ -38,6 +38,9 @@
     var featured = listing.tier === "promoted";
     var href = "/marketplace/" + encodeURIComponent(listing.slug) + "/";
     var img = listing.images && listing.images[0];
+    var pickupTag = listing.local_pickup_only
+      ? '<div class="tags card__tags"><span class="lvl">Local pickup only</span></div>'
+      : "";
     return (
       '<li class="card' + (featured ? " is-featured" : "") + '">' +
       '<div class="card__media"><a href="' + href + '" aria-label="' + esc(listing.title) + '">' +
@@ -51,6 +54,7 @@
       '<span class="card__place">' + esc(listing.location) + "</span>" +
       '<h3 class="card__name"><a class="card__name-link" href="' + href + '">' + esc(listing.title) + "</a></h3>" +
       '<p class="card__price">' + money(listing.price) + "</p>" +
+      pickupTag +
       '<div class="card__foot"><a class="visit" href="' + href + '">View &rarr;</a></div>' +
       "</div></li>"
     );
@@ -180,6 +184,32 @@
     if (presetRegion) {
       var regionField = form.elements.namedItem("region_slug");
       if (regionField) regionField.value = presetRegion;
+    }
+
+    var categorySelect = form.elements.namedItem("category");
+    var surfboardFields = document.getElementById("mp-surfboard-fields");
+    var boardTypeInput = form.elements.namedItem("board_type");
+    var conditionSelect = form.elements.namedItem("condition");
+    var dimensionFieldNames = ["dimension_length", "dimension_width", "dimension_thickness", "dimension_volume"];
+
+    function toggleSurfboardFields() {
+      var isSurfboard = categorySelect.value === "surfboards";
+      if (surfboardFields) surfboardFields.hidden = !isSurfboard;
+      if (boardTypeInput) boardTypeInput.required = isSurfboard;
+      if (conditionSelect) conditionSelect.required = isSurfboard;
+      if (!isSurfboard) {
+        if (boardTypeInput) boardTypeInput.value = "";
+        if (conditionSelect) conditionSelect.value = "";
+        dimensionFieldNames.forEach(function (name) {
+          var el = form.elements.namedItem(name);
+          if (el) el.value = "";
+        });
+      }
+    }
+
+    if (categorySelect) {
+      categorySelect.addEventListener("change", toggleSurfboardFields);
+      toggleSurfboardFields();
     }
 
     form.addEventListener("submit", function (e) {

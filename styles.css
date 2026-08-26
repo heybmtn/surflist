@@ -479,6 +479,21 @@
     .tier-option.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
     .tier-option .badge-featured { margin-right: 0.4em; }
 
+    /* surfboard-only fields block on the sell form, shown/hidden by category */
+    .form-surfboard-fields { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+    .form-surfboard-fields legend { padding: 0; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .dimensions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+    .dimensions-grid label { font-size: 0.78rem; color: var(--muted); }
+    @media (max-width: 560px) { .dimensions-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* "Local pickup only" checkbox row — the generic .form-row input rule above
+       is meant for text inputs/selects, not checkboxes */
+    .form-row--checkbox label { display: flex; align-items: center; gap: 0.5em; font-weight: 500; color: var(--ink); }
+    .form-row input[type="checkbox"] { padding: 0; border: 0; background: none; width: auto; min-height: auto; accent-color: var(--accent); }
+
+    /* pickup tag on grid cards */
+    .card__body .tags { margin-top: 0.2rem; }
+
     /* "Looking for gear?" callout on verified business detail pages — lighter-weight demo-banner */
     .gear-callout {
       margin-top: 1rem; padding: 0.7rem 0.9rem; font-size: 0.88rem; line-height: 1.45;
