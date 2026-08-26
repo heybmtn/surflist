@@ -4,6 +4,17 @@
 
 ## Destinations
 
+- [Surfing in Costa Rica](https://surflist.co/costa-rica/): 34 listings across Guanacaste, Limón, Puntarenas.
+  - [Surfing in Guanacaste](https://surflist.co/costa-rica/guanacaste/): 12 listings.
+    - [Surfing in Nosara](https://surflist.co/costa-rica/guanacaste/nosara/): 5 listings.
+    - [Surfing in Tamarindo](https://surflist.co/costa-rica/guanacaste/tamarindo/): 7 listings.
+  - [Surfing in Limón](https://surflist.co/costa-rica/limon/): 5 listings.
+    - [Surfing in Puerto Viejo](https://surflist.co/costa-rica/limon/puerto-viejo/): 5 listings.
+  - [Surfing in Puntarenas](https://surflist.co/costa-rica/puntarenas/): 17 listings.
+    - [Surfing in Dominical](https://surflist.co/costa-rica/puntarenas/dominical/): 3 listings.
+    - [Surfing in Jacó](https://surflist.co/costa-rica/puntarenas/jaco/): 5 listings.
+    - [Surfing in Pavones](https://surflist.co/costa-rica/puntarenas/pavones/): 4 listings.
+    - [Surfing in Santa Teresa](https://surflist.co/costa-rica/puntarenas/santa-teresa/): 5 listings.
 - [Surfing in England](https://surflist.co/england/): 64 listings across Cornwall, Devon, Yorkshire.
   - [Surfing in Cornwall](https://surflist.co/england/cornwall/): 40 listings.
     - [Surfing in Bude](https://surflist.co/england/cornwall/bude/): 2 listings.

@@ -311,5 +311,54 @@ window.LISTINGS = [
     blurb: "Taghazout shop whose core business is ding repair, also renting boards and stocking wetsuits, wax and accessories as GSI's Morocco distributor.",
     image: "", verified: false,
     socials: {},
-    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental", "Ding repair"] }
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental", "Ding repair"] },
+
+  // ================= COSTA RICA =================
+  // ---- Tamarindo (Guanacaste) ----
+  { name: "Iguana Surf", country: "Costa Rica", region: "Guanacaste", town: "Tamarindo",
+    url: "https://iguanasurf.net/",
+    blurb: "The original Tamarindo surf shop since 1989, with premium board rentals, gear and lessons steps from the break.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/iguanasurf_tamarindo/", facebook: "https://www.facebook.com/IguanaSurfCostaRica/", youtube: "https://www.youtube.com/@iguanasurf" },
+    offerings: ["Surfboards", "Board rental", "Accessories"] },
+
+  // ---- Nosara (Guanacaste) ----
+  { name: "Coconut Harry's Surf Shop", country: "Costa Rica", region: "Guanacaste", town: "Nosara",
+    url: "https://www.coconutharrys.com/",
+    blurb: "Longtime Guiones surf shop with a large rental fleet, new and used boards, plus beachwear and accessories.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/coconutharrys/", facebook: "https://www.facebook.com/coconutharrys/" },
+    offerings: ["Surfboards", "Board rental", "Apparel", "Accessories"] },
+
+  // ---- Santa Teresa (Puntarenas) ----
+  { name: "Nalu Surf Shop", country: "Costa Rica", region: "Puntarenas", town: "Santa Teresa",
+    url: "https://nalusurfschool.com/",
+    blurb: "Santa Teresa's full surf shop and exclusive Channel Islands, DHD and O'Neill dealer, with 100+ rental boards.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/nalusurfcr/", facebook: "https://www.facebook.com/pages/NALU-surf-school/108050269222008" },
+    offerings: ["Surfboards", "Board rental", "Apparel", "Accessories"] },
+
+  // ---- Jacó (Puntarenas) ----
+  { name: "Carton Surfboards", country: "Costa Rica", region: "Puntarenas", town: "Jacó",
+    url: "https://www.cartonsurfboards.com/",
+    blurb: "Local shaper Edwin Carton's Jacó shop, hand-shaping boards for 25+ years alongside rentals, wetsuits and accessories.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/cartonshaper.villalobos/" },
+    offerings: ["Surfboards", "Board rental", "Wetsuits", "Accessories", "Ding repair"] },
+
+  // ---- Dominical (Puntarenas) ----
+  { name: "Todo Sano Surf School", country: "Costa Rica", region: "Puntarenas", town: "Dominical",
+    url: "https://www.todosanosurfschool.com/",
+    blurb: "Dominical surf school and shop with boards for rent and sale plus ding repair for travelling surfers.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental", "Ding repair"] },
+
+  // ---- Puerto Viejo (Limón) ----
+  { name: "Caribbean Surf School & Shop", country: "Costa Rica", region: "Limón", town: "Puerto Viejo",
+    url: "https://puertoviejosurfandtours.com/",
+    blurb: "Puerto Viejo surf shop beside Salsa Brava stocking gear, apparel and rentals, run by local instructor Hershel Lewis.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/caribbeansurfschoolandshop/" },
+    offerings: ["Surfboards", "Board rental", "Apparel", "Accessories"] }
 ];
