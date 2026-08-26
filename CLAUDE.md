@@ -38,15 +38,16 @@ git checkout main && git pull
 git checkout -b add/bude-schools     # branch name: <verb>/<place>-<category>
 # …make the edit (see below)…
 node build.js --check     # place-integrity: fails on slug-fork typos; flags thin towns
-node build.js             # builds + self-validates links and JSON-LD (expect 0/0)
+node build.js             # regenerates every page from the data
 git add -A                # source + regenerated output — one commit
 git commit -m "…"         # see convention below
 git push -u origin add/bude-schools
 gh pr create --title "…" --body "…"   # open the PR; do NOT merge it yourself
 ```
 
-If `--check` reports a collision, fix the spelling before building. If the build
-reports broken links or bad JSON-LD, fix before committing. Cloudflare Pages
+If `--check` reports a collision, fix the spelling before building. `build.js` has
+no built-in link or JSON-LD validator — after building, spot-check any new or
+changed pages in the browser (or a link checker) before committing. Cloudflare Pages
 builds a **preview deployment** for the PR (its own preview URL) and deploys
 production only when the PR is merged to `main`.
 
