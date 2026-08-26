@@ -58,7 +58,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, n
   const dimensionsDisplay = [dimensionParts, row.dimension_volume].filter(Boolean).join(" · ");
 
   const factChips: string[] = [];
-  if (row.category === "surfboards") {
+  if (row.category === "surfboards" || row.category === "bodyboards") {
     if (row.board_type) factChips.push("Type: " + escapeHtml(row.board_type));
     if (dimensionsDisplay) factChips.push(escapeHtml(dimensionsDisplay));
     if (row.condition && isValidCondition(row.condition)) {

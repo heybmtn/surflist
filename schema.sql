@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS marketplace_listings (
   title               TEXT NOT NULL,
   slug                TEXT NOT NULL UNIQUE,
   description         TEXT NOT NULL,
-  category            TEXT NOT NULL CHECK (category IN ('surfboards', 'wetsuits', 'accessories', 'other')),
+  category            TEXT NOT NULL CHECK (category IN ('surfboards', 'bodyboards')),
   board_type          TEXT,
   dimension_length    TEXT,
   dimension_width     TEXT,
@@ -76,6 +76,58 @@ CREATE TABLE IF NOT EXISTS marketplace_listings (
 --     "ALTER TABLE marketplace_listings ADD COLUMN local_pickup_only INTEGER NOT NULL DEFAULT 0 CHECK (local_pickup_only IN (0, 1));"
 -- A fresh database created from this file already has these columns via the
 -- CREATE TABLE above, so these statements should not be run there.
+
+-- Gear categories changed from ('surfboards', 'wetsuits', 'accessories', 'other')
+-- to ('surfboards', 'bodyboards'). SQLite cannot ALTER a CHECK constraint in
+-- place, so on the LIVE D1 database a human must recreate the table with the
+-- new constraint and copy the data across. Any existing row whose category is
+-- no longer in the allowed set (wetsuits/accessories/other) must be
+-- reassigned first (e.g. to 'surfboards') or it will fail the copy below —
+-- decide case by case, this script does not guess. Run each statement in
+-- order against the LIVE database (schema.sql itself is never auto-applied):
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "CREATE TABLE marketplace_listings_new (
+--        id                  TEXT PRIMARY KEY,
+--        title               TEXT NOT NULL,
+--        slug                TEXT NOT NULL UNIQUE,
+--        description         TEXT NOT NULL,
+--        category            TEXT NOT NULL CHECK (category IN ('surfboards', 'bodyboards')),
+--        board_type          TEXT,
+--        dimension_length    TEXT,
+--        dimension_width     TEXT,
+--        dimension_thickness TEXT,
+--        dimension_volume    TEXT,
+--        condition           TEXT CHECK (condition IS NULL OR condition IN ('mint', 'minor_dings_repaired', 'needs_repair', 'beater')),
+--        price               INTEGER NOT NULL CHECK (price > 0),
+--        currency            TEXT NOT NULL DEFAULT 'GBP',
+--        location            TEXT NOT NULL,
+--        region_slug         TEXT,
+--        local_pickup_only   INTEGER NOT NULL DEFAULT 0 CHECK (local_pickup_only IN (0, 1)),
+--        images              TEXT NOT NULL DEFAULT '[]',
+--        seller_name         TEXT NOT NULL,
+--        seller_email        TEXT NOT NULL,
+--        seller_phone        TEXT,
+--        external_url        TEXT,
+--        tier                TEXT NOT NULL DEFAULT 'free' CHECK (tier IN ('free', 'promoted')),
+--        status              TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'pending_payment', 'sold', 'expired')),
+--        promoted_until      TEXT,
+--        created_at          TEXT NOT NULL,
+--        updated_at          TEXT NOT NULL
+--      );"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "INSERT INTO marketplace_listings_new SELECT * FROM marketplace_listings;"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "DROP TABLE marketplace_listings;"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "ALTER TABLE marketplace_listings_new RENAME TO marketplace_listings;"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "CREATE INDEX IF NOT EXISTS idx_listings_status_region   ON marketplace_listings(status, region_slug);"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "CREATE INDEX IF NOT EXISTS idx_listings_status_category ON marketplace_listings(status, category);"
+--   wrangler d1 execute surflist-marketplace --remote --command \
+--     "CREATE INDEX IF NOT EXISTS idx_listings_created_at       ON marketplace_listings(created_at);"
+-- A fresh database created from this file already has the new constraint via
+-- the CREATE TABLE above, so this migration should not be run there.
 
 CREATE INDEX IF NOT EXISTS idx_listings_status_region   ON marketplace_listings(status, region_slug);
 CREATE INDEX IF NOT EXISTS idx_listings_status_category ON marketplace_listings(status, category);

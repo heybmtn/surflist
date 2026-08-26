@@ -5,7 +5,7 @@ export const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export const MIN_PRICE_PENCE = 50; // 50p
 export const MAX_PRICE_PENCE = 1_000_000; // £10,000
-export const CATEGORIES = ["surfboards", "wetsuits", "accessories", "other"] as const;
+export const CATEGORIES = ["surfboards", "bodyboards"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

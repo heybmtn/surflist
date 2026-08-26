@@ -1105,21 +1105,19 @@ function renderMarketplaceIndex() {
   var trail = [{ name: "Home", href: "/" }, { name: "Marketplace" }];
   return head({
     title: "Marketplace — Buy & Sell Surf Gear | surflist",
-    desc: "Buy and sell secondhand surfboards, wetsuits and surf gear directly with other surfers on surflist.",
+    desc: "Buy and sell secondhand surfboards, bodyboards and surf gear directly with other surfers on surflist.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap" id="marketplace-index-root">' + crumbs(trail) +
   '<section class="hero"><h1>Surflist Marketplace</h1>' +
-  "<p>Buy and sell secondhand surfboards, wetsuits and gear directly with other surfers — no middleman, straight to your inbox.</p>" +
+  "<p>Buy and sell secondhand surfboards, bodyboards and gear directly with other surfers — no middleman, straight to your inbox.</p>" +
   '<a class="btn" href="/marketplace/sell/">+ Sell your gear</a></section>\n' +
   '<div class="marketplace-filterbar">' +
   '<div class="chip-nav" id="marketplace-category-tabs">' +
   '<a href="#" class="is-active" data-value="">All</a>' +
   '<a href="#" data-value="surfboards">Surfboards</a>' +
-  '<a href="#" data-value="wetsuits">Wetsuits</a>' +
-  '<a href="#" data-value="accessories">Accessories</a>' +
-  '<a href="#" data-value="other">Other</a>' +
+  '<a href="#" data-value="bodyboards">Bodyboards</a>' +
   "</div>" +
   '<select id="marketplace-region-select" class="search__input" aria-label="Filter by region"><option value="">All regions</option>' +
   marketplaceRegionOptions() + "</select>" +
@@ -1134,20 +1132,19 @@ function renderMarketplaceSell() {
   var trail = [{ name: "Home", href: "/" }, { name: "Marketplace", href: "/marketplace/" }, { name: "Sell" }];
   return head({
     title: "Sell Your Surf Gear — surflist Marketplace",
-    desc: "List a surfboard, wetsuit or other surf gear for sale on surflist. Free listings, or get featured for £5/30 days.",
+    desc: "List a surfboard or bodyboard for sale on surflist. Free listings, or get featured for £5/30 days.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
-  '<section class="hero"><h1>Sell your gear</h1><p>List a surfboard, wetsuit or other gear for sale. Buyers message you directly — no account needed.</p></section>\n' +
+  '<section class="hero"><h1>Sell your gear</h1><p>List a surfboard or bodyboard for sale. Buyers message you directly — no account needed.</p></section>\n' +
   '<form id="marketplace-sell-form" class="form-field">' +
   '<div class="form-row"><label for="mp-title">Title</label><input id="mp-title" name="title" maxlength="140" required></div>' +
   '<div class="form-row"><label for="mp-category">Category</label><select id="mp-category" name="category" required>' +
-  '<option value="surfboards">Surfboards</option><option value="wetsuits">Wetsuits</option>' +
-  '<option value="accessories">Accessories</option><option value="other">Other</option></select></div>' +
-  '<fieldset id="mp-surfboard-fields" class="form-surfboard-fields"><legend>Surfboard details</legend>' +
+  '<option value="surfboards">Surfboards</option><option value="bodyboards">Bodyboards</option></select></div>' +
+  '<fieldset id="mp-surfboard-fields" class="form-surfboard-fields"><legend>Board details</legend>' +
   '<div class="form-row"><label for="mp-board-type">Type / shape</label>' +
-  '<input id="mp-board-type" name="board_type" maxlength="80" required placeholder="e.g. Shortboard, Fish, Longboard, Funboard, Gun, SUP"></div>' +
+  '<input id="mp-board-type" name="board_type" maxlength="80" required placeholder="e.g. Shortboard, Fish, Longboard, Funboard, Gun, SUP, Bodyboard"></div>' +
   '<div class="form-row"><label id="mp-dimensions-label">Dimensions</label>' +
   '<div class="dimensions-grid" role="group" aria-labelledby="mp-dimensions-label">' +
   '<div><label for="mp-dim-length" class="form-hint">Length</label><input id="mp-dim-length" name="dimension_length" maxlength="40" placeholder="6&#39;2&quot;"></div>' +
