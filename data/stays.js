@@ -368,5 +368,13 @@ window.LISTINGS = [
     blurb: "Jungle-set Pavones surf camp with garden villas by the Rio Claro, daily lessons, yoga and all-inclusive packages.",
     image: "", verified: false,
     socials: {},
-    stayType: "Camp" }
+    stayType: "Camp" },
+
+  // ---- Khao Lak (Phang Nga) ----
+  { name: "Apsara Beachfront Resort & Spa", country: "Thailand", region: "Phang Nga", town: "Khao Lak",
+    url: "https://www.apsarakhaolak.com/",
+    blurb: "Beachfront resort right on Memories Beach with direct surf access, on-site lessons, board rental and seasonal surf programs.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/apsara_khaolak/", facebook: "https://www.facebook.com/apsarakhaolak/", youtube: "https://www.youtube.com/@apsarakhaolak1125" },
+    stayType: "Resort" }
 ];

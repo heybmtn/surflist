@@ -113,6 +113,12 @@
   - [Surfing in Cantabria](https://surflist.co/spain/cantabria/): 5 listings.
     - [Surfing in Santander](https://surflist.co/spain/cantabria/santander/): 2 listings.
     - [Surfing in Somo](https://surflist.co/spain/cantabria/somo/): 3 listings.
+- [Surfing in Thailand](https://surflist.co/thailand/): 11 listings across Phang Nga, Phuket.
+  - [Surfing in Phang Nga](https://surflist.co/thailand/phang-nga/): 4 listings.
+    - [Surfing in Khao Lak](https://surflist.co/thailand/phang-nga/khao-lak/): 4 listings.
+  - [Surfing in Phuket](https://surflist.co/thailand/phuket/): 7 listings.
+    - [Surfing in Bang Tao](https://surflist.co/thailand/phuket/bang-tao/): 2 listings.
+    - [Surfing in Kata Beach](https://surflist.co/thailand/phuket/kata-beach/): 5 listings.
 - [Surfing in Wales](https://surflist.co/wales/): 12 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
   - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
     - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.

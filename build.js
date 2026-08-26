@@ -86,6 +86,8 @@ const COUNTRIES = [
     intro: "One of the most accessible warm-water surf destinations from Europe — centred on Taghazout Bay near Agadir, with world-class right-hand point breaks, year-round sunshine and a dense cluster of surf camps, schools and shops, plus mellower beginner waves up the coast at Essaouira." },
   { name: "Costa Rica", bucket: "Worldwide", flag: "cr",
     intro: "One of the world's great surf destinations, with warm water and remarkably consistent waves on two coasts: the ultra-reliable Pacific — home to beginner-friendly hubs like Tamarindo and Nosara and heavier breaks at Santa Teresa, Dominical and Pavones — and the Afro-Caribbean south around Puerto Viejo, where the Salsa Brava reef fires in winter." },
+  { name: "Thailand", bucket: "Worldwide", flag: "th",
+    intro: "Thailand's surf is a seasonal, monsoon-driven secret on the Andaman coast — warm water and mostly gentle, beginner-friendly beach breaks around Phuket and Khao Lak, roughly May to October." },
 ];
 
 /* ---------- region registry (optional metadata) ----------

@@ -360,5 +360,29 @@ window.LISTINGS = [
     blurb: "Puerto Viejo surf shop beside Salsa Brava stocking gear, apparel and rentals, run by local instructor Hershel Lewis.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/caribbeansurfschoolandshop/" },
-    offerings: ["Surfboards", "Board rental", "Apparel", "Accessories"] }
+    offerings: ["Surfboards", "Board rental", "Apparel", "Accessories"] },
+
+  // ---- Kata Beach (Phuket) ----
+  { name: "Phuket Surfing (Nautilus Dive & Surf)", country: "Thailand", region: "Phuket", town: "Kata Beach",
+    url: "https://www.phuketsurfing.com/",
+    blurb: "Kata Beach surf shop with 60+ boards to rent — shortboards to longboards, plus SUPs, bodyboards and kayaks — with repairs and sales.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/NautillusDiveSurf/", instagram: "https://www.instagram.com/nautilusphuketsurfing" },
+    offerings: ["Surfboards", "Board rental", "Ding repair", "Accessories"] },
+
+  // ---- Bang Tao (Phuket) ----
+  { name: "Saltwater Dreaming", country: "Thailand", region: "Phuket", town: "Bang Tao",
+    url: "https://www.saltwater-dreaming.com/",
+    blurb: "Phuket's original surf shop (since 2000) stocking surfboards, softboards, bodyboards, apparel and accessories, with rental and repairs.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/swdreaming", instagram: "https://www.instagram.com/swdreaming", x: "https://twitter.com/swdreaming" },
+    offerings: ["Surfboards", "Apparel", "Accessories", "Board rental", "Ding repair"] },
+
+  // ---- Khao Lak (Phang Nga) ----
+  { name: "Pakarang Surf Shop", country: "Thailand", region: "Phang Nga", town: "Khao Lak",
+    url: "http://memoriesbar-khaolak.com/pakarang-surfshop/",
+    blurb: "Beachfront shop at Memories Beach Bar hiring out surfboards, paddle boards and bodyboards right by the break.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/Memories-Beach-Bar-Pakarang-Surfshop-in-Khaolak-150570521704548/", instagram: "https://www.instagram.com/memoriesbeachbar/" },
+    offerings: ["Board rental"] }
 ];
