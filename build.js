@@ -82,6 +82,8 @@ const COUNTRIES = [
     intro: "Ireland's Wild Atlantic Way delivers cold-water Atlantic surf down the west and south coasts — from the forgiving beach breaks of Donegal and Sligo to the punchier waves of Clare and Waterford. Consistent swell, dramatic scenery, 5/4 wetsuits year-round, and a famously warm welcome." },
   { name: "Indonesia", bucket: "Worldwide", flag: "id",
     intro: "One of the world's great surf nations — from Bali's beach breaks and reef points to Lombok's mellow bays and long sand-bottom beaches, with warm water and rideable waves year-round." },
+  { name: "Morocco", bucket: "Worldwide", flag: "ma",
+    intro: "One of the most accessible warm-water surf destinations from Europe — centred on Taghazout Bay near Agadir, with world-class right-hand point breaks, year-round sunshine and a dense cluster of surf camps, schools and shops, plus mellower beginner waves up the coast at Essaouira." },
 ];
 
 /* ---------- region registry (optional metadata) ----------

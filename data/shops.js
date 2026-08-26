@@ -296,5 +296,20 @@ window.LISTINGS = [
     blurb: "Kuta Lombok surf shop for board rental, ding repair and boards, attached to a local surf school.",
     image: "", verified: false,
     socials: {},
-    offerings: ["Board rental", "Ding repair", "Surfboards"] }
+    offerings: ["Board rental", "Ding repair", "Surfboards"] },
+
+  // ================= MOROCCO =================
+  // ---- Taghazout ----
+  { name: "Surf Maroc Store", country: "Morocco", region: "Souss-Massa", town: "Taghazout",
+    url: "https://surfmaroc.com/",
+    blurb: "Taghazout's Rip Curl store above Taghazout Villa, selling wetsuits, boards, fins and accessories and renting a Firewire quiver.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+  { name: "Almugar Surf Shop", country: "Morocco", region: "Souss-Massa", town: "Taghazout",
+    url: "https://www.dfrostsurfandyoga.com/almugar-surf-shop",
+    blurb: "Taghazout shop whose core business is ding repair, also renting boards and stocking wetsuits, wax and accessories as GSI's Morocco distributor.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental", "Ding repair"] }
 ];

@@ -1094,5 +1094,46 @@ window.LISTINGS = [
     blurb: "Selong Belanak school offering year-round lessons, guiding, board rental and surf camps.",
     image: "", verified: false,
     socials: {},
-    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] }
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ================= MOROCCO =================
+  // ---- Taghazout ----
+  { name: "Zen Surf School Taghazout", country: "Morocco", region: "Souss-Massa", town: "Taghazout",
+    url: "https://www.zen-surf-school-taghazout.com/",
+    blurb: "Taghazout Bay surf school running small-group lessons (max six per coach) for all levels, driving to the best spot each day.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+  { name: "Panorama Surf School", country: "Morocco", region: "Souss-Massa", town: "Taghazout",
+    url: "https://panoramasurfschool.com/",
+    blurb: "Local-run Taghazout surf school offering lessons, coaching and guided trips to points like Anchor Point for beginners through advanced surfers.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+  { name: "Taghazout Surfers", country: "Morocco", region: "Souss-Massa", town: "Taghazout",
+    url: "https://taghazoutsurfers.com/",
+    blurb: "Surf school and camp led by local professional surfers, with personalised coaching from complete beginner to advanced.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+  // ---- Tamraght ----
+  { name: "Local Surf Maroc", country: "Morocco", region: "Souss-Massa", town: "Tamraght",
+    url: "https://www.localsurfmaroc.com/",
+    blurb: "Coaching-first surf school in Tamraght using small groups, daily video analysis and a level assessment to structure progression.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+  // ---- Essaouira ----
+  { name: "SurfTwins Essaouira", country: "Morocco", region: "Marrakech-Safi", town: "Essaouira",
+    url: "https://www.surftwinsessaouira.com/",
+    blurb: "Surf school run by twin local instructors teaching in Essaouira bay and at Sidi Kaouki, with small groups and transport to the day's best waves.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate"] },
+  { name: "Loving Surf", country: "Morocco", region: "Marrakech-Safi", town: "Essaouira",
+    url: "https://www.lovingsurf.com/",
+    blurb: "Long-running Essaouira school offering daily beachfront surf lessons and lesson-plus-accommodation packages for beginners and intermediates.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate"] }
 ];

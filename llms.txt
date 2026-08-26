@@ -53,6 +53,13 @@
     - [Surfing in Strandhill](https://surflist.co/ireland/sligo/strandhill/): 4 listings.
   - [Surfing in Waterford](https://surflist.co/ireland/waterford/): 3 listings.
     - [Surfing in Tramore](https://surflist.co/ireland/waterford/tramore/): 3 listings.
+- [Surfing in Morocco](https://surflist.co/morocco/): 18 listings across Marrakech-Safi, Souss-Massa.
+  - [Surfing in Marrakech-Safi](https://surflist.co/morocco/marrakech-safi/): 3 listings.
+    - [Surfing in Essaouira](https://surflist.co/morocco/marrakech-safi/essaouira/): 2 listings.
+  - [Surfing in Souss-Massa](https://surflist.co/morocco/souss-massa/): 15 listings.
+    - [Surfing in Imsouane](https://surflist.co/morocco/souss-massa/imsouane/): 2 listings.
+    - [Surfing in Taghazout](https://surflist.co/morocco/souss-massa/taghazout/): 9 listings.
+    - [Surfing in Tamraght](https://surflist.co/morocco/souss-massa/tamraght/): 4 listings.
 - [Surfing in Portugal](https://surflist.co/portugal/): 56 listings across Algarve, Lisbon, Peniche, Porto, Silver Coast, Viana do Castelo.
   - [Surfing in Algarve](https://surflist.co/portugal/algarve/): 15 listings.
     - [Surfing in Arrifana](https://surflist.co/portugal/algarve/arrifana/): 2 listings.
