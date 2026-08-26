@@ -347,7 +347,7 @@ const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a><a href="/about/">About</a></nav></div>' +
   "</div></footer>\n";
 
 function head(o) {
@@ -369,8 +369,17 @@ function head(o) {
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="stylesheet" href="/styles.css" />\n' +
     (o.jsonld ? '<script type="application/ld+json">\n' + o.jsonld + "\n</script>\n" : "") +
+    '<script type="application/ld+json">\n' + WEBSITE_JSONLD + "\n</script>\n" +
     "</head>\n";
 }
+const WEBSITE_JSONLD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": SITE + "/#website",
+  url: SITE,
+  name: "Surflist",
+  publisher: { "@id": SITE + "/#organization" },
+}, null, 2);
 
 /* ---------- breadcrumbs ---------- */
 function crumbs(trail) {
@@ -488,12 +497,12 @@ const FILTER_JS =
 
 /* ---------- schema.org helpers ---------- */
 function surflistEntity() {
+  // stub reference only — the full Organization entity (logo, founder, sameAs) lives on /about
   return {
-    "@type": ["Organization", "WebSite"],
-    "@id": SITE + "/#surflist",
-    name: "surflist",
+    "@type": "Organization",
+    "@id": SITE + "/#organization",
+    name: "Surflist",
     url: SITE,
-    description: "surflist verifies and lists surf schools, shops, places to stay and surf services worldwide.",
   };
 }
 function placeNode(o) {
@@ -511,10 +520,10 @@ function collectionJsonLd(o) {
     "@id": o.pageUrl,
     url: o.pageUrl,
     name: o.name,
-    isPartOf: { "@id": SITE + "/#surflist" },
+    isPartOf: { "@id": SITE + "/#website" },
     about: { "@id": o.place["@id"] },
     mainEntity: { "@id": o.place["@id"] },
-    reviewedBy: { "@id": SITE + "/#surflist" },
+    reviewedBy: { "@id": SITE + "/#organization" },
   }, breadcrumbJsonLd(o.trail)];
   if (o.extra) graph.push(o.extra);
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
@@ -792,10 +801,10 @@ function jsonLd(d, cat, pageUrl, trail, extra) {
     "@id": pageUrl,
     url: pageUrl,
     name: d.name + " — " + cat.singular + " on surflist",
-    isPartOf: { "@id": SITE + "/#surflist" },
+    isPartOf: { "@id": SITE + "/#website" },
     about: { "@id": pageUrl + "#business" },
     mainEntity: { "@id": pageUrl + "#business" },
-    reviewedBy: { "@id": SITE + "/#surflist" },
+    reviewedBy: { "@id": SITE + "/#organization" },
   };
   if (d.lastVerified) page.lastReviewed = d.lastVerified;
   var graph = [surflistEntity(), biz, page, breadcrumbJsonLd(trail)];
@@ -1089,6 +1098,47 @@ function renderListYourBusiness() {
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+/* ---------- about (entity home: full Organization + founder Person) ---------- */
+function renderAbout() {
+  var pageUrl = SITE + "/about/";
+  var trail = [{ name: "Home", href: "/" }, { name: "About" }];
+  var org = {
+    "@type": "Organization",
+    "@id": SITE + "/#organization",
+    name: "Surflist",
+    url: SITE,
+    description: "Surflist is a curated directory of surf businesses — surf schools, surf shops, and surf-focused places to stay — organised by country, region, and town. Every listing is checked against the business's official website before inclusion.",
+    foundingDate: "2026",
+    founder: { "@id": SITE + "/#founder" },
+    knowsAbout: ["Surfing", "Surf schools", "Surf shops", "Surf camps", "Surf travel"],
+    sameAs: [],
+  };
+  var founder = {
+    "@type": "Person",
+    "@id": SITE + "/#founder",
+    name: "Ben Manton",
+    worksFor: { "@id": SITE + "/#organization" },
+    sameAs: [],
+  };
+  return head({
+    title: "About Surflist",
+    desc: "Surflist is a curated directory of surf businesses — surf schools, surf shops, and places to stay — organised by country, region, and town.",
+    canonical: pageUrl,
+    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [org, founder, breadcrumbJsonLd(trail)] }, null, 2),
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap">' + crumbs(trail) +
+  '<section class="hero"><h1>About Surflist</h1>' +
+  "<p>Surflist is a curated directory of surf businesses — surf schools, surf shops, and places to stay — organised by country, region, and town.</p></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>A directory you can trust</h2></div>' +
+  "<p>The idea is simple: a directory you can trust. Every business listed here has been checked against its own official website before it goes in. If a business can't be confirmed as real and operating from its own site, it isn't listed — no auto-scraped filler, no dead links, no guesswork.</p></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Founded in 2026</h2></div>' +
+  "<p>Founded in 2026 by Ben Manton, Surflist covers surf destinations worldwide and grows one town at a time as each is researched and verified.</p></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Get listed</h2></div>' +
+  '<p>Businesses can upgrade their listing to add full contact details, photos, and a verified badge. Everything else stays free to browse. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
+  "</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+
 /* ---------- marketplace: index + sell (data lives in D1, fetched client-side by
    marketplace-widget.js; these are just static shells, same as every other page) ---------- */
 function marketplaceRegionOptions() {
@@ -1231,7 +1281,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email hello@surflist.co.");
+  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email hello@surflist.co. Read more about surflist at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
@@ -1323,6 +1373,9 @@ fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
 
 writePage("list-your-business", renderListYourBusiness());
 urls.push(SITE + "/list-your-business/");
+
+writePage("about", renderAbout());
+urls.push(SITE + "/about/");
 
 writePage("marketplace", renderMarketplaceIndex());
 urls.push(SITE + "/marketplace/");
