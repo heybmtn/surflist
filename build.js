@@ -249,6 +249,17 @@ function loadData(file) {
 }
 CATEGORIES.forEach(function (c) { c.items = loadData(c.data); });
 
+/* header stat counts — read once from the loaded data so they stay correct as listings are added */
+function categoryCount(slug) {
+  var cat = CATEGORIES.find(function (c) { return c.slug === slug; });
+  return cat ? cat.items.length : 0;
+}
+var HEADER_STATS = {
+  schools: categoryCount("surf-schools"),
+  shops: categoryCount("surf-shops"),
+  stays: categoryCount("surf-stays"),
+};
+
 /* every (listing, category) pair, for whole-tree passes */
 var ALL = [];
 CATEGORIES.forEach(function (cat) { cat.items.forEach(function (d) { ALL.push({ d: d, cat: cat }); }); });
@@ -307,7 +318,10 @@ function townsWithHub(c, r) { return townsIn(c, r).filter(function (t) { return 
 function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
     '<nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav>' +
-    "</div></header>\n";
+    "</div>" +
+    '<div class="wrap"><p class="header__stats">' +
+    HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " + HEADER_STATS.stays + " places to stay</p></div>" +
+    "</header>\n";
 }
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
