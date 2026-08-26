@@ -161,7 +161,6 @@ const TOWN_CONTENT = {
       { name: "Crantock", note: "A river-mouth beach across the Gannel, quieter and good for longboarding on its day." },
       { name: "Porth", note: "A sheltered, more forgiving cove that's kinder for beginners when Fistral is maxing out." },
     ],
-    season: "Beginner-friendly conditions are most consistent from June to September, when the water is at its warmest.",
     // whenToSurf: "…",   // <- slot: add a paragraph or two
     faq: [
       { q: "When is the best time of year for surf lessons in Newquay?",
@@ -185,7 +184,6 @@ const TOWN_CONTENT = {
       { name: "São Lourenço", note: "A more forgiving beach break, generally the easier choice for beginners and improvers." },
       { name: "Pedra Branca", note: "A consistent reef break that works across a range of swell and tide." },
     ],
-    season: "Ericeira breaks year-round; beginners generally find the easiest conditions from May to September, when the swell is smaller and the water is warmer.",
     // whenToSurf: "…",   // <- slot: add a paragraph or two
     faq: [
       { q: "When is the best time of year for surf lessons in Ericeira?",
@@ -612,24 +610,6 @@ function marketplaceWidgetSection(region, town) {
 function editorialSlot(label, key) {
   return "\n<!-- EDITORIAL SLOT · " + label + " — add TOWN_CONTENT[\"" + key + "\"]." + label + " -->\n";
 }
-function renderTownOverview(country, region, town, ed) {
-  var counts = CATEGORIES.map(function (cat) {
-    var n = itemsInTown(country, region, town, cat).length;
-    return n ? n + " " + (n === 1 ? cat.singular : cat.plural) : null;
-  }).filter(Boolean);
-  if (!counts.length) return "";
-  var countsText = counts.length > 1
-    ? counts.slice(0, -1).join(", ") + " and " + counts[counts.length - 1]
-    : counts[0];
-  var text = "surflist lists " + countsText + " in " + town + ".";
-  if (Array.isArray(ed.beaches) && ed.beaches.length) {
-    var names = ed.beaches.map(function (b) { return b.name; });
-    var namesText = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
-    text += " Well-known local breaks include " + namesText + ".";
-  }
-  if (ed.season) text += " " + ed.season;
-  return '<p class="town-overview">' + esc(text) + "</p>";
-}
 function renderTownHub(country, region, town) {
   var pageUrl = SITE + townUrl(country, region, town);
   var key = cSlug(country) + "/" + rSlug(region) + "/" + tSlug(town);
@@ -713,7 +693,6 @@ function renderTownHub(country, region, town) {
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
-  renderTownOverview(country, region, town, ed) + "\n" +
   sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n" + marketplaceSection + "\n</main>\n" + FOOTER +
   '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
 }
