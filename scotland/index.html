@@ -21,14 +21,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": [
-        "Organization",
-        "WebSite"
-      ],
-      "@id": "https://surflist.co/#surflist",
-      "name": "surflist",
-      "url": "https://surflist.co",
-      "description": "surflist verifies and lists surf schools, shops, places to stay and surf services worldwide."
+      "@type": "Organization",
+      "@id": "https://surflist.co/#organization",
+      "name": "Surflist",
+      "url": "https://surflist.co"
     },
     {
       "@type": "Place",
@@ -45,7 +41,7 @@
       "url": "https://surflist.co/scotland/",
       "name": "Surfing in Scotland — surflist",
       "isPartOf": {
-        "@id": "https://surflist.co/#surflist"
+        "@id": "https://surflist.co/#website"
       },
       "about": {
         "@id": "https://surflist.co/scotland/#place"
@@ -54,7 +50,7 @@
         "@id": "https://surflist.co/scotland/#place"
       },
       "reviewedBy": {
-        "@id": "https://surflist.co/#surflist"
+        "@id": "https://surflist.co/#organization"
       }
     },
     {
@@ -76,12 +72,24 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://surflist.co/#website",
+  "url": "https://surflist.co",
+  "name": "Surflist",
+  "publisher": {
+    "@id": "https://surflist.co/#organization"
+  }
+}
+</script>
 </head>
 <body>
 <header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a><nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav></div></header>
 <main class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Scotland</span></nav><section class="hero"><h1><img class="flag" src="/flags/gb-sct.svg" width="20" height="15" alt="" loading="lazy" decoding="async" /> Surfing in Scotland</h1><p>Surf Scotland — cold, clean and uncrowded, from the world-class reef at Thurso to the learner bays of East Lothian and the white sands of the Hebrides.</p></section>
 <section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where in Scotland?</h2></div><ul class="grid"><li class="card"><div class="card__media"><a href="/scotland/argyll/" aria-label="Argyll"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(180%2C42%25%2C34%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(194%2C44%25%2C22%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%20206%20C%2080%20178%20140%20236%20220%20210%20C%20300%20186%20350%20224%20400%20204%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.10)%22%2F%3E%3Cpath%20d%3D%22M0%20230%20C%2090%20204%20150%20256%20240%20234%20C%20320%20216%20360%20244%20400%20230%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.14)%22%2F%3E%3C%2Fsvg%3E" alt="Argyll"></a></div><div class="card__body"><h3 class="card__name"><a class="card__name-link" href="/scotland/argyll/">Argyll</a></h3><p class="card__blurb">2 listings</p></div></li><li class="card"><div class="card__media"><a href="/scotland/caithness/" aria-label="Caithness"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(173%2C42%25%2C34%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(187%2C44%25%2C22%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%20206%20C%2080%20178%20140%20236%20220%20210%20C%20300%20186%20350%20224%20400%20204%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.10)%22%2F%3E%3Cpath%20d%3D%22M0%20230%20C%2090%20204%20150%20256%20240%20234%20C%20320%20216%20360%20244%20400%20230%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.14)%22%2F%3E%3C%2Fsvg%3E" alt="Caithness"></a></div><div class="card__body"><h3 class="card__name"><a class="card__name-link" href="/scotland/caithness/">Caithness</a></h3><p class="card__blurb">3 listings</p></div></li><li class="card"><div class="card__media"><a href="/scotland/east-lothian/" aria-label="East Lothian"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(188%2C42%25%2C34%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(202%2C44%25%2C22%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%20206%20C%2080%20178%20140%20236%20220%20210%20C%20300%20186%20350%20224%20400%20204%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.10)%22%2F%3E%3Cpath%20d%3D%22M0%20230%20C%2090%20204%20150%20256%20240%20234%20C%20320%20216%20360%20244%20400%20230%20L400%20300%20L0%20300%20Z%22%20fill%3D%22rgba(255%2C255%2C255%2C0.14)%22%2F%3E%3C%2Fsvg%3E" alt="East Lothian"></a></div><div class="card__body"><h3 class="card__name"><a class="card__name-link" href="/scotland/east-lothian/">East Lothian</a></h3><p class="card__blurb">2 listings</p></div></li></ul></section>
 </main>
-<footer><div class="wrap footer-grid"><div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a><p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div><div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a></nav></div></div></footer>
+<footer><div class="wrap footer-grid"><div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a><p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div><div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a><a href="/about/">About</a></nav></div></div></footer>
 </body>
 </html>

@@ -21,14 +21,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": [
-        "Organization",
-        "WebSite"
-      ],
-      "@id": "https://surflist.co/#surflist",
-      "name": "surflist",
-      "url": "https://surflist.co",
-      "description": "surflist verifies and lists surf schools, shops, places to stay and surf services worldwide."
+      "@type": "Organization",
+      "@id": "https://surflist.co/#organization",
+      "name": "Surflist",
+      "url": "https://surflist.co"
     },
     {
       "@type": "Place",
@@ -47,7 +43,7 @@
       "url": "https://surflist.co/morocco/souss-massa/tamraght/",
       "name": "Surfing in Tamraght — surflist",
       "isPartOf": {
-        "@id": "https://surflist.co/#surflist"
+        "@id": "https://surflist.co/#website"
       },
       "about": {
         "@id": "https://surflist.co/morocco/souss-massa/tamraght/#place"
@@ -56,7 +52,7 @@
         "@id": "https://surflist.co/morocco/souss-massa/tamraght/#place"
       },
       "reviewedBy": {
-        "@id": "https://surflist.co/#surflist"
+        "@id": "https://surflist.co/#organization"
       }
     },
     {
@@ -90,6 +86,18 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://surflist.co/#website",
+  "url": "https://surflist.co",
+  "name": "Surflist",
+  "publisher": {
+    "@id": "https://surflist.co/#organization"
+  }
+}
+</script>
 </head>
 <body>
 <header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a><nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav></div></header>
@@ -106,7 +114,7 @@
 
 <section class="hub-cat" id="marketplace"><div class="marketplace-widget" id="marketplace-widget" data-region-slug="souss-massa" data-title="Local Gear for Sale in Tamraght" data-sell-region="souss-massa"></div></section>
 </main>
-<footer><div class="wrap footer-grid"><div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a><p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div><div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a></nav></div></div></footer>
+<footer><div class="wrap footer-grid"><div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a><p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div><div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a><a href="/about/">About</a></nav></div></div></footer>
 <script src="/marketplace-widget.js" defer></script>
 </body>
 </html>
