@@ -155,48 +155,14 @@ const REGIONS = [
 const TOWN_CONTENT = {
   "england/cornwall/newquay": {
     // intro: "Newquay is Cornwall's best-known surf town...",   // <- optional override
-    beaches: [
-      { name: "Fistral", note: "The town's marquee beach break and the heart of UK surf culture — consistent, punchy and busy." },
-      { name: "Watergate Bay", note: "Two miles of open sand just north of town, with room to spread out at most tides." },
-      { name: "Crantock", note: "A river-mouth beach across the Gannel, quieter and good for longboarding on its day." },
-      { name: "Porth", note: "A sheltered, more forgiving cove that's kinder for beginners when Fistral is maxing out." },
-    ],
+    // beaches: [ { name: "…", note: "…" } ],   // <- slot: add a "Best beaches" list
     // whenToSurf: "…",   // <- slot: add a paragraph or two
-    faq: [
-      { q: "When is the best time of year for surf lessons in Newquay?",
-        a: "For beginners, June to September offers gentler, more consistent waves and the warmest water of the year. Intermediate and advanced surfers will find bigger, more powerful swells from October through March." },
-      { q: "Is Newquay good for total beginners?",
-        a: "Yes. Newquay has sheltered, sandy beach breaks — including Watergate Bay and Porth — that offer forgiving white-water conditions for learning the basics, alongside the more powerful Fistral for when you're ready to push on." },
-      { q: "Do I need to bring my own wetsuit and surfboard?",
-        a: "No. Surf schools listed on surflist in Newquay include wetsuit and board hire as standard in their lesson prices." },
-      { q: "What thickness wetsuit do I need in Newquay?",
-        a: "A 3/2mm wetsuit is enough for the warmer summer months. Over winter, water temperatures drop into single figures (°C), so a 5/4mm wetsuit with boots, gloves and a hood is the norm." },
-      { q: "Are the surf schools in Newquay fully certified?",
-        a: "Newquay's surf schools are commonly accredited by Surfing England or the International Surfing Association (ISA). Schools surflist has personally verified — including confirmed instructor and lifeguard qualifications — carry a “Surflist verified” badge on their listing." },
-      { q: "How much do surf lessons cost in Newquay on average?",
-        a: "Based on surflist's verified Newquay listings, a single group lesson starts from around £40 per person, and private 1:1 coaching starts from around £110." },
-    ],
+    // faq: [ { q: "…", a: "…" } ],   // <- slot: add an FAQ
   },
   "portugal/lisbon/ericeira": {
-    beaches: [
-      { name: "Ribeira d'Ilhas", note: "Ericeira's world-class right-hand point break and a designated World Surfing Reserve — powerful and better suited to experienced surfers." },
-      { name: "Coxos", note: "A fast, hollow reef break for advanced surfers, widely regarded as one of Europe's best waves." },
-      { name: "São Lourenço", note: "A more forgiving beach break, generally the easier choice for beginners and improvers." },
-      { name: "Pedra Branca", note: "A consistent reef break that works across a range of swell and tide." },
-    ],
+    // beaches: [ { name: "…", note: "…" } ],   // <- slot: add a "Best beaches" list
     // whenToSurf: "…",   // <- slot: add a paragraph or two
-    faq: [
-      { q: "When is the best time of year for surf lessons in Ericeira?",
-        a: "Ericeira breaks year-round, but beginners generally get the easiest conditions from May to September, when the swell is smaller and the water is warmer. More experienced surfers tend to visit from October to April, when bigger Atlantic swells arrive." },
-      { q: "Is Ericeira good for total beginners?",
-        a: "Yes, in the right spots. Beginner-friendly beaches like São Lourenço offer softer, more forgiving waves, while reef breaks such as Coxos and Ribeira d'Ilhas are better suited to experienced surfers." },
-      { q: "Do I need to bring my own wetsuit and surfboard?",
-        a: "No. Surf schools listed on surflist in Ericeira include wetsuit and board hire in their lesson prices as standard." },
-      { q: "What thickness wetsuit do I need in Ericeira?",
-        a: "A 3/2mm wetsuit covers most of the year. In peak summer (July–August) a 2mm or shortie is often enough; in winter a 4/3mm with boots is more comfortable." },
-      { q: "Are the surf schools in Ericeira fully certified?",
-        a: "Portuguese surf schools are typically accredited by the Federação Portuguesa de Surf. Schools surflist has personally verified — including confirmed instructor qualifications — carry a “Surflist verified” badge on their listing." },
-    ],
+    // faq: [ { q: "…", a: "…" } ],   // <- slot: add an FAQ
   },
 };
 
