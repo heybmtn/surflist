@@ -134,7 +134,9 @@ Special-field values in use:
 - schools `levels`: `Beginner`, `Intermediate`, `Advanced`, `Kids`
 - shops `offerings`: `Surfboards`, `Wetsuits`, `Apparel`, `Accessories`
   (also `Board rental`, `Ding repair`, etc. where true)
-- stays `stayType`: `Camp`, `Hostel`, `Eco-pod`, `Campervan`
+- stays `stayType`: `Camp`, `Hostel`, `Guesthouse`, `Hotel`, `Lodge`, `Resort`
+  (single value, not an array — use the closest match rather than inventing a
+  new one, so the type filter doesn't fragment)
 - services `serviceType`: e.g. `Board repair`
 
 ### Tier 2 — a verified (paid) listing (gets its own page)
@@ -225,9 +227,12 @@ second and it does.
 
 - **Popular surf destinations** (town chips): the **top 8 towns by listing
   count**, then alphabetical. To feature a town, give it more listings.
-- **Featured surf schools**: **verified schools ordered by most recent
-  `lastVerified`**, top 8. To feature a school: `verified: true` + a recent
-  `lastVerified`.
+- **Latest listings**: a random 8 drawn from **every listing in every
+  category** (free and verified alike), reshuffled client-side on each page
+  load. Verified listings show their blurb and a "Surflist verified" badge
+  and link to their own page; free listings link straight out to the
+  business's site. There's no `lastVerified`-based ordering or schools-only
+  featuring — every listing has an equal chance of appearing.
 
 There's no separate "homepage" list to edit — the homepage curates itself from
 your data.
@@ -331,10 +336,10 @@ flags any town below the 2-listing threshold, and **fails (non-zero exit) if a
 spelling typo has forked one place into two slugs**. Fix collisions before
 building.
 
-**`node build.js`**: validates its own output — all internal links and JSON-LD
-blocks (a healthy build reports 0 broken links, 0 bad JSON-LD) — and regenerates
-the homepage, every hub, every verified page, plus `sitemap.xml`, `robots.txt`
-and `llms.txt`.
+**`node build.js`**: regenerates the homepage, every hub, every verified page,
+plus `sitemap.xml`, `robots.txt` and `llms.txt`. It does not validate internal
+links or JSON-LD itself, so spot-check new or changed pages in the browser (or
+a link checker) before committing.
 
 Then commit both source and generated files and push; Cloudflare Pages rebuilds
 on push.
