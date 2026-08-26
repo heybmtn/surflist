@@ -67,10 +67,17 @@ export interface ListingRow {
   slug: string;
   description: string;
   category: string;
+  board_type: string | null;
+  dimension_length: string | null;
+  dimension_width: string | null;
+  dimension_thickness: string | null;
+  dimension_volume: string | null;
+  condition: string | null;
   price: number;
   currency: string;
   location: string;
   region_slug: string | null;
+  local_pickup_only: number;
   images: string;
   seller_name: string;
   seller_email: string;

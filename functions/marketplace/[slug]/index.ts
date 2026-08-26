@@ -17,6 +17,7 @@
 import type { Env, PagesFunction } from "../../../lib/types";
 import { getListingBySlug } from "../../../lib/db";
 import { renderShell, escapeHtml } from "../../../lib/html";
+import { CONDITION_LABELS, isValidCondition } from "../../../lib/validate";
 
 const RESERVED_SLUGS = new Set(["sell"]);
 
@@ -51,6 +52,25 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, n
     day: "numeric",
   });
 
+  const dimensionParts = [row.dimension_length, row.dimension_width, row.dimension_thickness]
+    .filter(Boolean)
+    .join(" x ");
+  const dimensionsDisplay = [dimensionParts, row.dimension_volume].filter(Boolean).join(" · ");
+
+  const factChips: string[] = [];
+  if (row.category === "surfboards") {
+    if (row.board_type) factChips.push("Type: " + escapeHtml(row.board_type));
+    if (dimensionsDisplay) factChips.push(escapeHtml(dimensionsDisplay));
+    if (row.condition && isValidCondition(row.condition)) {
+      factChips.push("Condition: " + CONDITION_LABELS[row.condition]);
+    }
+  }
+  if (row.local_pickup_only) factChips.push("Local pickup only");
+
+  const factChipsHtml = factChips.length
+    ? '<div class="tags">' + factChips.map((c) => '<span class="lvl">' + c + "</span>").join("") + "</div>"
+    : "";
+
   const body =
     '<main class="wrap">' +
     '<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="crumbs__sep" aria-hidden="true">/</span>' +
@@ -79,6 +99,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params, n
     "<h1>" + escapeHtml(row.title) + "</h1>" +
     '<p class="price">' + priceDisplay + "</p>" +
     "<p>" + escapeHtml(row.location) + " &middot; " + escapeHtml(row.category) + "</p>" +
+    factChipsHtml +
     "<p>Posted " + escapeHtml(postedDate) + "</p>" +
     (row.external_url
       ? '<a class="btn detail__buy-link" href="' + escapeHtml(row.external_url) +

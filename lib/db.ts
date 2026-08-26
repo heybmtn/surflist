@@ -15,10 +15,11 @@ export async function insertListing(db: D1Database, row: ListingRow): Promise<vo
   await db
     .prepare(
       `INSERT INTO marketplace_listings
-        (id, title, slug, description, category, price, currency, location, region_slug,
-         images, seller_name, seller_email, seller_phone, external_url, tier, status, promoted_until,
-         created_at, updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        (id, title, slug, description, category, board_type, dimension_length, dimension_width,
+         dimension_thickness, dimension_volume, condition, price, currency, location, region_slug,
+         local_pickup_only, images, seller_name, seller_email, seller_phone, external_url, tier, status,
+         promoted_until, created_at, updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     )
     .bind(
       row.id,
@@ -26,10 +27,17 @@ export async function insertListing(db: D1Database, row: ListingRow): Promise<vo
       row.slug,
       row.description,
       row.category,
+      row.board_type,
+      row.dimension_length,
+      row.dimension_width,
+      row.dimension_thickness,
+      row.dimension_volume,
+      row.condition,
       row.price,
       row.currency,
       row.location,
       row.region_slug,
+      row.local_pickup_only,
       row.images,
       row.seller_name,
       row.seller_email,
@@ -60,7 +68,7 @@ export async function listListings(db: D1Database, filters: ListingFilters): Pro
   const result = await db
     .prepare(
       `SELECT id, title, slug, category, price, currency, location, region_slug, images,
-              tier, status, promoted_until, created_at
+              local_pickup_only, tier, status, promoted_until, created_at
        FROM marketplace_listings
        WHERE status = 'active'
          AND (?1 IS NULL OR category = ?1)

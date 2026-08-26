@@ -9,7 +9,9 @@ import type { Env, ListingRow, PagesFunction } from "../../../lib/types";
 import { jsonError, jsonOk } from "../../../lib/response";
 import {
   MAX_PHOTOS,
+  clampText,
   isValidCategory,
+  isValidCondition,
   isValidEmail,
   isValidImageFile,
   isValidUrl,
@@ -54,6 +56,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const tier = String(form.get("tier") ?? "free") === "promoted" ? "promoted" : "free";
   const pricePence = parsePricePence(String(form.get("price") ?? ""));
 
+  const boardType = clampText(form.get("board_type"), 80) || null;
+  const dimensionLength = clampText(form.get("dimension_length"), 40) || null;
+  const dimensionWidth = clampText(form.get("dimension_width"), 40) || null;
+  const dimensionThickness = clampText(form.get("dimension_thickness"), 40) || null;
+  const dimensionVolume = clampText(form.get("dimension_volume"), 40) || null;
+  const condition = clampText(form.get("condition"), 40) || null;
+  const localPickupOnly = form.get("local_pickup_only") === "on" ? 1 : 0;
+
   const fieldErrors: Record<string, string> = {};
   if (!title) fieldErrors.title = "Title is required.";
   if (!isValidCategory(category)) fieldErrors.category = "Choose a valid category.";
@@ -63,6 +73,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!isValidEmail(sellerEmail)) fieldErrors.seller_email = "A valid email is required.";
   if (pricePence === null) fieldErrors.price = "Enter a valid price.";
   if (externalUrl && !isValidUrl(externalUrl)) fieldErrors.external_url = "Enter a valid http(s) link.";
+  if (category === "surfboards" && !boardType) fieldErrors.board_type = "Board type is required for surfboards.";
+  if (category === "surfboards" && !condition) {
+    fieldErrors.condition = "Condition is required for surfboards.";
+  } else if (condition && !isValidCondition(condition)) {
+    fieldErrors.condition = "Choose a valid condition.";
+  }
 
   const photos = form.getAll("photos").filter((p): p is File => p instanceof File && p.size > 0);
   if (photos.length > MAX_PHOTOS) fieldErrors.photos = `Up to ${MAX_PHOTOS} photos allowed.`;
@@ -104,10 +120,17 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     slug,
     description: description as string,
     category,
+    board_type: boardType,
+    dimension_length: dimensionLength,
+    dimension_width: dimensionWidth,
+    dimension_thickness: dimensionThickness,
+    dimension_volume: dimensionVolume,
+    condition,
     price: pricePence as number,
     currency: "GBP",
     location: location as string,
     region_slug: regionSlug,
+    local_pickup_only: localPickupOnly,
     images: JSON.stringify(images),
     seller_name: sellerName as string,
     seller_email: sellerEmail,
