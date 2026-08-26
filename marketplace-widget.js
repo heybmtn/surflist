@@ -193,11 +193,11 @@
     var dimensionFieldNames = ["dimension_length", "dimension_width", "dimension_thickness", "dimension_volume"];
 
     function toggleSurfboardFields() {
-      var isSurfboard = categorySelect.value === "surfboards";
-      if (surfboardFields) surfboardFields.hidden = !isSurfboard;
-      if (boardTypeInput) boardTypeInput.required = isSurfboard;
-      if (conditionSelect) conditionSelect.required = isSurfboard;
-      if (!isSurfboard) {
+      var isBoard = categorySelect.value === "surfboards" || categorySelect.value === "bodyboards";
+      if (surfboardFields) surfboardFields.hidden = !isBoard;
+      if (boardTypeInput) boardTypeInput.required = isBoard;
+      if (conditionSelect) conditionSelect.required = isBoard;
+      if (!isBoard) {
         if (boardTypeInput) boardTypeInput.value = "";
         if (conditionSelect) conditionSelect.value = "";
         dimensionFieldNames.forEach(function (name) {

@@ -73,9 +73,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!isValidEmail(sellerEmail)) fieldErrors.seller_email = "A valid email is required.";
   if (pricePence === null) fieldErrors.price = "Enter a valid price.";
   if (externalUrl && !isValidUrl(externalUrl)) fieldErrors.external_url = "Enter a valid http(s) link.";
-  if (category === "surfboards" && !boardType) fieldErrors.board_type = "Board type is required for surfboards.";
-  if (category === "surfboards" && !condition) {
-    fieldErrors.condition = "Condition is required for surfboards.";
+  const isBoardCategory = category === "surfboards" || category === "bodyboards";
+  if (isBoardCategory && !boardType) fieldErrors.board_type = "Board type is required.";
+  if (isBoardCategory && !condition) {
+    fieldErrors.condition = "Condition is required.";
   } else if (condition && !isValidCondition(condition)) {
     fieldErrors.condition = "Choose a valid condition.";
   }
