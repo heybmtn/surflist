@@ -19,6 +19,16 @@
       --shadow-xs: 0 2px 6px rgba(0,0,0,.12);
       --shadow-sm: 0 14px 28px -20px rgba(19,48,44,.45);
       --shadow-md: 0 14px 28px -16px rgba(19,48,44,.35);
+      /* homepage hero refresh: warm secondary accent, decorative only —
+         --accent stays the one brand/link/button colour everywhere else */
+      --sand: #fbfaf6;
+      --accent-coral: #e8663c;
+      /* darker than the #c9542f design spec: #c9542f fails WCAG AA (~4.4:1)
+         for white text at button size, this clears 4.5:1 */
+      --accent-coral-dark: #b8492a;
+      --mark: #fade8e;
+      --blob-teal: #dcefe9;
+      --blob-amber: #fcefc7;
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; height: 100%; }
@@ -193,6 +203,13 @@
     }
     .btn-outline:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); filter: none; }
     .btn-outline:active { transform: translateY(0); }
+    .cta-get-listed {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--accent-coral-dark); color: #fff; text-decoration: none;
+      font-weight: 600; padding: 0.5em 1.1em; border-radius: var(--radius);
+      transition: background .12s;
+    }
+    .cta-get-listed:hover { background: var(--accent-coral); }
 
     /* ---- verified listing page ---- */
     .detail { padding-bottom: 3.5rem; }
@@ -275,6 +292,24 @@
     .hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.6rem; line-height: 1.15; }
     .hero p { color: var(--muted); font-size: 1.12rem; line-height: 1.55; margin: 0; }
     .town-overview { color: var(--muted); font-size: 0.95rem; line-height: 1.55; margin: 0.6rem 0 0; max-width: 720px; }
+
+    /* homepage hero: heavier type, sand panel + decorative blobs, hand-drawn squiggle/marker */
+    .hero--home {
+      position: relative; overflow: hidden; max-width: 760px;
+      background: var(--sand); border-radius: var(--radius-md);
+      padding: 2.4rem clamp(1.2rem, 4vw, 2.6rem) 2.2rem;
+    }
+    .hero--home > * { position: relative; z-index: 1; }
+    .hero--home::before, .hero--home::after { content: ""; position: absolute; z-index: 0; border-radius: 50%; pointer-events: none; }
+    .hero--home::before { top: 20px; right: -40px; width: 260px; height: 260px; background: var(--blob-teal); }
+    .hero--home::after { bottom: 0; left: 120px; width: 150px; height: 150px; background: var(--blob-amber); }
+    .hero--home h1 { font-weight: 800; font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.02; letter-spacing: -0.03em; margin-bottom: 1.4rem; }
+    @media (max-width: 640px) {
+      .hero--home::before, .hero--home::after { display: none; }
+    }
+    .squiggle { position: relative; white-space: nowrap; display: inline-block; }
+    .squiggle svg { position: absolute; left: -2px; bottom: -8px; width: 100%; height: auto; pointer-events: none; }
+    .mark { background: linear-gradient(transparent 55%, var(--mark) 55%); padding: 0 3px; font-weight: 600; color: var(--ink); }
 
     /* region hub jump nav — same pill look as the filter chips (.side-opt on mobile) */
     .jump-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.2rem 0 0; }
@@ -394,20 +429,34 @@
     /* homepage: explore destinations */
     .dest-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.6rem 2.5rem; }
     .dest-group .filter-label { margin: 0 0 0.7rem; }
-    .dest-row { margin-bottom: 0.9rem; }
     .flag { display: inline-block; width: 1.3em; height: auto; vertical-align: -0.15em; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
-    .dest-country { font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
-    .dest-country:hover { color: var(--accent); }
+    .dest-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+    .dest-card {
+      display: flex; align-items: center; gap: 0.6rem; text-decoration: none;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+    .dest-card .flag { width: 1.7em; flex-shrink: 0; }
+    .dest-card__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .dest-card__name { font-size: 0.875rem; font-weight: 600; color: var(--ink); }
+    .dest-card__count { font-size: 0.69rem; color: var(--muted); }
+    @media (hover: hover) {
+      .dest-card:hover { border-color: var(--accent-coral); }
+    }
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+      .dest-card { transition: transform .12s ease, border-color .12s ease; }
+      .dest-card:hover { transform: translateY(-2px); }
+    }
 
     /* animated underline: a thin bar sliding in from the left, replacing a
        plain text-decoration toggle on these link groups */
-    .dest-country, .crumbs a, .hub-cat__head a, .footer-nav a { position: relative; }
-    .dest-country::after, .crumbs a::after, .hub-cat__head a::after, .footer-nav a::after {
+    .crumbs a, .hub-cat__head a, .footer-nav a { position: relative; }
+    .crumbs a::after, .hub-cat__head a::after, .footer-nav a::after {
       content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px;
       background: currentColor; transform: scaleX(0); transform-origin: left;
       transition: transform .2s ease-out;
     }
-    .dest-country:hover::after, .crumbs a:hover::after,
+    .crumbs a:hover::after,
     .hub-cat__head a:hover::after, .footer-nav a:hover::after { transform: scaleX(1); }
     .dest-regions { margin-top: 0.15rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.1rem 0.4rem; }
     .dest-regions a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }

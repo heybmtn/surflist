@@ -346,7 +346,7 @@ function header() {
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
-  '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
+  '<p>Run a surf school, shop or stay? <a class="cta-get-listed" href="/list-your-business/">Get listed</a></p></div>' +
   '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a></nav></div>' +
   "</div></footer>\n";
 
@@ -1002,9 +1002,12 @@ function renderDestinations() {
     var cs = countries().filter(function (c) { return countryMeta(c).bucket === bucket; });
     if (!cs.length) return "";
     var rows = cs.map(function (c) {
-      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a></div>";
+      var n = countCountry(c);
+      return '<a class="dest-card" href="' + countryUrl(c) + '">' + flagHtml(c) +
+        '<span class="dest-card__body"><span class="dest-card__name">' + esc(c) + '</span>' +
+        '<span class="dest-card__count">' + n + " listing" + (n === 1 ? "" : "s") + "</span></span></a>";
     }).join("");
-    return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
+    return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + '</p><div class="dest-cards">' + rows + "</div></div>";
   }).join("");
   return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
     '<div class="dest-groups">' + groups + "</div></section>\n";
@@ -1055,8 +1058,10 @@ function renderHub() {
     canonical: SITE + "/",
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
-  "<p>Find surf schools, shops, stays and board repair by destination.</p>" +
+  '<main class="wrap"><section class="hero hero--home"><h1>Where surfers and surf businesses ' +
+  '<span class="squiggle">meet<svg viewBox="0 0 150 16" width="150" height="16" aria-hidden="true" focusable="false">' +
+  '<path d="M3 9 C40 3, 78 3, 118 8 C130 9.5, 140 11, 147 8" fill="none" stroke="var(--accent-coral)" stroke-width="4" stroke-linecap="round"/></svg></span>.</h1>' +
+  '<p>Find surf schools, shops, stays and board repair <span class="mark">by destination</span>.</p>' +
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
