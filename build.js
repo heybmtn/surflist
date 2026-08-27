@@ -319,7 +319,6 @@ function townsWithHub(c, r) { return townsIn(c, r).filter(function (t) { return 
 /* ---------- shared chrome ---------- */
 function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
-    '<nav class="nav" aria-label="Primary"><a href="/marketplace/">Marketplace</a></nav>' +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
     HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " + HEADER_STATS.stays + " places to stay</p></div>" +
@@ -329,7 +328,7 @@ const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/marketplace/">Marketplace</a><a href="/about/">About</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a></nav></div>' +
   "</div></footer>\n";
 
 function head(o) {
@@ -563,7 +562,6 @@ function renderRegionHub(country, region) {
   if (hubTowns.length) jump.push('<a href="#towns">Towns</a>');
   sectionCats.forEach(function (cat) { jump.push('<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"); });
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
-  var marketplaceSection = marketplaceWidgetSection(region);
 
   return head({
     title: "Surf Schools, Shops & Stays in " + region + " | surflist",
@@ -574,11 +572,14 @@ function renderRegionHub(country, region) {
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(region) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
-  townSection + "\n" + sections + "\n" + marketplaceSection + "\n</main>\n" + FOOTER +
-  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+  townSection + "\n" + sections + "\n</main>\n" + FOOTER +
+  "</body>\n</html>\n";
 }
 
 /* ---------- marketplace cross-promotion widget (client-fetched; see marketplace-widget.js) ----------
+   Kept for when the marketplace launches — not currently called from any
+   generated page; see marketplaceWidgetSection's former call sites in git
+   history to re-wire.
    Region-scoped: cross-promotion filters by region_slug, not town, so a town
    hub's widget shows the same region-wide listings as its region hub — just
    labelled with the town's name for relevance. */
@@ -664,9 +665,7 @@ function renderTownHub(country, region, town) {
   if (Array.isArray(ed.beaches) && ed.beaches.length) jump.push('<a href="#beaches">Beaches</a>');
   if (ed.whenToSurf) jump.push('<a href="#when">When to surf</a>');
   if (Array.isArray(ed.faq) && ed.faq.length) jump.push('<a href="#faq">FAQ</a>');
-  jump.push('<a href="#marketplace">Gear for sale</a>');
   var jumpNav = jump.length > 1 ? '<nav class="jump-nav" aria-label="Jump to a section">' + jump.join("") + "</nav>" : "";
-  var marketplaceSection = marketplaceWidgetSection(region, town);
 
   return head({
     title: "Surf Schools, Shops & Stays in " + town + ", " + region + " | surflist",
@@ -677,8 +676,8 @@ function renderTownHub(country, region, town) {
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
-  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n" + marketplaceSection + "\n</main>\n" + FOOTER +
-  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER +
+  "</body>\n</html>\n";
 }
 
 /* ---------- town-category page ---------- */
@@ -710,9 +709,7 @@ function renderTownCategory(country, region, town, cat) {
   '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
   n + " " + (n === 1 ? cat.singular : cat.plural) + "</p>" +
   '<ul class="grid" id="list">' + items.map(function (d) { return renderCard(d, cat, "h2"); }).join("") + "</ul></div></div>" +
-  marketplaceWidgetSection(region, town) +
-  "</main>\n" + FOOTER + "<script>" + FILTER_JS + "</script>\n" +
-  '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
+  "</main>\n" + FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
 }
 
 /* ---------- browse-all category page (/surf-schools/) ---------- */
@@ -852,11 +849,6 @@ function renderDetail(d, cat, slug, opts) {
   var demoBanner = opts.demo
     ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="/list-your-business/">Claim your verified listing &rarr;</a></div>'
     : "";
-  var gearCallout = (!opts.demo && d.region)
-    ? '<div class="gear-callout">Looking for gear? <a href="/marketplace/?region_slug=' + esc(rSlug(d.region)) +
-      '">Check out recent surfboard &amp; gear listings near ' + esc(d.town || d.region) + ".</a></div>"
-    : "";
-
   // link "back" to the business's town hub when it exists, else its category page
   var hasTownHub = !opts.demo && townHubExists(d.country, d.region, d.town);
   var backHref = hasTownHub ? townUrl(d.country, d.region, d.town) : "/" + cat.slug + "/";
@@ -887,7 +879,7 @@ function renderDetail(d, cat, slug, opts) {
   (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
   (tags ? '<div class="tags detail__levels">' + tags + "</div>" : "") +
   sections + "</div>\n" +
-  '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + gearCallout + "</aside>\n" +
+  '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + "</aside>\n" +
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
@@ -1326,7 +1318,8 @@ uniqSorted(
   CATEGORIES.map(function (c) { return c.slug; })
     .concat(countries().map(function (c) { return cSlug(c); }))
     // legacy: old builds put regions at the root and used /schools/
-    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo"])
+    // "marketplace": not launched yet — see the writePage calls note above
+    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace"])
 ).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
 // legacy redirect file no longer used (nothing is indexed to protect)
 fs.rmSync(path.join(ROOT, "_redirects"), { force: true });
@@ -1340,10 +1333,9 @@ urls.push(SITE + "/list-your-business/");
 writePage("about", renderAbout());
 urls.push(SITE + "/about/");
 
-writePage("marketplace", renderMarketplaceIndex());
-urls.push(SITE + "/marketplace/");
-writePage("marketplace/sell", renderMarketplaceSell());
-urls.push(SITE + "/marketplace/sell/");
+// marketplace not launched yet — renderMarketplaceIndex/renderMarketplaceSell
+// are kept defined but unused; re-add these writePage/urls.push calls to
+// launch. The functions/ backend and marketplace-widget.js stay live.
 
 // browse-all category pages + verified business pages (flat, canonical)
 CATEGORIES.forEach(function (cat) {
