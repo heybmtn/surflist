@@ -94,6 +94,8 @@ const COUNTRIES = [
     intro: "Aotearoa's two main islands face two oceans, with cold-water surf year-round — from the black-sand beach breaks north and south of Auckland to Raglan's famous left point, the Canterbury beach breaks around Christchurch, and the far-south breaks of Dunedin's Otago coast." },
   { name: "USA", bucket: "Worldwide", flag: "us",
     intro: "The birthplace of modern surf culture, with world-class waves spanning California, Hawaii, the East Coast and the Gulf — from Huntington Beach's pier to Oahu's North Shore." },
+  { name: "Vietnam", bucket: "Worldwide", flag: "vn",
+    intro: "Vietnam's surf runs on the northeast monsoon (roughly September–March), when the central and south-central coast picks up windswell. Da Nang's My Khe beachbreaks are the country's most consistent, with smaller, seasonal scenes around Mui Ne and Nha Trang's Bai Dai Beach." },
 ];
 
 /* ---------- region registry (optional metadata) ----------

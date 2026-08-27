@@ -1599,5 +1599,61 @@ window.LISTINGS = [
     url: "https://bigfootsurf.com/",
     blurb: "Westport surf school (the only Washington State Parks-permitted one) teaching cold-water lessons at Westhaven State Park.",
     image: "", verified: false, socials: {},
-    levels: ["Beginner", "Intermediate", "Kids"] }
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ================= VIETNAM =================
+
+  // ---- Da Nang (Da Nang) ----
+  { name: "Da Nang Surf School", country: "Vietnam", region: "Da Nang", town: "Da Nang",
+    url: "https://danangsurfschool.com/",
+    blurb: "Local-led surf and SUP-surf school running small-group beginner lessons on My Khe Beach.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner"] },
+  { name: "Da Nang Outdoor Adventures", country: "Vietnam", region: "Da Nang", town: "Da Nang",
+    url: "https://danangadventures.com/",
+    blurb: "Full-service surf school on My Khe offering group, private and kids' lessons plus board rental and summer camps.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/danangoutdooradventures/", facebook: "https://www.facebook.com/Da-Nang-Outdoor-Adventures-228620470953307/", tiktok: "https://www.tiktok.com/@danangoutdooradventures", youtube: "https://www.youtube.com/channel/UCtgU0Ryy7Iilv2UdosKg6Zg/" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Go Surfing", country: "Vietnam", region: "Da Nang", town: "Da Nang",
+    url: "https://www.gosurfing.vn/",
+    blurb: "Da Nang's original surf school (since 2019) with ISA-certified coaches running group and private lessons at Non Nuoc Beach; also serves Hoi An.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/gosurfing.vn", facebook: "https://www.facebook.com/gosurfingvietnam" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Mui Ne (Binh Thuan) ----
+  { name: "Mui Ne Local Surf School", country: "Vietnam", region: "Binh Thuan", town: "Mui Ne",
+    url: "https://www.muinelocalsurf.com/",
+    blurb: "Dedicated wave-surf school running beginner and intermediate lessons and courses in Mui Ne since 2014.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate"] },
+  { name: "Mui Ne Surf School", country: "Vietnam", region: "Binh Thuan", town: "Mui Ne",
+    url: "https://www.muinesurfschool.com/",
+    blurb: "Local-run school teaching both surfing and kitesurfing on the Ham Tien beachfront in Mui Ne.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate"] },
+
+  // ---- Nha Trang (Khanh Hoa) ----
+  { name: "Nha Trang Local Surf School", country: "Vietnam", region: "Khanh Hoa", town: "Nha Trang",
+    url: "https://www.nhatranglocalsurfschool.com/",
+    blurb: "Local-run, ISA-certified school teaching complete beginners at Bai Dai Beach south of Nha Trang.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner"] },
+  { name: "Single Fin Surf School", country: "Vietnam", region: "Khanh Hoa", town: "Nha Trang",
+    url: "https://singlefinsurfschool.com/",
+    blurb: "ISA-certified surf school running beginner courses at Bai Dai Beach, with a September-to-May season.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner"] },
+  { name: "Cam Ranh Surf Camp", country: "Vietnam", region: "Khanh Hoa", town: "Nha Trang",
+    url: "https://camranhsurfcamp.com/",
+    blurb: "Surf school on Bai Dai Beach at Cam Ranh teaching all levels, with a strong community focus.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/camranhsurfcamp/", facebook: "https://www.facebook.com/camranhsurfcampchill", tiktok: "https://www.tiktok.com/@camranhsurfcamp" },
+    levels: ["Beginner", "Intermediate", "Advanced"] }
 ];
