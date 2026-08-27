@@ -39,3 +39,4 @@ export async function sendEmail(apiKey: string, opts: SendEmailOptions): Promise
 }
 
 export const MARKETPLACE_FROM = "Surflist Marketplace <marketplace@surflist.co>";
+export const LISTINGS_FROM = "Surflist <hello@surflist.co>";

@@ -1034,28 +1034,27 @@ function renderHub() {
 }
 function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
-  var mailto = "mailto:hello@surflist.co?subject=List%20my%20business%20on%20surflist";
-  var stripeLink = "https://buy.stripe.com/7sY7sDeEKeA86yS2zQ1oI00";
   return head({
     title: "Get Listed — Add Your Surf Business | surflist",
-    desc: "List your surf school, shop, stay or service on surflist for free, or get a verified listing with its own page for £99/year.",
+    desc: "List your surf school, shop, stay or service on surflist. Share your website and socials and we'll build a listing fully optimised for search and AI.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
-  "<p>surflist is a directory for surf schools, shops, places to stay and surf services. Add a free basic listing in a couple of minutes, or get verified for more visibility.</p></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>How it works</h2></div>' +
-  "<ol class=\"spec-list\">" +
-  "<li><strong>Basic listing (free):</strong> your business name, location and a link out to your website or socials — enough to get found.</li>" +
-  "<li><strong>Verified listing (£99/year):</strong> a dedicated page on surflist with your description, pricing, levels or services offered, and structured data that helps you show up in Google and AI search results.</li>" +
-  "<li>Get in touch or pay below and we'll email you to collect your business details, usually within a few days.</li>" +
-  "</ol></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>Free basic listing</h2></div>' +
-  '<p><a class="btn" href="' + mailto + '">Email hello@surflist.co &rarr;</a></p></section>\n' +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>Verified listing — £99/year</h2></div>' +
-  "<p>Billed annually, cancel anytime. After payment we'll email you to collect your business details and get your page live.</p>" +
-  '<p><a class="btn" href="' + stripeLink + '" target="_blank" rel="noopener">Get verified — £99/year &rarr;</a></p></section>\n' +
-  "</main>\n" + FOOTER + "</body>\n</html>\n";
+  "<p>Every listing on surflist is built out fully and optimised to be found by both search engines and AI assistants. Share your website and socials below and we'll do the rest.</p></section>\n" +
+  '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
+  '<form id="list-your-business-form" class="form-field">' +
+  '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
+  '<div class="form-row"><label for="lyb-website">Website</label><input id="lyb-website" name="website" type="url" maxlength="500" required placeholder="https://www.yourbusiness.com"></div>' +
+  '<div class="form-row"><label for="lyb-socials">Socials</label><textarea id="lyb-socials" name="socials" maxlength="1000" placeholder="Instagram, Facebook, TikTok — one per line"></textarea>' +
+  '<p class="form-hint">Optional, but the more we can find you, the better your listing.</p></div>' +
+  '<div class="form-row"><label for="lyb-contact-email">Contact email</label><input id="lyb-contact-email" name="contact_email" type="email" required></div>' +
+  '<div class="form-actions"><button type="submit" class="btn">Submit</button></div>' +
+  '<p class="form-error" id="list-your-business-error" hidden></p>' +
+  "</form>" +
+  '<div class="form-success" hidden></div>' +
+  "</section>\n" +
+  "</main>\n" + FOOTER + '<script src="/list-your-business.js" defer></script>\n</body>\n</html>\n';
 }
 
 /* ---------- about (entity home: full Organization + founder Person) ---------- */
