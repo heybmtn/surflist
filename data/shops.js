@@ -386,6 +386,66 @@ window.LISTINGS = [
     socials: { facebook: "https://www.facebook.com/Memories-Beach-Bar-Pakarang-Surfshop-in-Khaolak-150570521704548/", instagram: "https://www.instagram.com/memoriesbeachbar/" },
     offerings: ["Board rental"] },
 
+  // ================= MEXICO =================
+
+  // ---- Sayulita (Nayarit) ----
+  { name: "WildMex Surf School & Adventure Center", country: "Mexico", region: "Nayarit", town: "Sayulita",
+    url: "https://wildmex.com/",
+    blurb: "Sayulita surf shop with 300+ boards for rent plus SUPs and bikes, with free swaps across its Nayarit locations.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental", "Accessories"] },
+  { name: "Lunazul Surf School & Shop", country: "Mexico", region: "Nayarit", town: "Sayulita",
+    url: "https://www.lunazulsurfing.com/",
+    blurb: "Family surf shop on Sayulita's main beach with a wide selection of boards for sale and rent.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental"] },
+  { name: "Stalla Surf Center", country: "Mexico", region: "Nayarit", town: "Sayulita",
+    url: "https://www.fernandostalla.com/",
+    blurb: "Rents soft-tops, fiberglass boards and SUPs from its Sayulita surf center.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental"] },
+
+  // ---- San Pancho (Nayarit) ----
+  { name: "WildMex Surf School & Adventure Center", country: "Mexico", region: "Nayarit", town: "San Pancho",
+    url: "https://wildmex.com/",
+    blurb: "WildMex's San Pancho shop, offering board rentals and gear with swaps across its Nayarit locations.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental", "Accessories"] },
+  { name: "San Pancho Surf Shop", country: "Mexico", region: "Nayarit", town: "San Pancho",
+    url: "https://sanpanchosurfshop.com/",
+    blurb: "Locally owned surf shop in San Pancho stocking boards and beach essentials.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Apparel", "Accessories"] },
+
+  // ---- Puerto Escondido (Oaxaca) ----
+  { name: "Odyboards Surf Shop & Factory", country: "Mexico", region: "Oaxaca", town: "Puerto Escondido",
+    url: "https://www.odyboards.com/",
+    blurb: "La Punta surfboard factory and shop hand-shaping boards on site, selling new and used boards plus fins, wax and accessories.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Accessories"] },
+
+  // ---- El Pescadero (Baja California Sur) ----
+  { name: "West Side Baja Surf School", country: "Mexico", region: "Baja California Sur", town: "El Pescadero",
+    url: "https://westsidebaja.com/",
+    blurb: "Shop on the road to Cerritos beach with board and beach-gear rentals, apparel and surf essentials.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/westsidesurfbaja/" },
+    offerings: ["Board rental", "Apparel", "Accessories"] },
+
+  // ---- Todos Santos (Baja California Sur) ----
+  { name: "Todos Santos Surf Shop & Activities Center", country: "Mexico", region: "Baja California Sur", town: "Todos Santos",
+    url: "https://explorabaja.com/todossurfshop/",
+    blurb: "Well-established local surf shop in Todos Santos carrying boards, wetsuits and beach gear, with board rentals.",
+    image: "", verified: false,
+    socials: {},
+    offerings: ["Surfboards", "Board rental", "Wetsuits", "Apparel", "Accessories"] },
+
   // ================= NEW ZEALAND =================
 
   // ---- Te Arai (Auckland) ----

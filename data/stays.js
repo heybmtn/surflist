@@ -378,6 +378,50 @@ window.LISTINGS = [
     socials: { instagram: "https://www.instagram.com/apsara_khaolak/", facebook: "https://www.facebook.com/apsarakhaolak/", youtube: "https://www.youtube.com/@apsarakhaolak1125" },
     stayType: "Resort" },
 
+  // ================= MEXICO =================
+
+  // ---- Sayulita (Nayarit) ----
+  { name: "WildMex Surf School & Adventure Center", country: "Mexico", region: "Nayarit", town: "Sayulita",
+    url: "https://wildmex.com/",
+    blurb: "Surf camp with pool- and ocean-view accommodation a few blocks from the beach, bundling lodging, daily lessons and surf safaris.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+  { name: "Sayulita Surf Camps", country: "Mexico", region: "Nayarit", town: "Sayulita",
+    url: "https://www.sayulitasurfcamps.com/",
+    blurb: "Custom surf-camp packages in Sayulita for solo travelers, families and groups, from day trips to full-week stays.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+
+  // ---- Puerto Escondido (Oaxaca) ----
+  { name: "Puerto Surf House & School", country: "Mexico", region: "Oaxaca", town: "Puerto Escondido",
+    url: "https://www.puertosurf.com.mx/",
+    blurb: "Beachfront surf house and camp in La Punta, 50m from the point, with garden, hammocks and an outdoor kitchen.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Surf house" },
+  { name: "B Surfer", country: "Mexico", region: "Oaxaca", town: "Puerto Escondido",
+    url: "https://www.bsurfer.com/",
+    blurb: "Palapa-roofed surf bungalows in La Punta de Zicatela, steps from the waves, with surf-and-stay packages.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Bungalow" },
+  { name: "Vidasurf Ecotours", country: "Mexico", region: "Oaxaca", town: "Puerto Escondido",
+    url: "https://www.vidasurfecotours.com/",
+    blurb: "Beachfront accommodation run by the Vidasurf surf school in Puerto Escondido.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Guesthouse" },
+
+  // ---- Troncones (Guerrero) ----
+  { name: "ISA Mexico Surf Adventures", country: "Mexico", region: "Guerrero", town: "Troncones",
+    url: "http://www.isamexico.com/",
+    blurb: "Troncones surf camp (Casa de las Piedras) on Playa Troncones combining lodging with its learn-to-surf program.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+
   // ================= NEW ZEALAND =================
 
   // ---- Te Arai (Auckland) ----
