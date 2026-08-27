@@ -386,6 +386,16 @@ window.LISTINGS = [
     socials: { facebook: "https://www.facebook.com/Memories-Beach-Bar-Pakarang-Surfshop-in-Khaolak-150570521704548/", instagram: "https://www.instagram.com/memoriesbeachbar/" },
     offerings: ["Board rental"] },
 
+  // ================= NICARAGUA =================
+
+  // ---- San Juan del Sur (Rivas) ----
+  { name: "Alvarez Surfboards", country: "Nicaragua", region: "Rivas", town: "San Juan del Sur",
+    url: "https://www.surfwithalex.com",
+    blurb: "San Juan del Sur shop of local shaper Alex Alvarez, making custom surfboards and offering board rentals and ding repair.",
+    image: "", verified: false,
+    socials: { instagram: "https://instagram.com/surfwithalex", facebook: "https://www.facebook.com/surfwithalex" },
+    offerings: ["Surfboards", "Board rental", "Ding repair"] },
+
   // ================= MEXICO =================
 
   // ---- Sayulita (Nayarit) ----

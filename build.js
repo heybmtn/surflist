@@ -86,6 +86,8 @@ const COUNTRIES = [
     intro: "One of the most accessible warm-water surf destinations from Europe — centred on Taghazout Bay near Agadir, with world-class right-hand point breaks, year-round sunshine and a dense cluster of surf camps, schools and shops, plus mellower beginner waves up the coast at Essaouira." },
   { name: "Costa Rica", bucket: "Worldwide", flag: "cr",
     intro: "One of the world's great surf destinations, with warm water and remarkably consistent waves on two coasts: the ultra-reliable Pacific — home to beginner-friendly hubs like Tamarindo and Nosara and heavier breaks at Santa Teresa, Dominical and Pavones — and the Afro-Caribbean south around Puerto Viejo, where the Salsa Brava reef fires in winter." },
+  { name: "Nicaragua", bucket: "Worldwide", flag: "ni",
+    intro: "Central America's largest country and one of its most consistent surf destinations, Nicaragua is known for warm water and offshore winds that blow almost year-round off Lake Nicaragua. The Pacific coast runs from the beach and reef breaks around San Juan del Sur, Popoyo and Playa Gigante in the south to the quieter, remote waves of León and Chinandega in the north." },
   { name: "Mexico", bucket: "Worldwide", flag: "mx",
     intro: "From the Pacific point breaks of Nayarit to Oaxaca's world-class Zicatela and the mellow sand-bottom waves of Baja, Mexico offers warm water and consistent surf year-round for every level." },
   { name: "Thailand", bucket: "Worldwide", flag: "th",

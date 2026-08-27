@@ -378,6 +378,78 @@ window.LISTINGS = [
     socials: { instagram: "https://www.instagram.com/apsara_khaolak/", facebook: "https://www.facebook.com/apsarakhaolak/", youtube: "https://www.youtube.com/@apsarakhaolak1125" },
     stayType: "Resort" },
 
+  // ================= NICARAGUA =================
+
+  // ---- San Juan del Sur (Rivas) ----
+  { name: "Beyond the Dream Surf", country: "Nicaragua", region: "Rivas", town: "San Juan del Sur",
+    url: "https://www.beyondthedreamsurf.com",
+    blurb: "Surf house just outside San Juan del Sur run by locals Manuel and Hanna, with surf-and-stay packages and jungle ocean views.",
+    image: "", verified: false,
+    socials: { instagram: "https://instagram.com/beyondthedreamsurf", facebook: "https://www.facebook.com/beyondthedreamsurf", youtube: "https://www.youtube.com/channel/UCoh_MHl7PAwLqw5DjiajJ7g" },
+    stayType: "Camp" },
+
+  // ---- Popoyo (Rivas) ----
+  { name: "Sardina Surf Camp", country: "Nicaragua", region: "Rivas", town: "Popoyo",
+    url: "https://www.sardinasurfcamp.com",
+    blurb: "Locally owned, off-grid surf camp in Popoyo with handcrafted solar-powered cabanas near the Magnific Rock breaks.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/alocalmovement", facebook: "https://www.facebook.com/alocalmovement" },
+    stayType: "Camp" },
+  { name: "Popoyo Surf Camp", country: "Nicaragua", region: "Rivas", town: "Popoyo",
+    url: "https://www.popoyosurfcamp.com",
+    blurb: "Popoyo surf camp with accommodation, surf packages, boat trips and guiding across the area's world-class breaks.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/popoyosurfcamp" },
+    stayType: "Camp" },
+  { name: "Las Plumerias Surf Lodge", country: "Nicaragua", region: "Rivas", town: "Popoyo",
+    url: "https://www.lasplumerias.com",
+    blurb: "Beachfront surf lodge near Popoyo offering all-inclusive surf-and-stay packages with meals, accommodation and daily coaching.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/lasplumerias_surf_nicaragua", facebook: "https://www.facebook.com/lasplumerias" },
+    stayType: "Lodge" },
+  { name: "Surf & Yoga Retreats Nicaragua", country: "Nicaragua", region: "Rivas", town: "Popoyo",
+    url: "https://surfnyoganicaragua.com",
+    blurb: "Popoyo surf-and-yoga retreat centre a street back from the beach, with packages combining daily surf and yoga.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Camp" },
+
+  // ---- Playa Gigante (Rivas) ----
+  { name: "Giant's Foot Surf", country: "Nicaragua", region: "Rivas", town: "Playa Gigante",
+    url: "https://giantsfootsurf.com",
+    blurb: "Beachfront, all-inclusive surf lodge in the fishing village of Playa Gigante, established 2004 with boat access to a dozen-plus breaks.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/giantsfootsurf", facebook: "https://www.facebook.com/giantsfootsurf", youtube: "https://www.youtube.com/@giantsfootsurf" },
+    stayType: "Camp" },
+  { name: "Dale Dagger Surf Lodge", country: "Nicaragua", region: "Rivas", town: "Playa Gigante",
+    url: "https://nicasurf.com",
+    blurb: "Beachfront surf lodge in Playa Gigante operating since 2002, offering all-inclusive surf-charter packages with unlimited boat access.",
+    image: "", verified: false,
+    socials: { instagram: "http://www.instagram.com/nicasurf", facebook: "http://www.facebook.com/nica.surf.3", youtube: "https://www.youtube.com/channel/UCuOtBo6z4vcd0bDR5BUgehg", x: "http://www.twitter.com/nica_surf" },
+    stayType: "Camp" },
+
+  // ---- Aposentillo (Chinandega) ----
+  { name: "Las Dunas Surf Resort", country: "Nicaragua", region: "Chinandega", town: "Aposentillo",
+    url: "https://lasdunassurfresort.com",
+    blurb: "Boutique surf resort with private cabins on Playa Aposentillo in remote northern Nicaragua, with pool, restaurant and surf packages.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Resort" },
+
+  // ---- Las Peñitas (León) ----
+  { name: "Mano a Mano Hostel", country: "Nicaragua", region: "León", town: "Las Peñitas",
+    url: "https://www.manoamanoecohostel.com",
+    blurb: "Beachfront eco-hostel in Las Peñitas with dorms and private rooms, a beach bar and restaurant, surf classes and daily yoga.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/hostal_manoamano", facebook: "https://www.facebook.com/ManoaManoEcoHostal" },
+    stayType: "Hostel" },
+  { name: "Surfing Turtle Lodge", country: "Nicaragua", region: "León", town: "Las Peñitas",
+    url: "https://www.surfingturtlelodge.com",
+    blurb: "Remote, solar-powered island eco-hostel off the León coast with an on-site turtle hatchery, restaurant and surf lessons.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Hostel" },
+
   // ================= MEXICO =================
 
   // ---- Sayulita (Nayarit) ----
