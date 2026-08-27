@@ -1252,5 +1252,35 @@ window.LISTINGS = [
     blurb: "Surf school at Memories Beach Bar with certified instructors and board hire, working the Pakarang and Nang Thong breaks.",
     image: "", verified: false,
     socials: { facebook: "https://www.facebook.com/Memories-Beach-Bar-Pakarang-Surfshop-in-Khaolak-150570521704548/", instagram: "https://www.instagram.com/memoriesbeachbar/" },
-    levels: ["Beginner", "Intermediate"] }
+    levels: ["Beginner", "Intermediate"] },
+
+  // ================= NEW ZEALAND =================
+
+  // ---- Te Arai (Auckland) ----
+  { name: "Aotearoa Surf School", country: "New Zealand", region: "Auckland", town: "Te Arai",
+    url: "https://aotearoasurf.co.nz",
+    blurb: "Established 2002, a mobile surf school based at Te Arai Point running year-round lessons, kids' and youth camps, women's programmes and surf tours across the beaches north of Auckland.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/aotearoasurfschool/", facebook: "https://www.facebook.com/aotearoasurf/" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Christchurch (Canterbury) ----
+  { name: "Stoked Surf School", country: "New Zealand", region: "Canterbury", town: "Christchurch",
+    url: "https://www.stokedsurfschool.co.nz",
+    blurb: "Sumner-based surf and skate school at Scarborough Beach, with lessons and board hire for all abilities, plus dedicated women's and family sessions.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/stokedsumner/", facebook: "https://www.facebook.com/stokedsurfskateschool/" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Learn to Surf Sumner", country: "New Zealand", region: "Canterbury", town: "Christchurch",
+    url: "https://surfcoach.co.nz",
+    blurb: "Sumner surf school run by Aaron and team, with lessons, kids' and after-school classes, school-group programmes and a large board and wetsuit hire range.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/surfcoachnz/" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "Christchurch Surf Lessons", country: "New Zealand", region: "Canterbury", town: "Christchurch",
+    url: "https://christchurchsurflessons.co.nz",
+    blurb: "Sumner Beach surf school (part of the Aotearoa Surf family) offering group, private and women's lessons, kids' camps and school programmes year-round for ages 4 and up.",
+    image: "", verified: false,
+    socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] }
 ];

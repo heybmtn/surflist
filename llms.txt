@@ -71,6 +71,13 @@
     - [Surfing in Imsouane](https://surflist.co/morocco/souss-massa/imsouane/): 2 listings.
     - [Surfing in Taghazout](https://surflist.co/morocco/souss-massa/taghazout/): 9 listings.
     - [Surfing in Tamraght](https://surflist.co/morocco/souss-massa/tamraght/): 4 listings.
+- [Surfing in New Zealand](https://surflist.co/new-zealand/): 8 listings across Auckland, Canterbury, Northland, Otago.
+  - [Surfing in Auckland](https://surflist.co/new-zealand/auckland/): 3 listings.
+    - [Surfing in Te Arai](https://surflist.co/new-zealand/auckland/te-arai/): 3 listings.
+  - [Surfing in Canterbury](https://surflist.co/new-zealand/canterbury/): 3 listings.
+    - [Surfing in Christchurch](https://surflist.co/new-zealand/canterbury/christchurch/): 3 listings.
+  - [Surfing in Northland](https://surflist.co/new-zealand/northland/): 1 listings.
+  - [Surfing in Otago](https://surflist.co/new-zealand/otago/): 1 listings.
 - [Surfing in Portugal](https://surflist.co/portugal/): 56 listings across Algarve, Lisbon, Peniche, Porto, Silver Coast, Viana do Castelo.
   - [Surfing in Algarve](https://surflist.co/portugal/algarve/): 15 listings.
     - [Surfing in Arrifana](https://surflist.co/portugal/algarve/arrifana/): 2 listings.
