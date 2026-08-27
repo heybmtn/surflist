@@ -376,5 +376,31 @@ window.LISTINGS = [
     blurb: "Beachfront resort right on Memories Beach with direct surf access, on-site lessons, board rental and seasonal surf programs.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/apsara_khaolak/", facebook: "https://www.facebook.com/apsarakhaolak/", youtube: "https://www.youtube.com/@apsarakhaolak1125" },
-    stayType: "Resort" }
+    stayType: "Resort" },
+
+  // ================= NEW ZEALAND =================
+
+  // ---- Te Arai (Auckland) ----
+  { name: "Aotearoa Surf Eco Pods & Glamping", country: "New Zealand", region: "Auckland", town: "Te Arai",
+    url: "https://aotearoasurf.co.nz/accommodation/",
+    blurb: "Modern eco pods and glamping run by Aotearoa Surf near Te Arai Point, with surf-and-stay packages pairing accommodation with lessons.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/aotearoasurfschool/", facebook: "https://www.facebook.com/aotearoasurf/" },
+    stayType: "Eco-pod" },
+
+  // ---- Mangawhai (Northland) ----
+  { name: "Aotearoa Surf Lodge", country: "New Zealand", region: "Northland", town: "Mangawhai",
+    url: "https://aotearoasurf.co.nz/aotearoa-surf-lodge-mangawhai/",
+    blurb: "Surf lodge in the heart of Mangawhai Heads run by Aotearoa Surf, offering surf-and-stay packages, retreats and group getaways.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/aotearoasurfschool/", facebook: "https://www.facebook.com/aotearoasurf/" },
+    stayType: "Lodge" },
+
+  // ---- Dunedin (Otago) ----
+  { name: "Hydro Esplanade Apartments", country: "New Zealand", region: "Otago", town: "Dunedin",
+    url: "https://esplanadeapartments.co.nz",
+    blurb: "Self-contained apartments on The Esplanade right on St Clair's surf beach in the historic Hydro building, with ocean views over the breaks.",
+    image: "", verified: false,
+    socials: {},
+    stayType: "Apartment" }
 ];

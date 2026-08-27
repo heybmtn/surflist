@@ -384,5 +384,15 @@ window.LISTINGS = [
     blurb: "Beachfront shop at Memories Beach Bar hiring out surfboards, paddle boards and bodyboards right by the break.",
     image: "", verified: false,
     socials: { facebook: "https://www.facebook.com/Memories-Beach-Bar-Pakarang-Surfshop-in-Khaolak-150570521704548/", instagram: "https://www.instagram.com/memoriesbeachbar/" },
-    offerings: ["Board rental"] }
+    offerings: ["Board rental"] },
+
+  // ================= NEW ZEALAND =================
+
+  // ---- Te Arai (Auckland) ----
+  { name: "Aotearoa Surf", country: "New Zealand", region: "Auckland", town: "Te Arai",
+    url: "https://aotearoasurf.co.nz/shop/",
+    blurb: "In-store and online surf shop at Te Arai Point stocking surfboards, wetsuits, SUPs and accessories, with board and wetsuit hire alongside the surf school.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/aotearoasurfschool/", facebook: "https://www.facebook.com/aotearoasurf/" },
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] }
 ];

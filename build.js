@@ -88,6 +88,8 @@ const COUNTRIES = [
     intro: "One of the world's great surf destinations, with warm water and remarkably consistent waves on two coasts: the ultra-reliable Pacific — home to beginner-friendly hubs like Tamarindo and Nosara and heavier breaks at Santa Teresa, Dominical and Pavones — and the Afro-Caribbean south around Puerto Viejo, where the Salsa Brava reef fires in winter." },
   { name: "Thailand", bucket: "Worldwide", flag: "th",
     intro: "Thailand's surf is a seasonal, monsoon-driven secret on the Andaman coast — warm water and mostly gentle, beginner-friendly beach breaks around Phuket and Khao Lak, roughly May to October." },
+  { name: "New Zealand", bucket: "Worldwide", flag: "nz",
+    intro: "Aotearoa's two main islands face two oceans, with cold-water surf year-round — from the black-sand beach breaks north and south of Auckland to Raglan's famous left point, the Canterbury beach breaks around Christchurch, and the far-south breaks of Dunedin's Otago coast." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
