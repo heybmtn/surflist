@@ -394,5 +394,137 @@ window.LISTINGS = [
     blurb: "In-store and online surf shop at Te Arai Point stocking surfboards, wetsuits, SUPs and accessories, with board and wetsuit hire alongside the surf school.",
     image: "", verified: false,
     socials: { instagram: "https://www.instagram.com/aotearoasurfschool/", facebook: "https://www.facebook.com/aotearoasurf/" },
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] },
+
+  // ================= USA =================
+  // ---- Huntington Beach (California) ----
+  { name: "Jack's Surfboards", country: "USA", region: "California", town: "Huntington Beach",
+    url: "https://jackssurfboards.com/",
+    blurb: "Huntington Beach's landmark surf retailer at PCH and Main since 1957, with one of America's largest board and wetsuit selections.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/jackssurf", facebook: "https://www.facebook.com/jackssurf" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+  { name: "Huntington Surf & Sport", country: "USA", region: "California", town: "Huntington Beach",
+    url: "https://www.hsssurf.com/",
+    blurb: "Surfer-owned Huntington Beach shop since 1978, opposite the pier, with a large board and wetsuit range and custom shaping.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ---- Santa Cruz (California) ----
+  { name: "Freeline Surf Shop", country: "USA", region: "California", town: "Santa Cruz",
+    url: "https://freelinesurf.com/",
+    blurb: "Core Santa Cruz surf shop at Pleasure Point, founded by the Mel family in 1969, stocking boards, wetsuits and accessories.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Apparel"] },
+
+  // ---- Encinitas (California) ----
+  { name: "Hansen Surfboards", country: "USA", region: "California", town: "Encinitas",
+    url: "https://www.hansensurf.com/",
+    blurb: "Family-owned Encinitas heritage surf shop since 1961, directly across from Swami's, San Diego County's largest surf retailer.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ---- San Clemente (California) ----
+  { name: "369 Surf", country: "USA", region: "California", town: "San Clemente",
+    url: "https://369surf.com/",
+    blurb: "San Clemente surf shop since 2003 in El Camino Plaza, with board and wetsuit rentals, lessons and surf-guide service.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] },
+
+  // ---- Ventura (California) ----
+  { name: "Ventura Surf Shop", country: "USA", region: "California", town: "Ventura",
+    url: "https://shopvss.com/",
+    blurb: "Ventura surf shop with roots in the 1960s Morey-Pope era, stocking boards, wetsuits and gear on Thompson Blvd.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ---- Pacifica (California) ----
+  { name: "NorCal Surf Shop", country: "USA", region: "California", town: "Pacifica",
+    url: "https://norcalsurfshop.com/",
+    blurb: "Pacifica surf-and-skate shop at Linda Mar since 1991, with 200+ boards, rentals and lessons.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+  { name: "Sonlight Surfshop", country: "USA", region: "California", town: "Pacifica",
+    url: "https://sonlightsurfshop.com/",
+    blurb: "Family-run Pacifica surf shop serving Linda Mar since 1985, with boards, wetsuits, clothing and rentals.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Half Moon Bay (California) ----
+  { name: "Mavericks Surf Company", country: "USA", region: "California", town: "Half Moon Bay",
+    url: "https://maverickssurfcompany.com/",
+    blurb: "Jeff Clark's Pillar Point Harbor shop, home of the original Mavericks Surf brand and Jeff Clark Surfboards, with rentals.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/MavericksSurf" },
+    offerings: ["Surfboards", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Haleiwa (Oahu) ----
+  { name: "Surf N Sea", country: "USA", region: "Oahu", town: "Haleiwa",
+    url: "https://surfnsea.com/",
+    blurb: "The oldest surf and dive shop in Hawaii, in Haleiwa's landmark 1921 building on the North Shore since 1965 — boards, wetsuits, rentals and lessons.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Kihei (Maui) ----
+  { name: "Hi-Tech Surf Sports", country: "USA", region: "Maui", town: "Kihei",
+    url: "https://www.surfmaui.com/",
+    blurb: "Maui's main surf shop with the island's largest rental and demo center, stocking boards, wetsuits and gear (Kihei, Kahului and Paia).",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Kitty Hawk (North Carolina) ----
+  { name: "Wave Riding Vehicles", country: "USA", region: "North Carolina", town: "Kitty Hawk",
+    url: "https://www.waveridingvehicles.com/",
+    blurb: "The East Coast's largest surfboard manufacturer since 1967, with a full-service Kitty Hawk showroom, rentals and repairs.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/wrv1967_kittyhawk" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental", "Ding repair"] },
+  { name: "Kitty Hawk Surf Co.", country: "USA", region: "North Carolina", town: "Kitty Hawk",
+    url: "https://www.khsurf.com/",
+    blurb: "Outer Banks board-sports retailer (Corolla to Rodanthe) with new and used surf, SUP, skim and kayak gear plus rentals.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Cocoa Beach (Florida) ----
+  { name: "Ron Jon Surf Shop", country: "USA", region: "Florida", town: "Cocoa Beach",
+    url: "https://www.ronjonsurfshop.com/",
+    blurb: "The world's largest surf shop — Ron Jon's 52,000-sq-ft Cocoa Beach flagship, open since 1963.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ---- Belmar (New Jersey) ----
+  { name: "Eastern Lines Surf Shop", country: "USA", region: "New Jersey", town: "Belmar",
+    url: "https://easternlines.com/",
+    blurb: "Family-owned Belmar surf shop since 1981, with boards, wetsuits and apparel plus rentals, lessons and ding repair.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental", "Ding repair"] },
+
+  // ---- Montauk (New York) ----
+  { name: "Air + Speed", country: "USA", region: "New York", town: "Montauk",
+    url: "https://airandspeedclothing.com/",
+    blurb: "Montauk Main Street surf shop with boards, wetsuits and gear, plus rentals, repairs, private lessons and a kids' surf camp.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Galveston (Texas) ----
+  { name: "Ohana Surf & Skate", country: "USA", region: "Texas", town: "Galveston",
+    url: "https://ohanasurfandskate.com/",
+    blurb: "Galveston's Hawaiian-style surf and skate shop, stocking boards, apparel and gear alongside its lessons and camps.",
+    image: "", verified: false, socials: {},
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories"] },
+
+  // ---- Pacific City (Oregon) ----
+  { name: "Moment Surf Company", country: "USA", region: "Oregon", town: "Pacific City",
+    url: "https://momentsurfco.com/",
+    blurb: "Core cold-water surf shop on the beach at Cape Kiwanda since 2010, with boards, wetsuits, apparel and rentals.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/momentsurfco" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] },
+
+  // ---- Westport (Washington) ----
+  { name: "The Surf Shop", country: "USA", region: "Washington", town: "Westport",
+    url: "https://thesurfshop.us/",
+    blurb: "Washington's first surf shop, family-owned in Westport since 1986, with boards, wetsuits, bodyboards and rentals.",
+    image: "", verified: false, socials: {},
     offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] }
 ];
