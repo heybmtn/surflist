@@ -56,10 +56,6 @@ export async function getListingBySlug(db: D1Database, slug: string): Promise<Li
   return db.prepare(`SELECT * FROM marketplace_listings WHERE slug = ?`).bind(slug).first<ListingRow>();
 }
 
-export async function getListingById(db: D1Database, id: string): Promise<ListingRow | null> {
-  return db.prepare(`SELECT * FROM marketplace_listings WHERE id = ?`).bind(id).first<ListingRow>();
-}
-
 export async function listListings(db: D1Database, filters: ListingFilters): Promise<ListingRow[]> {
   const limit = Math.min(Math.max(filters.limit ?? 24, 1), 60);
   const offset = Math.max(filters.offset ?? 0, 0);
