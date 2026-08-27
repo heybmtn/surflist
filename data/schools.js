@@ -1282,5 +1282,200 @@ window.LISTINGS = [
     blurb: "Sumner Beach surf school (part of the Aotearoa Surf family) offering group, private and women's lessons, kids' camps and school programmes year-round for ages 4 and up.",
     image: "", verified: false,
     socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ================= USA =================
+  // ---- Huntington Beach (California) ----
+  { name: "Corky Carroll's Surf School", country: "USA", region: "California", town: "Huntington Beach",
+    url: "https://www.surfschool.net/",
+    blurb: "Long-running Huntington Beach surf school teaching beginners and groups at the gentler Bolsa Chica State Beach, with rentals and camps.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Banzai Surf School", country: "USA", region: "California", town: "Huntington Beach",
+    url: "https://banzaisurfschool.com/",
+    blurb: "NSSIA-accredited Huntington Beach surf school running year-round group and private lessons plus summer camps, equipment included.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Santa Cruz (California) ----
+  { name: "Richard Schmidt School of Surfing", country: "USA", region: "California", town: "Santa Cruz",
+    url: "https://richardschmidt.com/",
+    blurb: "Santa Cruz's original surf school, teaching lessons, SUP and ocean-safety classes across Monterey Bay since 1978.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Encinitas (California) ----
+  { name: "Leucadia Surf School", country: "USA", region: "California", town: "Encinitas",
+    url: "https://leucadiasurfschool.com/",
+    blurb: "Family-run Encinitas surf school offering beginner and small-group lessons at Moonlight Beach, in north county San Diego since 2002.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Surfin Fire", country: "USA", region: "California", town: "Encinitas",
+    url: "https://surfinfire.com/",
+    blurb: "Family-owned Encinitas surf school running lessons and camps for all ages across north county San Diego since 1999.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- San Diego (California) ----
+  { name: "Pacific Surf School", country: "USA", region: "California", town: "San Diego",
+    url: "https://www.pacificsurf.com/",
+    blurb: "Long-established San Diego surf school running lessons and camps at Pacific and Mission Beach for all levels, all gear included.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/pacificsurfschool" },
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "San Diego Surf School", country: "USA", region: "California", town: "San Diego",
+    url: "https://www.sandiegosurfingschool.com/",
+    blurb: "San Diego surf school with private, group and kids' camp lessons across Pacific Beach and Ocean Beach, plus board and wetsuit rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Oceanside (California) ----
+  { name: "Oceanside Surf School", country: "USA", region: "California", town: "Oceanside",
+    url: "https://oceansidesurfschool.com/",
+    blurb: "City-approved Oceanside surf school teaching lessons and camps at Tyson Street Park by the pier.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Whitlock Surf Experience", country: "USA", region: "California", town: "Oceanside",
+    url: "https://whitlocksurfexperience.com/",
+    blurb: "Small family-run Oceanside surf school offering two-hour lessons plus board and wetsuit rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- San Clemente (California) ----
+  { name: "369 Surf", country: "USA", region: "California", town: "San Clemente",
+    url: "https://369surf.com/",
+    blurb: "San Clemente surf shop and school since 2003, offering private lessons and surf-guide sessions to Trestles and San Onofre.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced"] },
+
+  // ---- Malibu (California) ----
+  { name: "Sunrise Surf Academy", country: "USA", region: "California", town: "Malibu",
+    url: "https://www.sunrisesurfacademy.com/",
+    blurb: "Locally owned surf school running lessons and camps at beginner-friendly Zuma Beach in Malibu.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Ventura (California) ----
+  { name: "Ventura Surf School", country: "USA", region: "California", town: "Ventura",
+    url: "https://venturasurfschool.com/",
+    blurb: "Ventura County's long-standing surf school teaching lessons and a kids' summer camp at beginner-friendly Mondos Beach.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Pacifica (California) ----
+  { name: "NorCal Surf Shop", country: "USA", region: "California", town: "Pacifica",
+    url: "https://norcalsurfshop.com/",
+    blurb: "Pacifica surf-and-skate shop at Linda Mar Beach since 1991, running group and private lessons alongside its rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Sonlight Surfshop", country: "USA", region: "California", town: "Pacifica",
+    url: "https://sonlightsurfshop.com/",
+    blurb: "Family-run Pacifica surf shop serving Linda Mar since 1985, offering one-on-one and small-group lessons plus rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Haleiwa (Oahu) ----
+  { name: "North Shore Ohana School of Surfing", country: "USA", region: "Oahu", town: "Haleiwa",
+    url: "https://northshoreohanaschoolofsurfing.com/",
+    blurb: "Family-owned North Shore surf school with local instructors teaching private and group lessons around Haleiwa.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+  { name: "North Shore Oahu Surf School", country: "USA", region: "Oahu", town: "Haleiwa",
+    url: "https://northshoreoahusurf.com/",
+    blurb: "Haleiwa surf school led by pro surfer Kala Grace, teaching all levels at Chun's Reef and Puaena Point with lifeguard-certified local instructors.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Waikiki (Oahu) ----
+  { name: "Faith Surf School", country: "USA", region: "Oahu", town: "Waikiki",
+    url: "https://faithsurfschool.com/",
+    blurb: "Family-run Waikiki surf school founded by Hawaiian pro surfer Tony Moniz in 2000, offering lessons, canoe rides and board rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Hans Hedemann Surf School", country: "USA", region: "Oahu", town: "Waikiki",
+    url: "https://hhsurf.com/",
+    blurb: "Established Oahu surf school run by former pro Hans Hedemann, teaching surf, SUP and bodyboard lessons in Waikiki (and on the North Shore).",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Kihei (Maui) ----
+  { name: "Maui Wave Riders", country: "USA", region: "Maui", town: "Kihei",
+    url: "https://www.mauiwaveriders.com/",
+    blurb: "Maui surf and SUP school teaching beginners at Kihei's beginner-friendly Cove, with rentals and small-group lessons.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Surf Club Maui", country: "USA", region: "Maui", town: "Kihei",
+    url: "https://surfclubmaui.com/",
+    blurb: "Locally owned, family-operated Kihei surf and SUP school of 30+ years, running daily lessons and kids' camps at The Cove.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Kitty Hawk (North Carolina) ----
+  { name: "Wave Riding Vehicles", country: "USA", region: "North Carolina", town: "Kitty Hawk",
+    url: "https://www.waveridingvehicles.com/",
+    blurb: "East Coast surfboard maker since 1967 with a full Outer Banks shop in Kitty Hawk, running summer surf camps and lessons.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/wrv1967_kittyhawk" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Kitty Hawk Surf Co.", country: "USA", region: "North Carolina", town: "Kitty Hawk",
+    url: "https://www.khsurf.com/",
+    blurb: "Outer Banks surf retailer with locations from Corolla to Rodanthe, offering group and private surf lessons and full board-sport rentals.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Cocoa Beach (Florida) ----
+  { name: "Ron Jon Surf School", country: "USA", region: "Florida", town: "Cocoa Beach",
+    url: "https://ronjonsurfschool.com/",
+    blurb: "Cocoa Beach surf school (a Ron Jon licensee, est. 1993) running private and group lessons and kids' camps at Shepard Park.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/ronjonsurfschoolofficial" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Belmar (New Jersey) ----
+  { name: "Summertime Surf", country: "USA", region: "New Jersey", town: "Belmar",
+    url: "https://summertimesurf.com/",
+    blurb: "Jersey Shore surf school founded in Belmar in 2006, running kids' camps, clinics and private lessons across Monmouth and Ocean County.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Montauk (New York) ----
+  { name: "CoreysWave Professional Surf Instruction", country: "USA", region: "New York", town: "Montauk",
+    url: "https://www.coreyswave.com/",
+    blurb: "Montauk surf school offering private and group lessons, kids' classes and personal coaching for all abilities.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Advanced", "Kids"] },
+
+  // ---- Galveston (Texas) ----
+  { name: "Ohana Surf & Skate", country: "USA", region: "Texas", town: "Galveston",
+    url: "https://ohanasurfandskate.com/",
+    blurb: "Galveston surf-and-skate shop and school of 20+ years, teaching daily lessons and summer camps on the island's Gulf beaches.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+  { name: "Valz Surf Lessons", country: "USA", region: "Texas", town: "Galveston",
+    url: "https://valzsurf.com/",
+    blurb: "Female-owned Galveston surf school offering year-round one-on-one and group lessons for all ages on the Texas Gulf Coast.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- South Padre Island (Texas) ----
+  { name: "South Padre Surf Company", country: "USA", region: "Texas", town: "South Padre Island",
+    url: "https://southpadresurfcompany.com/",
+    blurb: "South Padre Island surf school teaching year-round beginner lessons and day camps in the shallow water at Isla Blanca Beach Park.",
+    image: "", verified: false, socials: {},
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Pacific City (Oregon) ----
+  { name: "Moment Surf Company", country: "USA", region: "Oregon", town: "Pacific City",
+    url: "https://momentsurfco.com/",
+    blurb: "Core cold-water surf shop and school at Cape Kiwanda since 2010, running daily beginner lessons and a youth surf camp.",
+    image: "", verified: false,
+    socials: { facebook: "https://www.facebook.com/momentsurfco" },
+    levels: ["Beginner", "Intermediate", "Kids"] },
+
+  // ---- Westport (Washington) ----
+  { name: "BigFoot Surf School", country: "USA", region: "Washington", town: "Westport",
+    url: "https://bigfootsurf.com/",
+    blurb: "Westport surf school (the only Washington State Parks-permitted one) teaching cold-water lessons at Westhaven State Park.",
+    image: "", verified: false, socials: {},
     levels: ["Beginner", "Intermediate", "Kids"] }
 ];

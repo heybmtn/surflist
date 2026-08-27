@@ -126,6 +126,35 @@
   - [Surfing in Phuket](https://surflist.co/thailand/phuket/): 7 listings.
     - [Surfing in Bang Tao](https://surflist.co/thailand/phuket/bang-tao/): 2 listings.
     - [Surfing in Kata Beach](https://surflist.co/thailand/phuket/kata-beach/): 5 listings.
+- [Surfing in USA](https://surflist.co/usa/): 49 listings across California, Florida, Maui, New Jersey, New York, North Carolina, Oahu, Oregon, Texas, Washington.
+  - [Surfing in California](https://surflist.co/usa/california/): 23 listings.
+    - [Surfing in Encinitas](https://surflist.co/usa/california/encinitas/): 3 listings.
+    - [Surfing in Huntington Beach](https://surflist.co/usa/california/huntington-beach/): 4 listings.
+    - [Surfing in Oceanside](https://surflist.co/usa/california/oceanside/): 2 listings.
+    - [Surfing in Pacifica](https://surflist.co/usa/california/pacifica/): 4 listings.
+    - [Surfing in San Clemente](https://surflist.co/usa/california/san-clemente/): 2 listings.
+    - [Surfing in San Diego](https://surflist.co/usa/california/san-diego/): 2 listings.
+    - [Surfing in Santa Cruz](https://surflist.co/usa/california/santa-cruz/): 2 listings.
+    - [Surfing in Ventura](https://surflist.co/usa/california/ventura/): 2 listings.
+  - [Surfing in Florida](https://surflist.co/usa/florida/): 2 listings.
+    - [Surfing in Cocoa Beach](https://surflist.co/usa/florida/cocoa-beach/): 2 listings.
+  - [Surfing in Maui](https://surflist.co/usa/maui/): 3 listings.
+    - [Surfing in Kihei](https://surflist.co/usa/maui/kihei/): 3 listings.
+  - [Surfing in New Jersey](https://surflist.co/usa/new-jersey/): 2 listings.
+    - [Surfing in Belmar](https://surflist.co/usa/new-jersey/belmar/): 2 listings.
+  - [Surfing in New York](https://surflist.co/usa/new-york/): 2 listings.
+    - [Surfing in Montauk](https://surflist.co/usa/new-york/montauk/): 2 listings.
+  - [Surfing in North Carolina](https://surflist.co/usa/north-carolina/): 4 listings.
+    - [Surfing in Kitty Hawk](https://surflist.co/usa/north-carolina/kitty-hawk/): 4 listings.
+  - [Surfing in Oahu](https://surflist.co/usa/oahu/): 5 listings.
+    - [Surfing in Haleiwa](https://surflist.co/usa/oahu/haleiwa/): 3 listings.
+    - [Surfing in Waikiki](https://surflist.co/usa/oahu/waikiki/): 2 listings.
+  - [Surfing in Oregon](https://surflist.co/usa/oregon/): 2 listings.
+    - [Surfing in Pacific City](https://surflist.co/usa/oregon/pacific-city/): 2 listings.
+  - [Surfing in Texas](https://surflist.co/usa/texas/): 4 listings.
+    - [Surfing in Galveston](https://surflist.co/usa/texas/galveston/): 3 listings.
+  - [Surfing in Washington](https://surflist.co/usa/washington/): 2 listings.
+    - [Surfing in Westport](https://surflist.co/usa/washington/westport/): 2 listings.
 - [Surfing in Wales](https://surflist.co/wales/): 12 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
   - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
     - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.

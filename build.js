@@ -90,6 +90,8 @@ const COUNTRIES = [
     intro: "Thailand's surf is a seasonal, monsoon-driven secret on the Andaman coast — warm water and mostly gentle, beginner-friendly beach breaks around Phuket and Khao Lak, roughly May to October." },
   { name: "New Zealand", bucket: "Worldwide", flag: "nz",
     intro: "Aotearoa's two main islands face two oceans, with cold-water surf year-round — from the black-sand beach breaks north and south of Auckland to Raglan's famous left point, the Canterbury beach breaks around Christchurch, and the far-south breaks of Dunedin's Otago coast." },
+  { name: "USA", bucket: "Worldwide", flag: "us",
+    intro: "The birthplace of modern surf culture, with world-class waves spanning California, Hawaii, the East Coast and the Gulf — from Huntington Beach's pier to Oahu's North Shore." },
 ];
 
 /* ---------- region registry (optional metadata) ----------
