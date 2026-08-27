@@ -586,5 +586,21 @@ window.LISTINGS = [
     url: "https://thesurfshop.us/",
     blurb: "Washington's first surf shop, family-owned in Westport since 1986, with boards, wetsuits, bodyboards and rentals.",
     image: "", verified: false, socials: {},
-    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] }
+    offerings: ["Surfboards", "Wetsuits", "Accessories", "Board rental"] },
+
+  // ================= VIETNAM =================
+
+  // ---- Da Nang (Da Nang) ----
+  { name: "Da Nang Outdoor Adventures", country: "Vietnam", region: "Da Nang", town: "Da Nang",
+    url: "https://danangadventures.com/shop/",
+    blurb: "Surf and outdoor shop in the An Thuong area with rash guards, wax, leashes, boards for rent and warm-water gear.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/danangoutdooradventures/", facebook: "https://www.facebook.com/Da-Nang-Outdoor-Adventures-228620470953307/", tiktok: "https://www.tiktok.com/@danangoutdooradventures", youtube: "https://www.youtube.com/channel/UCtgU0Ryy7Iilv2UdosKg6Zg/" },
+    offerings: ["Apparel", "Accessories", "Board rental"] },
+  { name: "Go Surfing", country: "Vietnam", region: "Da Nang", town: "Da Nang",
+    url: "https://www.gosurfing.vn/shop",
+    blurb: "Surf shop selling boards, wetsuits, rash guards and accessories with a full board-rental range.",
+    image: "", verified: false,
+    socials: { instagram: "https://www.instagram.com/gosurfing.vn", facebook: "https://www.facebook.com/gosurfingvietnam" },
+    offerings: ["Surfboards", "Wetsuits", "Apparel", "Accessories", "Board rental"] }
 ];

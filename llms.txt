@@ -166,6 +166,13 @@
     - [Surfing in Galveston](https://surflist.co/usa/texas/galveston/): 3 listings.
   - [Surfing in Washington](https://surflist.co/usa/washington/): 2 listings.
     - [Surfing in Westport](https://surflist.co/usa/washington/westport/): 2 listings.
+- [Surfing in Vietnam](https://surflist.co/vietnam/): 10 listings across Binh Thuan, Da Nang, Khanh Hoa.
+  - [Surfing in Binh Thuan](https://surflist.co/vietnam/binh-thuan/): 2 listings.
+    - [Surfing in Mui Ne](https://surflist.co/vietnam/binh-thuan/mui-ne/): 2 listings.
+  - [Surfing in Da Nang](https://surflist.co/vietnam/da-nang/): 5 listings.
+    - [Surfing in Da Nang](https://surflist.co/vietnam/da-nang/da-nang/): 5 listings.
+  - [Surfing in Khanh Hoa](https://surflist.co/vietnam/khanh-hoa/): 3 listings.
+    - [Surfing in Nha Trang](https://surflist.co/vietnam/khanh-hoa/nha-trang/): 3 listings.
 - [Surfing in Wales](https://surflist.co/wales/): 12 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
   - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
     - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.
