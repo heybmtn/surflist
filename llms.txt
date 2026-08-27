@@ -64,6 +64,17 @@
     - [Surfing in Strandhill](https://surflist.co/ireland/sligo/strandhill/): 4 listings.
   - [Surfing in Waterford](https://surflist.co/ireland/waterford/): 3 listings.
     - [Surfing in Tramore](https://surflist.co/ireland/waterford/tramore/): 3 listings.
+- [Surfing in Mexico](https://surflist.co/mexico/): 32 listings across Baja California Sur, Guerrero, Nayarit, Oaxaca.
+  - [Surfing in Baja California Sur](https://surflist.co/mexico/baja-california-sur/): 6 listings.
+    - [Surfing in El Pescadero](https://surflist.co/mexico/baja-california-sur/el-pescadero/): 4 listings.
+    - [Surfing in Todos Santos](https://surflist.co/mexico/baja-california-sur/todos-santos/): 2 listings.
+  - [Surfing in Guerrero](https://surflist.co/mexico/guerrero/): 3 listings.
+    - [Surfing in Troncones](https://surflist.co/mexico/guerrero/troncones/): 3 listings.
+  - [Surfing in Nayarit](https://surflist.co/mexico/nayarit/): 14 listings.
+    - [Surfing in San Pancho](https://surflist.co/mexico/nayarit/san-pancho/): 3 listings.
+    - [Surfing in Sayulita](https://surflist.co/mexico/nayarit/sayulita/): 11 listings.
+  - [Surfing in Oaxaca](https://surflist.co/mexico/oaxaca/): 9 listings.
+    - [Surfing in Puerto Escondido](https://surflist.co/mexico/oaxaca/puerto-escondido/): 9 listings.
 - [Surfing in Morocco](https://surflist.co/morocco/): 18 listings across Marrakech-Safi, Souss-Massa.
   - [Surfing in Marrakech-Safi](https://surflist.co/morocco/marrakech-safi/): 3 listings.
     - [Surfing in Essaouira](https://surflist.co/morocco/marrakech-safi/essaouira/): 2 listings.
