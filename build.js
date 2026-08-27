@@ -970,7 +970,8 @@ function renderDestinations() {
     var rows = cs.map(function (c) {
       return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a></div>";
     }).join("");
-    return '<div class="dest-group"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
+    var groupClass = cs.length > 5 ? "dest-group dest-group--wide" : "dest-group";
+    return '<div class="' + groupClass + '"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
   }).join("");
   return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
     '<div class="dest-groups">' + groups + "</div></section>\n";
