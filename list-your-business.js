@@ -33,7 +33,7 @@
         var success = form.parentElement.querySelector(".form-success");
         if (success) {
           success.hidden = false;
-          success.textContent = "Thanks — we've got your details and will be in touch shortly.";
+          success.textContent = "Thanks. We'll be in touch.";
         }
       })
       .catch(function (err) {
