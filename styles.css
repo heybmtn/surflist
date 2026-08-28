@@ -382,14 +382,16 @@
       .faq-item[open]::details-content { opacity: 1; block-size: auto; }
     }
 
-    /* homepage: explore destinations */
-    .dest-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.6rem 2.5rem; }
-    .dest-group .filter-label { margin: 0 0 0.7rem; }
-    .dest-row { margin-bottom: 0.9rem; break-inside: avoid; }
-    /* once a bucket outgrows a single short list, let it reflow into columns
-       instead of stretching one bucket much taller than its neighbors */
-    .dest-group--wide { column-width: 130px; column-gap: 1.6rem; }
-    .dest-group--wide .filter-label { column-span: all; }
+    /* homepage: explore destinations — wrapping A–Z country chips */
+    .dest-chips { display: flex; flex-wrap: wrap; gap: 0.6rem 0.7rem; }
+    .dest-chips .dest-country {
+      display: inline-flex; align-items: center; gap: 0.4em; width: max-content;
+      min-height: 44px; padding: 0.4em 1.05em 0.4em 0.8em;
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+      transition: border-color .12s, color .12s;
+    }
+    .dest-chips .dest-country:hover { border-color: var(--accent); }
+    .dest-chips .dest-country::after { left: 0.8em; right: 0.8em; bottom: 0.35em; }
     .flag { display: inline-block; width: 1.3em; height: auto; vertical-align: -0.15em; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
     .dest-country { font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
     .dest-country:hover { color: var(--accent); }

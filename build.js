@@ -17,9 +17,10 @@
        /surf-schools/<slug>/     (every school's own page)
 
    Country → Region → Town come straight from the data (the country/region/town
-   fields on each listing). "United Kingdom / Europe / Worldwide" is only a
-   homepage grouping (see COUNTRIES.bucket), never a URL segment, so every
-   canonical path is a real place.
+   fields on each listing). "United Kingdom / Europe / Worldwide" is a data-side
+   grouping (COUNTRIES.bucket / BUCKET_ORDER) used by --check warnings, never a
+   URL segment and not rendered on the homepage, so every canonical path is a
+   real place.
 
    Add a category .......... add data/<x>.js + one CATEGORIES entry
    Add a country/region .... just add listings; optionally add a COUNTRIES /
@@ -61,9 +62,10 @@ const CATEGORIES = [
 ];
 
 /* ---------- country registry ----------
-   `bucket` groups countries on the homepage only (never in a URL). Add a country
-   here to give it an intro and put it in the right homepage group; countries not
-   listed still work and default to the "Worldwide" bucket. */
+   `bucket` is a data-side grouping (United Kingdom / Europe / Worldwide) used
+   by --check warnings, never a URL segment and not rendered on the homepage.
+   Add a country here to give it an intro and a flag; countries not listed
+   still work and default to the "Worldwide" bucket. */
 const BUCKET_ORDER = ["United Kingdom", "Europe", "Worldwide"];
 const COUNTRIES = [
   { name: "England", bucket: "United Kingdom", flag: "gb-eng",
@@ -1070,17 +1072,11 @@ const SEARCH_JS =
 
 /* ---------- homepage ---------- */
 function renderDestinations() {
-  var groups = BUCKET_ORDER.map(function (bucket) {
-    var cs = countries().filter(function (c) { return countryMeta(c).bucket === bucket; });
-    if (!cs.length) return "";
-    var rows = cs.map(function (c) {
-      return '<div class="dest-row"><a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a></div>";
-    }).join("");
-    var groupClass = cs.length > 5 ? "dest-group dest-group--wide" : "dest-group";
-    return '<div class="' + groupClass + '"><p class="filter-label">' + esc(bucket) + "</p>" + rows + "</div>";
+  var chips = countries().slice().sort(function (a, b) { return a.localeCompare(b); }).map(function (c) {
+    return '<a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + "<span>" + esc(c) + "</span></a>";
   }).join("");
   return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
-    '<div class="dest-groups">' + groups + "</div></section>\n";
+    '<nav class="dest-chips" aria-label="Explore destinations">' + chips + "</nav></section>\n";
 }
 function renderPopularTowns() {
   var towns = [];
