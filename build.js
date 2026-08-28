@@ -783,7 +783,7 @@ function jsonLd(d, cat, pageUrl, trail, extra) {
   if (d.image) biz.image = d.image;
   if (typeof d.lat === "number" && typeof d.lng === "number") biz.geo = { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lng };
   if (d.priceRange) biz.priceRange = d.priceRange;
-  if (d.phone) biz.telephone = d.phone;
+  if (d.phone) biz.telephone = Array.isArray(d.phone) ? d.phone.filter(Boolean) : d.phone;
   if (d.email) biz.email = d.email;
   if (d.openingHours) biz.openingHours = d.openingHours;
   if (d.bookingUrl) biz.potentialAction = { "@type": "ReserveAction", target: d.bookingUrl };
@@ -857,6 +857,12 @@ function hoursText(val) {
   if (Array.isArray(val)) return val.filter(Boolean).join("; ");
   return val ? String(val) : "";
 }
+function phoneHtml(val) {
+  var nums = Array.isArray(val) ? val.filter(Boolean) : (val ? [val] : []);
+  return nums.map(function (n) {
+    return '<a href="tel:' + esc(String(n).replace(/\s+/g, "")) + '">' + esc(n) + "</a>";
+  }).join("<br>");
+}
 function detailSection(title, inner) {
   return inner ? '<section class="detail__section"><h2>' + esc(title) + "</h2>" + inner + "</section>" : "";
 }
@@ -868,7 +874,6 @@ function renderDetail(d, cat, slug, opts) {
   var placeShort = [d.town, d.region].filter(Boolean).join(", ");
   var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
-  var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
   var lead = verified
     ? d.name + " is a Surflist-verified " + cat.singular + " in " + place + "."
     : d.name + " is a " + cat.singular + " in " + place + ".";
@@ -887,7 +892,7 @@ function renderDetail(d, cat, slug, opts) {
   if (d.equipment) facts += fact("Equipment", esc(d.equipment));
   if (vals.length) facts += fact(esc(cat.facetLabel), esc(vals.join(", ")));
   if (typeof d.lat === "number" && typeof d.lng === "number") facts += fact("Coordinates", d.lat.toFixed(4) + ", " + d.lng.toFixed(4));
-  if (d.phone) facts += fact("Phone", '<a href="tel:' + esc(d.phone.replace(/\s+/g, "")) + '">' + esc(d.phone) + "</a>");
+  if (d.phone) facts += fact("Phone", phoneHtml(d.phone));
   if (d.email) facts += fact("Email", '<a href="mailto:' + esc(d.email) + '">' + esc(d.email) + "</a>");
   if (d.lastVerified) facts += fact("Last verified", fmtDate(d.lastVerified));
   if (d.lastChecked) facts += fact("Last checked", fmtDate(d.lastChecked));
@@ -952,7 +957,6 @@ function renderDetail(d, cat, slug, opts) {
   '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
   '  <div class="detail__grid"><div class="detail__body"><p class="detail__lead">' + esc(lead) + "</p>" + closedNote +
   (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
-  (tags ? '<div class="tags detail__levels">' + tags + "</div>" : "") +
   sections + "</div>\n" +
   '    <aside class="detail__facts"><h2>Details</h2><dl class="facts">' + facts + "</dl>" + cta + links + "</aside>\n" +
   "  </div></main>\n" + FOOTER + "</body>\n</html>\n";
