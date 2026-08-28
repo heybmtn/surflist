@@ -1,7 +1,7 @@
 // functions/api/list-your-business.ts — POST /api/list-your-business
 //
 // Intake for the "get listed" form: no DB row, no file upload — just
-// validate and best-effort email the details to the team (verified@) with
+// validate and best-effort email the details to the team (listings@) with
 // Reply-To the submitter, plus a short confirmation back to the submitter.
 
 import type { Env, PagesFunction } from "../../lib/types";
@@ -9,7 +9,7 @@ import { jsonError, jsonOk } from "../../lib/response";
 import { clampText, isValidEmail, isValidUrl, requireNonEmpty } from "../../lib/validate";
 import { LISTINGS_FROM, escapeHtml, sendEmail } from "../../lib/email";
 
-const RECIPIENT = "verified@surflist.co";
+const DEFAULT_LISTINGS_INBOX = "listings@surflist.co";
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   let body: Record<string, unknown>;
@@ -34,7 +34,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   await sendEmail(env.RESEND_API_KEY, {
-    to: RECIPIENT,
+    to: env.LISTINGS_INBOX || DEFAULT_LISTINGS_INBOX,
     from: LISTINGS_FROM,
     replyTo: contactEmail,
     subject: `New listing submission: ${businessName}`,
