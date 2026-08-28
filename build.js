@@ -1145,13 +1145,14 @@ function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
   return head({
     title: "Get listed on Surflist",
-    desc: "Ask to be listed on Surflist. We check every business against its own official website. Verified listings help you get mentioned by AI agents.",
+    desc: "Ask to be listed on Surflist. We check every business against its own official website.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Get listed on Surflist</h1>' +
-  "<p>Surflist is a curated directory of surf schools, shops, stays and services. We check every business against its own official website.</p>" +
-  "<p>Send your details and we'll follow up about adding you, or about Verified if you're already listed. Verified listings help you get mentioned by AI agents.</p></section>\n" +
+  '<main class="wrap"><section class="hero hero--copy"><h1>Get listed on Surflist</h1>' +
+  "<p>Surflist is a curated directory of surf schools, shops, stays and services.</p>" +
+  "<p>We check every business against its own official website.</p>" +
+  "<p>Send your details and we'll follow up about adding you.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
   '<form id="list-your-business-form" class="form-field">' +
   '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
@@ -1197,10 +1198,10 @@ function renderAbout() {
   }) +
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
-  '<section class="hero"><h1>About Surflist</h1>' +
+  '<section class="hero hero--copy"><h1>About Surflist</h1>' +
   "<p>Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.</p>" +
-  "<p>Every listing is checked against the business's own official website. If we can't confirm a business is real and operating from its own site, it isn't listed.</p>" +
-  "<p>Verified listings help you get mentioned by AI agents.</p>" +
+  "<p>Every listing is checked against the business's own official website.</p>" +
+  "<p>If we can't confirm a business is real and operating from its own site, it isn't listed.</p>" +
   "<p>Founded in 2026 by Ben Manton.</p>" +
   '<p>If you run a surf business, <a href="/list-your-business/">get listed</a>.</p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
@@ -1267,7 +1268,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. Verified listings help you get mentioned by AI agents. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/.");
+  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
