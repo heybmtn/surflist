@@ -385,7 +385,7 @@
     /* homepage: explore destinations — wrapping A–Z country chips */
     .dest-chips { display: flex; flex-wrap: wrap; gap: 0.6rem 0.7rem; }
     .dest-chips .dest-country {
-      display: inline-flex; align-items: center; width: max-content;
+      display: inline-flex; align-items: center; gap: 0.4em; width: max-content;
       min-height: 44px; padding: 0.4em 1.05em 0.4em 0.8em;
       border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
       transition: border-color .12s, color .12s;

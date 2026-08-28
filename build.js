@@ -1073,7 +1073,7 @@ const SEARCH_JS =
 /* ---------- homepage ---------- */
 function renderDestinations() {
   var chips = countries().slice().sort(function (a, b) { return a.localeCompare(b); }).map(function (c) {
-    return '<a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + esc(c) + "</a>";
+    return '<a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + "<span>" + esc(c) + "</span></a>";
   }).join("");
   return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
     '<nav class="dest-chips" aria-label="Explore destinations">' + chips + "</nav></section>\n";
