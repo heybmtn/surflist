@@ -33,10 +33,19 @@
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const shared = require("./shared.js");
 
 const ROOT = __dirname;
 const SITE = "https://surflist.co"; // change if your domain differs
+
+/* Fingerprint styles.css so a deploy cannot keep serving a previous
+   stylesheet to returning visitors. Cloudflare and browsers cache the
+   stable /styles.css URL; a content hash in the query string forces a
+   refetch whenever the sheet changes. The file itself stays at /styles.css. */
+const STYLES_HREF = "/styles.css?" + crypto.createHash("md5")
+  .update(fs.readFileSync(path.join(ROOT, "styles.css")))
+  .digest("hex").slice(0, 8);
 
 /* ---------- category registry ---------- */
 const CATEGORIES = [
@@ -397,7 +406,7 @@ function head(o) {
     '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n' +
     '<link rel="preload" href="/fonts/hanken-400.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
-    '<link rel="stylesheet" href="/styles.css" />\n' +
+    '<link rel="stylesheet" href="' + STYLES_HREF + '" />\n' +
     (o.jsonld ? '<script type="application/ld+json">\n' + o.jsonld + "\n</script>\n" : "") +
     '<script type="application/ld+json">\n' + WEBSITE_JSONLD + "\n</script>\n" +
     "</head>\n";

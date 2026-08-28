@@ -392,6 +392,19 @@
     }
     .dest-chips .dest-country:hover { border-color: var(--accent); }
     .dest-chips .dest-country::after { left: 0.8em; right: 0.8em; bottom: 0.35em; }
+    /* Flag SVGs have a large intrinsic width (viewBox 640). As a flex item
+       that defaults to min-width: auto, the img overflows and paints over
+       the country name — eating flex gap. Constrain the item and use
+       margin-right so space does not depend on gap. */
+    .dest-chips .flag {
+      flex: 0 0 auto;
+      width: 1.3em;
+      max-width: 1.3em;
+      min-width: 0;
+      height: auto;
+      margin-right: 0.5em;
+    }
+    .dest-chips .dest-country span { padding-left: 0.05em; }
     .flag { display: inline-block; width: 1.3em; height: auto; vertical-align: -0.15em; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
     .dest-country { font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
     .dest-country:hover { color: var(--accent); }
