@@ -1,5 +1,5 @@
 /* Shared helpers used by BOTH the site (in the browser) and build.js (in Node).
-   Keeping them here means a verified card's link and its generated page always
+   Keeping them here means a listing card's link and its generated page always
    agree on the same URL slug. */
 (function () {
   function slugify(s) {

@@ -8,10 +8,10 @@ A directory for surf trips, in four categories:
 - **Surf services** (board repair, etc.) — `/surf-services/`
 
 The canonical hub for every place is its geographic page — country → region →
-town (`/england/cornwall/newquay/`) — with a browse-all page per category and a
-dedicated page per **verified** business (e.g.
-`/surf-schools/cornish-wave-surf-school/`) carrying schema.org markup for SEO and
-LLMs. Free listings show as cards that link out to the business.
+town (`/england/cornwall/newquay/`) — with a browse-all page per category. Every
+surf school has a dedicated page (e.g. `/surf-schools/cornish-wave-surf-school/`)
+carrying schema.org markup for SEO and LLMs. Shops, stays and services still only
+get a page when verified; otherwise they show as cards that link out.
 
 Everything is generated as plain, pre-rendered HTML with a self-hosted font — no
 frameworks, no client-side rendering, no layout shift.
@@ -48,7 +48,7 @@ fonts/              self-hosted Hanken Grotesk
 index.html                              the homepage hub
 <country>/<region>/<town>/...           the geographic hub tree
 surf-schools/index.html                 a category directory page...
-surf-schools/<slug>/index.html          ...and a page per verified listing
+surf-schools/<slug>/index.html          ...and a page per surf school
 surf-shops/... surf-stays/... surf-services/...
 sitemap.xml  robots.txt  llms.txt
 ```
@@ -61,9 +61,10 @@ After any edit, run:
 node build.js
 ```
 
-It regenerates the homepage, every hub, every verified page, plus `sitemap.xml`,
-`robots.txt` and `llms.txt`. There's also an integrity check that prints the
-place tree, flags thin towns, and fails on slug collisions:
+It regenerates the homepage, every hub, every surf-school page (and any other
+verified listing page), plus `sitemap.xml`, `robots.txt` and `llms.txt`. There's
+also an integrity check that prints the place tree, flags thin towns, and fails
+on place-slug or remaining listing-slug collisions:
 
 ```bash
 node build.js --check
