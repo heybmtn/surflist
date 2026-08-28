@@ -93,8 +93,10 @@ add a new one. Order inside the array doesn't matter; the build sorts things.
 
 ### Tier 1 — a free listing (the common case)
 
-Free listings show as a card that links out to the business. **Copy an existing
-free entry from the same file** and change the details:
+Free surf schools each get a Surflist page (`/surf-schools/<slug>/`) — hub
+cards, search and the homepage all link there, not off-site. Free shops, stays
+and services still show as a card that links out to the business. **Copy an
+existing free entry from the same file** and change the details:
 
 ```js
 { name: "Business Name", country: "England", region: "Cornwall", town: "Bude",
@@ -139,15 +141,17 @@ Special-field values in use:
   new one, so the type filter doesn't fragment)
 - services `serviceType`: e.g. `Board repair`
 
-### Tier 2 — a verified (paid) listing (gets its own page)
+### Tier 2 — a verified (paid) listing (badge + extra detail)
 
 `verified: true` is the **paid upgrade**: the site owner sets it when a business
-pays, and the business then earns its **own detail page** (e.g.
-`/surf-schools/cornish-wave-surf-school/`) with rich schema markup for SEO and
-LLMs. It is never set by research or as a reward for being well-checked — a new
-listing, however thoroughly confirmed, always starts free (`verified: false`).
-When you do upgrade a paid listing, the extra fields below are all optional; fill
-what's accurate and leave out the rest. A real one to copy from:
+pays. It adds the Surflist-verified badge, verified-only lead copy, and the extra
+detail fields below — it is **not** the gate that creates a page. Every surf
+school already has a Surflist page; shops, stays and services still only get a
+page when verified. It is never set by research or as a reward for being
+well-checked — a new listing, however thoroughly confirmed, always starts free
+(`verified: false`). When you do upgrade a paid listing, the extra fields below
+are all optional; fill what's accurate and leave out the rest. A real one to copy
+from:
 
 ```js
 { name: "Cornish Wave Surf School", country: "England", region: "Cornwall", town: "Newquay",
@@ -215,7 +219,7 @@ You don't place things on pages — the build derives it all from the data.
 /england/cornwall/newquay/surf-schools/   town + category page
 
 /surf-schools/                            browse all schools
-/surf-schools/cornish-wave-surf-school/   a verified school's own page
+/surf-schools/cornish-wave-surf-school/   a school's own page
 ```
 
 **Threshold rule:** a town hub only generates with **≥2 listings**, and a
@@ -229,8 +233,8 @@ second and it does.
   count**, then alphabetical. To feature a town, give it more listings.
 - **Latest listings**: a random 8 drawn from **every listing in every
   category** (free and verified alike), reshuffled client-side on each page
-  load. Verified listings show their blurb and a "Surflist verified" badge
-  and link to their own page; free listings link straight out to the
+  load. Every surf school links to its Surflist page (verified schools also
+  show the badge). Free shops, stays and services still link out to the
   business's site. There's no `lastVerified`-based ordering or schools-only
   featuring — every listing has an equal chance of appearing.
 
@@ -356,13 +360,15 @@ repo changes and there's nothing to keep in sync here.
 
 **`node build.js --check`** (run first): prints the full place tree with counts,
 flags any town below the 2-listing threshold, and **fails (non-zero exit) if a
-spelling typo has forked one place into two slugs**. Fix collisions before
+spelling typo has forked one place into two slugs**, or if two listing pages
+would still share a slug after disambiguating with town. Fix collisions before
 building.
 
-**`node build.js`**: regenerates the homepage, every hub, every verified page,
-plus `sitemap.xml`, `robots.txt` and `llms.txt`. It does not validate internal
-links or JSON-LD itself, so spot-check new or changed pages in the browser (or
-a link checker) before committing.
+**`node build.js`**: regenerates the homepage, every hub, every surf-school
+page (and any other verified listing page), plus `sitemap.xml`, `robots.txt`
+and `llms.txt`. It does not validate internal links or JSON-LD itself, so
+spot-check new or changed pages in the browser (or a link checker) before
+committing.
 
 Then commit both source and generated files and push; Cloudflare Pages rebuilds
 on push.
@@ -425,8 +431,8 @@ stays `stayType:"…"` · services `serviceType:"…"`
 **Hub threshold:** 2 listings for a town hub; 2 in a category for a town+category
 page.
 
-**Homepage is automatic:** popular towns = most listings; featured schools =
-verified, most recent `lastVerified`.
+**Homepage is automatic:** popular towns = most listings. Every surf school has
+a Surflist page; verified is a paid badge, not the page gate.
 
 **New flag:**
 `curl -sfL "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/4x3/<code>.svg" -o flags/<code>.svg`
