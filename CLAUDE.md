@@ -93,8 +93,9 @@ Registries near the top of `build.js`:
   HTML-comment placeholders. FAQ emits `FAQPage` schema.
 
 Thresholds: a town hub needs **≥2 listings**; a town+category page needs **≥2 in
-that category**. Homepage "popular towns" = top 8 by listing count; "featured
-schools" = verified schools by most recent `lastVerified`.
+that category**. Homepage "popular towns" = top 8 by listing count. Every surf
+school gets a listing page even when `verified: false`; shops, stays and
+services still only get a page when verified.
 
 ## Flags (new country)
 
@@ -111,9 +112,11 @@ Then set `flag: "<code>"` in the `COUNTRIES` entry and **commit the SVG**
 Every listing from a research hand-off is `verified: false`, always. `verified:
 true` is a paid/billing state the site owner controls: set it only when the human
 explicitly tells you a specific business has paid (and then add the paid-only
-detail fields). A research or new-listings hand-off must never arrive with
-`verified: true` — if one does, treat it as an error and apply the entry as
-`verified: false`. Never attach socials or details the hand-off didn't provide.
+detail fields). It is a badge, not the gate that creates a page — every surf
+school already gets a Surflist page. A research or new-listings hand-off must
+never arrive with `verified: true` — if one does, treat it as an error and apply
+the entry as `verified: false`. Never attach socials or details the hand-off
+didn't provide.
 
 ## Commit message convention
 
