@@ -1437,6 +1437,7 @@ var DEMO_LISTING = {
 writePage("verified-demo", renderDetail(DEMO_LISTING, CATEGORIES[0], "verified-demo", { demo: true }));
 // intentionally NOT added to `urls` (kept out of sitemap.xml)
 
+// Content-Type is set in _headers (text/xml; charset=UTF-8) so GSC can fetch the sitemap.
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(function (u) { return "  <url><loc>" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n");
