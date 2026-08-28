@@ -1040,12 +1040,12 @@ function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
   return head({
     title: "Get Listed — Add Your Surf Business | surflist",
-    desc: "List your surf school, shop, stay or service on surflist. Share your website and socials and we'll build a listing fully optimised for search and AI.",
+    desc: "List your surf school, shop, stay or service on surflist. Share your website and socials and we'll follow up about a free listing or a verified page.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
-  "<p>Every listing on surflist is built out fully and optimised to be found by both search engines and AI assistants. Share your website and socials below and we'll do the rest.</p></section>\n" +
+  "<p>Every listing starts free — a card with a link out to your site. Share your details below and we'll follow up about adding it, or setting you up with a verified page with full contact details, photos and a badge.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
   '<form id="list-your-business-form" class="form-field">' +
   '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
@@ -1098,7 +1098,7 @@ function renderAbout() {
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Founded in 2026</h2></div>' +
   "<p>Founded in 2026 by Ben Manton, Surflist covers surf destinations worldwide and grows one town at a time as each is researched and verified.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Get listed</h2></div>' +
-  '<p>Businesses can upgrade their listing to add full contact details, photos, and a verified badge. Everything else stays free to browse. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
+  '<p>Every listing starts free — a card with a link to your site. Businesses can also upgrade to a verified listing with its own page, full contact details, photos and a badge. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
@@ -1244,7 +1244,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email hello@surflist.co. Read more about surflist at " + SITE + "/about/.");
+  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email verified@surflist.co. Read more about surflist at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
