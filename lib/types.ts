@@ -7,6 +7,8 @@
 
 export interface Env {
   RESEND_API_KEY: string;
+  /** Optional override for the get-listed staff inbox. Defaults to listings@. */
+  LISTINGS_INBOX?: string;
 }
 
 export interface EventContext<E> {

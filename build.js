@@ -1268,7 +1268,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Every surf school has a dedicated page on surflist. Verified is a paid upgrade (badge and extra prominence), not the gate for having a school page. Shops, stays and services currently appear as cards that link out unless they are verified. To get listed, see " + SITE + "/list-your-business/ or email verified@surflist.co. Read more about surflist at " + SITE + "/about/.");
+  out.push("Every surf school has a dedicated page on surflist. Verified is a paid upgrade (badge and extra prominence), not the gate for having a school page. Shops, stays and services currently appear as cards that link out unless they are verified. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more about surflist at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
