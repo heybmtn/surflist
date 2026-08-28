@@ -785,7 +785,8 @@ function jsonLd(d, cat, pageUrl, trail, extra) {
   if (d.priceRange) biz.priceRange = d.priceRange;
   if (d.phone) biz.telephone = Array.isArray(d.phone) ? d.phone.filter(Boolean) : d.phone;
   if (d.email) biz.email = d.email;
-  if (d.openingHours) biz.openingHours = d.openingHours;
+  var hours = visibleHours(d.openingHours);
+  if (hours) biz.openingHours = hours;
   if (d.bookingUrl) biz.potentialAction = { "@type": "ReserveAction", target: d.bookingUrl };
   if (Array.isArray(d.surfSpots) && d.surfSpots.length) {
     biz.areaServed = d.surfSpots.map(function (s) { return { "@type": "Place", name: s }; });
@@ -842,18 +843,43 @@ function asList(val) {
   if (val) return [val];
   return [];
 }
+/* Drop scrape-dump strings so they never reach visible HTML or Hours/JSON-LD. */
+function isScrapeNote(s) {
+  var t = String(s || "").trim();
+  if (!t) return true;
+  if (/^GBP\.?$/i.test(t)) return true;
+  if (/JSON-?LD/i.test(t)) return true;
+  if (/\bschema\b/i.test(t)) return true;
+  if (/Site conflicts/i.test(t)) return true;
+  if (/Activity-prices page:/i.test(t)) return true;
+  if (/\bFAQ:/i.test(t)) return true;
+  if (/dateModified/i.test(t)) return true;
+  if (/do not reconcile/i.test(t)) return true;
+  return false;
+}
+function visibleList(val) {
+  return asList(val).filter(function (v) { return !isScrapeNote(v); });
+}
+function visibleHours(val) {
+  var hours = visibleList(val);
+  if (!hours.length) return "";
+  if (!Array.isArray(val) && hours.length === 1) return hours[0];
+  return hours;
+}
 function bulletList(arr) {
-  arr = asList(arr);
+  arr = visibleList(arr);
   return arr.length
     ? '<ul class="spec-list">' + arr.map(function (v) { return "<li>" + esc(v) + "</li>"; }).join("") + "</ul>"
     : "";
 }
 function listOrText(val) {
   if (Array.isArray(val)) return bulletList(val);
+  if (val && isScrapeNote(val)) return "";
   if (val) return "<p>" + esc(val) + "</p>";
   return "";
 }
 function hoursText(val) {
+  val = visibleHours(val);
   if (Array.isArray(val)) return val.filter(Boolean).join("; ");
   return val ? String(val) : "";
 }
@@ -903,12 +929,15 @@ function renderDetail(d, cat, slug, opts) {
   var links = socialsHtml(d.socials, d.googleBusiness);
 
   var faq = faqBlock(d.faq, "FAQs", pageUrl);
+  var priceList = bulletList(d.pricing);
+  var pricesInner = priceList
+    || (cat.slug === "surf-schools" ? "<p>Contact " + esc(d.name) + " to confirm.</p>" : "");
   var sections =
     detailSection("Services", bulletList(d.services)) +
     detailSection("Lessons", bulletList(d.lessons)) +
     detailSection("Rentals", bulletList(d.rentals)) +
     detailSection("Camps", bulletList(d.camps)) +
-    detailSection("Prices", bulletList(d.pricing)) +
+    detailSection("Prices", pricesInner) +
     detailSection("Surf spots served", chips(d.surfSpots) + bulletList(d.spotNotes)) +
     detailSection("Surf conditions", listOrText(d.surfConditions)) +
     detailSection("Logistics & amenities", bulletList(d.amenities)) +
