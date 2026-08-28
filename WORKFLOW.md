@@ -105,9 +105,10 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > *not* the same as the `verified` field. Attach socials only where confirmed.
 > **Every entry you output is `verified: false`, with no exceptions.** `verified`
 > is a paid/billing state the site owner controls — it is turned on only when a
-> business pays, never as a result of your research. Never set `verified: true`
-> and never add the paid-only detail fields (see schema); a hand-off that sets
-> `verified: true` is wrong. Never invent a business or a field. Flag thin spots
+> business pays, never as a result of your research. It is a badge, not the gate
+> that creates a page: every surf school already gets a Surflist URL. Never set
+> `verified: true` and never add the paid-only detail fields (see schema); a
+> hand-off that sets `verified: true` is wrong. Never invent a business or a field. Flag thin spots
 > honestly — if a town has fewer than 2 real listings, say so rather than padding;
 > if a "beach" folds into an existing town, note it rather than creating a
 > near-duplicate. If a destination isn't really wave-surf (e.g. wind/kite only),
@@ -136,11 +137,12 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 >   `Board repair`.
 >
 > The paid-only fields below are added **later, when a business pays and the owner
-> sets `verified: true`** — never in a research hand-off. For reference, a
-> `verified: true` entry may also carry any of: `streetAddress`, `phone`, `email`,
-> `priceRange`, `groupSize`, `minAge`, `equipment`, `description` (`\n\n` between
-> paragraphs), and the list fields `lessons`, `pricing`, `surfSpots`, `spotNotes`,
-> `amenities`, `accreditations`, `faq` (array of `{ q, a }`), plus `lastVerified`
+> sets `verified: true`** — never in a research hand-off. Schools already have a
+> listing page without them. For reference, a `verified: true` entry may also
+> carry any of: `streetAddress`, `phone`, `email`, `priceRange`, `groupSize`,
+> `minAge`, `equipment`, `description` (`\n\n` between paragraphs), and the list
+> fields `lessons`, `pricing`, `surfSpots`, `spotNotes`, `amenities`,
+> `accreditations`, `faq` (array of `{ q, a }`), plus `lastVerified`
 > (`YYYY-MM-DD`).
 >
 > `COUNTRIES` entry (for a new country): `{ name, bucket, flag, intro }` — `bucket`
