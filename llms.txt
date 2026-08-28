@@ -201,4 +201,4 @@
 
 ## About
 
-Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see https://surflist.co/list-your-business/ or email hello@surflist.co. Read more about surflist at https://surflist.co/about/.
+Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see https://surflist.co/list-your-business/ or email verified@surflist.co. Read more about surflist at https://surflist.co/about/.
