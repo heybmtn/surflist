@@ -37,7 +37,7 @@ the human's call.
 git checkout main && git pull
 git checkout -b add/bude-schools     # branch name: <verb>/<place>-<category>
 # …make the edit (see below)…
-node build.js --check     # place-integrity: fails on slug-fork typos; flags thin towns
+node build.js --check     # place-integrity: fails on slug-fork typos and listing-slug collisions; flags thin towns
 node build.js             # regenerates every page from the data
 git add -A                # source + regenerated output — one commit
 git commit -m "…"         # see convention below
@@ -93,8 +93,11 @@ Registries near the top of `build.js`:
   HTML-comment placeholders. FAQ emits `FAQPage` schema.
 
 Thresholds: a town hub needs **≥2 listings**; a town+category page needs **≥2 in
-that category**. Homepage "popular towns" = top 8 by listing count; "featured
-schools" = verified schools by most recent `lastVerified`.
+that category**. Homepage "popular towns" = top 8 by listing count; "latest
+listings" = a random 8 from every category. Every surf school gets a listing
+page at `/surf-schools/<slug>/`; `verified` is a paid badge, not the gate for
+having a school page. Duplicate school names are disambiguated with a town
+suffix; `--check` fails if two listing paths would still collide.
 
 ## Flags (new country)
 
@@ -111,9 +114,11 @@ Then set `flag: "<code>"` in the `COUNTRIES` entry and **commit the SVG**
 Every listing from a research hand-off is `verified: false`, always. `verified:
 true` is a paid/billing state the site owner controls: set it only when the human
 explicitly tells you a specific business has paid (and then add the paid-only
-detail fields). A research or new-listings hand-off must never arrive with
-`verified: true` — if one does, treat it as an error and apply the entry as
-`verified: false`. Never attach socials or details the hand-off didn't provide.
+detail fields). **Having a school page does not require `verified: true`** —
+every school already gets `/surf-schools/<slug>/`. A research or new-listings
+hand-off must never arrive with `verified: true` — if one does, treat it as an
+error and apply the entry as `verified: false`. Never attach socials or details
+the hand-off didn't provide.
 
 ## Commit message convention
 

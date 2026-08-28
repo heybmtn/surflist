@@ -135,13 +135,21 @@ Point Claude Code at `heybmtn/surflist`. It works on a real checkout and reads
 > - **services** (`data/services.js`): `serviceType` — a single string, e.g.
 >   `Board repair`.
 >
-> The paid-only fields below are added **later, when a business pays and the owner
-> sets `verified: true`** — never in a research hand-off. For reference, a
-> `verified: true` entry may also carry any of: `streetAddress`, `phone`, `email`,
-> `priceRange`, `groupSize`, `minAge`, `equipment`, `description` (`\n\n` between
+> Every surf school gets a page at `/surf-schools/<slug>/`. `verified` is a paid
+> badge / extra prominence, **not** the gate for having a school page. Shops,
+> stays and services still only get a detail page when `verified: true`.
+>
+> Extra listing-page fields (address, lessons, pricing, `lastChecked`, etc.)
+> render when present on a school page, but a research hand-off still must not
+> invent them — only include fields you confirmed. The paid-only extras below
+> are added **later, when a business pays and the owner sets `verified: true`**
+> — never in a research hand-off. For reference, a `verified: true` entry may
+> also carry any of: `streetAddress`, `phone`, `email`, `priceRange`,
+> `groupSize`, `minAge`, `equipment`, `description` (`\n\n` between
 > paragraphs), and the list fields `lessons`, `pricing`, `surfSpots`, `spotNotes`,
 > `amenities`, `accreditations`, `faq` (array of `{ q, a }`), plus `lastVerified`
-> (`YYYY-MM-DD`).
+> (`YYYY-MM-DD`). Do not conflate `lastVerified` (paid) with `lastChecked`
+> (research freshness).
 >
 > `COUNTRIES` entry (for a new country): `{ name, bucket, flag, intro }` — `bucket`
 > is `United Kingdom` / `Europe` / `Worldwide`; `flag` is a flag-icons code

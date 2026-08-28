@@ -9,12 +9,12 @@
        /<country>/<region>/<town>/         e.g. /england/cornwall/newquay/   <- core SEO asset
        /<country>/<region>/<town>/<cat>/   e.g. /england/cornwall/newquay/surf-schools/
 
-   Alongside the tree, each category also has a browse-all page and a page per
-   VERIFIED business (kept flat + canonical, so a business has one stable URL no
-   matter which town/region pages link to it):
+   Alongside the tree, each category has a browse-all page. Every surf school
+   gets its own listing page (verified or not). Other categories still only
+   write a page for verified listings. Listing URLs stay flat + canonical:
 
        /surf-schools/            (browse all schools everywhere)
-       /surf-schools/<slug>/     (a verified school's own page)
+       /surf-schools/<slug>/     (every school's own page)
 
    Country → Region → Town come straight from the data (the country/region/town
    fields on each listing). "United Kingdom / Europe / Worldwide" is only a
@@ -188,7 +188,12 @@ function uniqSorted(arr) {
   return arr.filter(function (v, i) { return arr.indexOf(v) === i; }).sort(function (a, b) { return a.localeCompare(b); });
 }
 function isVerified(d) { return !!(d.verified || d.premium); }
-function slugOf(d) { return d.slug || shared.slugify(d.name); }
+function slugOf(d) { return d._listingSlug || d.slug || shared.slugify(d.name); }
+/* Schools always get a listing page; shops/stays/services stay verified-only. */
+function hasListingPage(d, cat) { return cat.slug === "surf-schools" || isVerified(d); }
+function listingHref(d, cat) {
+  return hasListingPage(d, cat) ? "/" + cat.slug + "/" + slugOf(d) + "/" : (d.url || "");
+}
 function facetVals(d, cat) {
   var v = d[cat.facetField];
   return Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
@@ -324,6 +329,40 @@ function townCatPageExists(c, r, t, cat) { return itemsInTown(c, r, t, cat).leng
 function townContent(c, r, t) { return TOWN_CONTENT[cSlug(c) + "/" + rSlug(r) + "/" + tSlug(t)] || {}; }
 function townsWithHub(c, r) { return townsIn(c, r).filter(function (t) { return townHubExists(c, r, t); }); }
 
+/* Listing slugs are name-only by default. Duplicate names in the same category
+   get a town suffix so two pages never share a path. Remaining collisions fail
+   --check (and the build). */
+var listingSlugCollisions = [];
+var listingSlugDisambiguations = [];
+(function assignListingSlugs() {
+  CATEGORIES.forEach(function (cat) {
+    var pageItems = cat.items.filter(function (d) { return hasListingPage(d, cat); });
+    var baseCount = {};
+    pageItems.forEach(function (d) {
+      var base = d.slug || shared.slugify(d.name);
+      baseCount[base] = (baseCount[base] || 0) + 1;
+    });
+    var used = {};
+    cat.items.forEach(function (d) {
+      var slug = d.slug || shared.slugify(d.name);
+      if (hasListingPage(d, cat) && baseCount[slug] > 1) {
+        slug = slug + "-" + tSlug(d.town);
+        listingSlugDisambiguations.push(d.name + " (" + d.town + ") → /" + cat.slug + "/" + slug + "/");
+      }
+      if (hasListingPage(d, cat)) {
+        if (used[slug]) {
+          listingSlugCollisions.push(
+            "/" + cat.slug + "/" + slug + "/ would be used by \"" + used[slug].name + "\" (" + used[slug].town + ") and \"" + d.name + "\" (" + d.town + ")"
+          );
+        } else {
+          used[slug] = d;
+        }
+      }
+      d._listingSlug = slug;
+    });
+  });
+})();
+
 /* ---------- shared chrome ---------- */
 function header() {
   return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
@@ -394,29 +433,31 @@ function breadcrumbJsonLd(trail) {
 function renderCard(d, cat, nameTag) {
   nameTag = nameTag || "h2";
   var verified = isVerified(d);
+  var hasPage = hasListingPage(d, cat);
   var name = esc(d.name);
   var place = [d.town, d.region].filter(Boolean).join(", ");
   var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
   var socials = socialsHtml(d.socials);
-  var href = verified ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
-  var linkText = verified ? "View" : "Visit";
-  var linkAttrs = verified ? "" : ' target="_blank" rel="noopener"';
+  var href = listingHref(d, cat);
+  var linkText = hasPage ? "View" : "Visit";
+  var linkAttrs = hasPage ? "" : ' target="_blank" rel="noopener"';
   var link = href ? '<a class="visit" href="' + esc(href) + '"' + linkAttrs + ">" + linkText + " &rarr;</a>" : "";
   var badge = verified ? '<span class="badge-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' : "";
   var foot = (socials || link) ? '<div class="card__foot">' + socials + link + "</div>" : "";
-  var media = verified
+  var media = hasPage
     ? '<a href="' + esc(href) + '" aria-label="' + name + '"><img src="' + img + '" alt="' + name + '" loading="lazy"></a>'
     : '<img src="' + img + '" alt="' + name + '" loading="lazy">';
-  var nameHtml = verified
+  var nameHtml = hasPage
     ? "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">"
     : "<" + nameTag + ' class="card__name">' + name + "</" + nameTag + ">";
+  var showBlurb = d.blurb && (verified || cat.slug === "surf-schools");
   var dataFacet = vals.length ? ' data-facet="|' + esc(vals.join("|")) + '|"' : "";
   return '<li class="card' + (verified ? " is-verified" : "") + '" data-country="' + esc(d.country) + '" data-region="' + esc(d.region) + '"' + dataFacet + ">" +
     '<div class="card__media">' + media + badge + "</div>" +
     '<div class="card__body"><span class="card__place">' + esc(place) + "</span>" + nameHtml +
-    (verified && d.blurb ? '<p class="card__blurb">' + esc(d.blurb) + "</p>" : "") +
+    (showBlurb ? '<p class="card__blurb">' + esc(d.blurb) + "</p>" : "") +
     (tags ? '<div class="card__levels">' + tags + "</div>" : "") + foot + "</div></li>";
 }
 
@@ -726,15 +767,17 @@ function renderCategory(cat) {
   FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
 }
 
-/* ---------- verified business detail (flat, canonical) ---------- */
+/* ---------- listing detail (flat, canonical) ---------- */
 function jsonLd(d, cat, pageUrl, trail, extra) {
   var address = { "@type": "PostalAddress" };
   if (d.streetAddress) address.streetAddress = d.streetAddress;
   if (d.town) address.addressLocality = d.town;
   if (d.region) address.addressRegion = d.region;
   var cc = shared.countryCode(d.country); if (cc) address.addressCountry = cc;
+  var hasAddress = !!(d.streetAddress || d.town || d.region || cc);
 
-  var biz = { "@type": cat.schemaType(d), "@id": pageUrl + "#business", name: d.name, address: address };
+  var biz = { "@type": cat.schemaType(d), "@id": pageUrl + "#business", name: d.name };
+  if (hasAddress) biz.address = address;
   if (d.description || d.blurb) biz.description = d.description || d.blurb;
   if (d.url) biz.url = d.url;
   if (d.image) biz.image = d.image;
@@ -742,6 +785,8 @@ function jsonLd(d, cat, pageUrl, trail, extra) {
   if (d.priceRange) biz.priceRange = d.priceRange;
   if (d.phone) biz.telephone = d.phone;
   if (d.email) biz.email = d.email;
+  if (d.openingHours) biz.openingHours = d.openingHours;
+  if (d.bookingUrl) biz.potentialAction = { "@type": "ReserveAction", target: d.bookingUrl };
   if (Array.isArray(d.surfSpots) && d.surfSpots.length) {
     biz.areaServed = d.surfSpots.map(function (s) { return { "@type": "Place", name: s }; });
   }
@@ -749,17 +794,19 @@ function jsonLd(d, cat, pageUrl, trail, extra) {
   if (d.googleBusiness) sameAs.push(d.googleBusiness);
   if (sameAs.length) biz.sameAs = sameAs;
 
+  var placeBit = [d.town, d.region].filter(Boolean).join(", ");
   var page = {
     "@type": "WebPage",
     "@id": pageUrl,
     url: pageUrl,
-    name: d.name + " — " + cat.singular + " on surflist",
+    name: d.name + " — " + cat.singular + (placeBit ? " in " + placeBit : "") + " on surflist",
     isPartOf: { "@id": SITE + "/#website" },
     about: { "@id": pageUrl + "#business" },
     mainEntity: { "@id": pageUrl + "#business" },
-    reviewedBy: { "@id": SITE + "/#organization" },
   };
+  if (isVerified(d)) page.reviewedBy = { "@id": SITE + "/#organization" };
   if (d.lastVerified) page.lastReviewed = d.lastVerified;
+  if (d.lastChecked) page.dateModified = d.lastChecked;
   var graph = [surflistEntity(), biz, page, breadcrumbJsonLd(trail)];
   if (extra) graph.push(extra);
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
@@ -790,22 +837,41 @@ function chips(arr) {
     ? '<div class="tags">' + arr.map(function (v) { return '<span class="lvl">' + esc(v) + "</span>"; }).join("") + "</div>"
     : "";
 }
+function asList(val) {
+  if (Array.isArray(val)) return val.filter(Boolean);
+  if (val) return [val];
+  return [];
+}
 function bulletList(arr) {
-  return (Array.isArray(arr) && arr.length)
+  arr = asList(arr);
+  return arr.length
     ? '<ul class="spec-list">' + arr.map(function (v) { return "<li>" + esc(v) + "</li>"; }).join("") + "</ul>"
     : "";
+}
+function listOrText(val) {
+  if (Array.isArray(val)) return bulletList(val);
+  if (val) return "<p>" + esc(val) + "</p>";
+  return "";
+}
+function hoursText(val) {
+  if (Array.isArray(val)) return val.filter(Boolean).join("; ");
+  return val ? String(val) : "";
 }
 function detailSection(title, inner) {
   return inner ? '<section class="detail__section"><h2>' + esc(title) + "</h2>" + inner + "</section>" : "";
 }
 function renderDetail(d, cat, slug, opts) {
   opts = opts || {};
+  var verified = isVerified(d);
   var pageUrl = SITE + "/" + (opts.demo ? "verified-demo" : cat.slug + "/" + slug) + "/";
   var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
+  var placeShort = [d.town, d.region].filter(Boolean).join(", ");
   var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
-  var lead = d.name + " is a Surflist-verified " + cat.singular + " in " + place + ".";
+  var lead = verified
+    ? d.name + " is a Surflist-verified " + cat.singular + " in " + place + "."
+    : d.name + " is a " + cat.singular + " in " + place + ".";
   var descText = d.description || d.blurb || "";
   var metaDesc = (descText || lead).slice(0, 155);
 
@@ -814,6 +880,7 @@ function renderDetail(d, cat, slug, opts) {
   var addrLine = [d.streetAddress, d.town, d.region].filter(Boolean).join(", ");
   if (addrLine) facts += fact("Location", esc(addrLine));
   if (d.country) facts += fact("Country", esc(d.country));
+  if (hoursText(d.openingHours)) facts += fact("Hours", esc(hoursText(d.openingHours)));
   if (d.priceRange) facts += fact("Pricing range", esc(d.priceRange));
   if (d.groupSize) facts += fact("Group size", esc(d.groupSize));
   if (d.minAge) facts += fact("Min age", esc(d.minAge));
@@ -823,22 +890,37 @@ function renderDetail(d, cat, slug, opts) {
   if (d.phone) facts += fact("Phone", '<a href="tel:' + esc(d.phone.replace(/\s+/g, "")) + '">' + esc(d.phone) + "</a>");
   if (d.email) facts += fact("Email", '<a href="mailto:' + esc(d.email) + '">' + esc(d.email) + "</a>");
   if (d.lastVerified) facts += fact("Last verified", fmtDate(d.lastVerified));
+  if (d.lastChecked) facts += fact("Last checked", fmtDate(d.lastChecked));
 
-  var cta = d.url ? '<a class="btn" href="' + esc(d.url) + '" target="_blank" rel="noopener nofollow">Visit website &rarr;</a>' : "";
+  var cta = "";
+  if (d.bookingUrl) cta += '<a class="btn" href="' + esc(d.bookingUrl) + '" target="_blank" rel="noopener nofollow">Book now &rarr;</a>';
+  if (d.url) cta += '<a class="btn' + (d.bookingUrl ? " btn--secondary" : "") + '" href="' + esc(d.url) + '" target="_blank" rel="noopener nofollow">Visit website &rarr;</a>';
   var links = socialsHtml(d.socials, d.googleBusiness);
 
   var faq = faqBlock(d.faq, "FAQs", pageUrl);
   var sections =
+    detailSection("Services", bulletList(d.services)) +
     detailSection("Lessons", bulletList(d.lessons)) +
+    detailSection("Rentals", bulletList(d.rentals)) +
+    detailSection("Camps", bulletList(d.camps)) +
     detailSection("Prices", bulletList(d.pricing)) +
     detailSection("Surf spots served", chips(d.surfSpots) + bulletList(d.spotNotes)) +
+    detailSection("Surf conditions", listOrText(d.surfConditions)) +
     detailSection("Logistics & amenities", bulletList(d.amenities)) +
     detailSection("Accreditation", chips(d.accreditations)) +
     (d.seasonal ? detailSection("When to go", "<p>" + esc(d.seasonal) + "</p>") : "") +
     faq.html;
 
-  var verifiedMeta = '<p class="verified-meta">Verified by surflist' +
-    (d.lastVerified ? " &middot; last checked " + fmtDate(d.lastVerified) : "") + "</p>";
+  var badge = verified
+    ? '<span class="badge-verified inline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>'
+    : "";
+  var verifiedMeta = verified
+    ? '<p class="verified-meta">Verified by surflist' +
+      (d.lastVerified ? " &middot; last verified " + fmtDate(d.lastVerified) : "") + "</p>"
+    : "";
+  var closedNote = d.appearsActive === false
+    ? '<p class="detail__note">This listing may currently be closed.</p>'
+    : "";
   var demoBanner = opts.demo
     ? '<div class="demo-banner"><strong>Example listing.</strong> This is a demo of a Surflist verified profile, not a real business. Run a surf business? <a href="/list-your-business/">Claim your verified listing &rarr;</a></div>'
     : "";
@@ -858,7 +940,7 @@ function renderDetail(d, cat, slug, opts) {
   trail.push({ name: d.name });
 
   return head({
-    title: d.name + " — " + cat.singular + " in " + d.town + ", " + d.country + " | surflist",
+    title: d.name + " — " + cat.singular + " in " + (placeShort || place) + " | surflist",
     desc: metaDesc, canonical: pageUrl, ogImage: d.image || "", jsonld: jsonLd(d, cat, pageUrl, trail, faq.jsonld),
     noindex: !!opts.demo,
   }) +
@@ -866,9 +948,9 @@ function renderDetail(d, cat, slug, opts) {
   '<main class="wrap detail">' + demoBanner +
   (opts.demo ? "" : crumbs(trail) + '\n<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
-  '<span class="badge-verified inline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' + verifiedMeta + "</div>\n" +
+  badge + verifiedMeta + "</div>\n" +
   '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
-  '  <div class="detail__grid"><div class="detail__body"><p class="detail__lead">' + esc(lead) + "</p>" +
+  '  <div class="detail__grid"><div class="detail__body"><p class="detail__lead">' + esc(lead) + "</p>" + closedNote +
   (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
   (tags ? '<div class="tags detail__levels">' + tags + "</div>" : "") +
   sections + "</div>\n" +
@@ -892,7 +974,7 @@ function searchIndex() {
   // businesses
   CATEGORIES.forEach(function (cat) {
     cat.items.forEach(function (d) {
-      var href = isVerified(d) ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
+      var href = listingHref(d, cat);
       if (!href) return;
       var facetVal = d[cat.facetField];
       var f = Array.isArray(facetVal) ? facetVal.join(" ") : (facetVal || "");
@@ -906,7 +988,7 @@ function latestPool() {
   CATEGORIES.forEach(function (cat) {
     cat.items.forEach(function (d) {
       var verified = isVerified(d);
-      var href = verified ? "/" + cat.slug + "/" + slugOf(d) + "/" : d.url;
+      var href = listingHref(d, cat);
       if (!href) return;
       out.push({
         n: d.name,
@@ -915,7 +997,7 @@ function latestPool() {
         u: href,
         v: verified,
         img: d.image ? d.image : placeholderImage(d.name, cat.slug),
-        b: verified && d.blurb ? d.blurb : "",
+        b: (verified || cat.slug === "surf-schools") && d.blurb ? d.blurb : "",
       });
     });
   });
@@ -938,7 +1020,7 @@ const SEARCH_JS =
 "function render(list){box.innerHTML='';active=-1;" +
 "if(!list.length){box.hidden=true;input.setAttribute('aria-expanded','false');return;}" +
 "list.forEach(function(d,i){var li=document.createElement('li');li.setAttribute('role','option');li.id='search-opt-'+i;" +
-"var a=document.createElement('a');a.href=d.u;a.className='search__result';if(!d.v){a.target='_blank';a.rel='noopener';}" +
+"var a=document.createElement('a');a.href=d.u;a.className='search__result';if(d.u.charAt(0)!=='/'){a.target='_blank';a.rel='noopener';}" +
 "a.innerHTML='<span class=\"search__name\">'+esc(d.n)+'</span><span class=\"search__meta\">'+esc(d.c)+(d.p?' &middot; '+esc(d.p):'')+'</span>';" +
 "li.appendChild(a);box.appendChild(li);});" +
 "box.hidden=false;input.setAttribute('aria-expanded','true');}" +
@@ -998,10 +1080,10 @@ const LATEST_JS =
 "for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}" +
 "function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
 "function card(d){var badge=d.v?'<span class=\"badge-verified\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z\"/></svg>Surflist verified</span>':'';" +
-"var attrs=d.v?'':' target=\"_blank\" rel=\"noopener\"';var text=d.v?'View':'Visit';" +
-"var name=d.v?'<a class=\"card__name-link\" href=\"'+esc(d.u)+'\">'+esc(d.n)+'</a>':esc(d.n);" +
+"var onsite=d.u.charAt(0)==='/';var attrs=onsite?'':' target=\"_blank\" rel=\"noopener\"';var text=onsite?'View':'Visit';" +
+"var name=onsite?'<a class=\"card__name-link\" href=\"'+esc(d.u)+'\">'+esc(d.n)+'</a>':esc(d.n);" +
 "return '<li class=\"card'+(d.v?' is-verified':'')+'\"><div class=\"card__media\">'+" +
-"(d.v?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">'+(d.v?'</a>':'')+badge+'</div>'+" +
+"(onsite?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">'+(onsite?'</a>':'')+badge+'</div>'+" +
 "'<div class=\"card__body\"><span class=\"card__place\">'+esc(d.p)+' &middot; '+esc(d.cat)+'</span><h3 class=\"card__name\">'+name+'</h3>'+" +
 "(d.b?'<p class=\"card__blurb\">'+esc(d.b)+'</p>':'')+" +
 "'<div class=\"card__foot\"><a class=\"visit\" href=\"'+esc(d.u)+'\"'+attrs+'>'+text+' &rarr;</a></div></div></li>';}" +
@@ -1025,12 +1107,12 @@ function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
   return head({
     title: "Get Listed — Add Your Surf Business | surflist",
-    desc: "List your surf school, shop, stay or service on surflist. Share your website and socials and we'll follow up about a free listing or a verified page.",
+    desc: "List your surf school, shop, stay or service on surflist. Every surf school gets its own page; verified is a paid upgrade with a badge and extra prominence.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
   '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
-  "<p>Every listing starts free — a card with a link out to your site. Share your details below and we'll follow up about adding it, or setting you up with a verified page with full contact details, photos and a badge.</p></section>\n" +
+  "<p>Every surf school on Surflist gets its own page. Share your details below and we'll follow up about adding your listing, or upgrading to a verified profile with a badge, extra prominence and richer details. Shops, stays and services currently start as a card that links to your site.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
   '<form id="list-your-business-form" class="form-field">' +
   '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
@@ -1083,7 +1165,7 @@ function renderAbout() {
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Founded in 2026</h2></div>' +
   "<p>Founded in 2026 by Ben Manton, Surflist covers surf destinations worldwide and grows one town at a time as each is researched and verified.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Get listed</h2></div>' +
-  '<p>Every listing starts free — a card with a link to your site. Businesses can also upgrade to a verified listing with its own page, full contact details, photos and a badge. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
+  '<p>Every surf school on Surflist has its own page. Verified is a paid upgrade — a badge, extra prominence, and richer profile details. Surf shops, stays and services currently appear as cards that link to the business; a verified listing in those categories gets its own page. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
@@ -1123,6 +1205,18 @@ function renderLlms() {
   CATEGORIES.forEach(function (c) { out.push("- [" + c.title + "](" + SITE + "/" + c.slug + "/): " + c.intro); });
   out.push("");
   CATEGORIES.forEach(function (cat) {
+    if (cat.slug === "surf-schools") {
+      if (!cat.items.length) return;
+      out.push("## Surf schools");
+      out.push("");
+      cat.items.forEach(function (d) {
+        var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
+        var desc = String(d.blurb || "").replace(/\s+/g, " ").trim().replace(/\.+$/, "");
+        out.push("- [" + d.name + "](" + SITE + "/" + cat.slug + "/" + slugOf(d) + "/): " + cat.singular + " in " + place + (desc ? " — " + desc : "") + ".");
+      });
+      out.push("");
+      return;
+    }
     var verified = cat.items.filter(isVerified);
     if (!verified.length) return;
     out.push("## Verified " + cat.plural);
@@ -1136,7 +1230,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Basic listings are free and link out to each business; verified listings get a dedicated page with address, coordinates and pricing. To get listed, see " + SITE + "/list-your-business/ or email verified@surflist.co. Read more about surflist at " + SITE + "/about/.");
+  out.push("Every surf school has a dedicated page on surflist. Verified is a paid upgrade (badge and extra prominence), not the gate for having a school page. Shops, stays and services currently appear as cards that link out unless they are verified. To get listed, see " + SITE + "/list-your-business/ or email verified@surflist.co. Read more about surflist at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
@@ -1148,7 +1242,9 @@ function renderLlms() {
      node build.js --check     print the whole place tree with counts, flag
                                towns below the 2-listing hub threshold, and fail
                                (exit 1) on any spelling that forks one place into
-                               two slugs — without writing any files.
+                               two slugs, or on listing-slug collisions that
+                               survive town-suffix disambiguation — without
+                               writing any files.
 
    Every normal build also prints a passive warning for such collisions. */
 function q(s) { return '"' + s + '"'; }
@@ -1194,16 +1290,29 @@ function placeReport() {
     ? "\n! " + collisions.length + " duplicate place(s) from inconsistent spelling:\n  - " + collisions.join("\n  - ") +
       "\n  Fix the spelling in data/*.js so each place resolves to one slug."
     : "No duplicate-spelling collisions.");
+  if (listingSlugDisambiguations.length) {
+    out.push("Listing slugs disambiguated with town: " + listingSlugDisambiguations.length +
+      " — " + listingSlugDisambiguations.join("; ") + ".");
+  }
+  out.push(listingSlugCollisions.length
+    ? "\n! " + listingSlugCollisions.length + " listing slug collision(s) after town-suffix disambiguation:\n  - " +
+      listingSlugCollisions.join("\n  - ") +
+      "\n  Two listings would write the same path. Give one an explicit slug, or rename so they differ."
+    : "No listing-slug collisions.");
   return { report: out.join("\n"), collisions: collisions, singletons: singletons };
 }
 (function () {
   var r = placeReport();
   // passive warning on every build
   r.collisions.forEach(function (c) { console.warn("  ! " + c); });
+  listingSlugCollisions.forEach(function (c) { console.warn("  ! " + c); });
   // --check: print the full report and stop before writing anything
   if (process.argv.indexOf("--check") > -1) {
     process.stdout.write(r.report + "\n");
-    process.exit(r.collisions.length ? 1 : 0);
+    process.exit((r.collisions.length || listingSlugCollisions.length) ? 1 : 0);
+  }
+  if (listingSlugCollisions.length) {
+    throw new Error("Listing slug collisions:\n  - " + listingSlugCollisions.join("\n  - "));
   }
 })();
 
@@ -1233,14 +1342,17 @@ urls.push(SITE + "/list-your-business/");
 writePage("about", renderAbout());
 urls.push(SITE + "/about/");
 
-// browse-all category pages + verified business pages (flat, canonical)
+// browse-all category pages + listing pages (schools: every listing; other cats: verified only)
+var listingPages = 0;
 CATEGORIES.forEach(function (cat) {
   writePage(cat.slug, renderCategory(cat));
   urls.push(SITE + "/" + cat.slug + "/");
-  cat.items.filter(isVerified).forEach(function (d) {
+  cat.items.forEach(function (d) {
+    if (!hasListingPage(d, cat)) return;
     var slug = slugOf(d);
     writePage(cat.slug + "/" + slug, renderDetail(d, cat, slug));
     urls.push(SITE + "/" + cat.slug + "/" + slug + "/");
+    listingPages++;
   });
 });
 
@@ -1294,6 +1406,8 @@ fs.writeFileSync(path.join(ROOT, "robots.txt"), renderRobots());
 fs.writeFileSync(path.join(ROOT, "llms.txt"), renderLlms());
 
 var totalV = CATEGORIES.reduce(function (a, c) { return a + c.items.filter(isVerified).length; }, 0);
+var schoolPages = CATEGORIES.filter(function (c) { return c.slug === "surf-schools"; })
+  .reduce(function (a, c) { return a + c.items.length; }, 0);
 console.log("Built: homepage, " + stats.countries + " country + " + stats.regions + " region + " + stats.towns +
   " town hubs, " + stats.townCats + " town-category pages, " + CATEGORIES.length + " browse-all pages, " +
-  totalV + " verified page(s). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt.");
+  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt.");
