@@ -126,7 +126,6 @@
       text-decoration: none; white-space: nowrap;
     }
     .visit:hover { text-decoration: underline; }
-    .empty { color: var(--muted); padding: 2rem 0; grid-column: 1 / -1; }
 
     footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; }
     footer a { color: var(--accent); }
@@ -411,31 +410,8 @@
     }
     .chip-nav a:hover { border-color: var(--accent); }
 
-    /* ===== MARKETPLACE ===== */
-    /* "Featured" badge — same visual recipe as .badge-verified, distinct copy/accent so the two are never confused */
-    .badge-featured {
-      color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 88%, #000);
-      border: 1px solid var(--accent);
-    }
-    .card__media .badge-featured { position: absolute; top: 0.6rem; left: 0.6rem; }
-    .card.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
-    .card__media-placeholder { width: 100%; height: 100%; background: var(--line); }
-    .card__price { font-weight: 700; color: var(--ink); margin: 0.1rem 0 0; }
-
-    /* filter bar on /marketplace/ */
-    .marketplace-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin: 1.6rem 0; }
-    .marketplace-filterbar .chip-nav a.is-active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-    .marketplace-filterbar select, .marketplace-filterbar input { max-width: 260px; }
-
-    /* CTA card injected by marketplace-widget.js when a region has <2 listings */
-    .widget-cta-card {
-      display: flex; flex-direction: column; align-items: flex-start; gap: 0.7rem;
-      background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius-md);
-      padding: 1.4rem; grid-column: 1 / -1; box-shadow: var(--shadow-xs);
-    }
-    .widget-cta-card p { margin: 0; color: var(--muted); }
-
-    /* first real <form> in the codebase: generic layout primitives, borrowing .search__input's look */
+    /* ===== FORMS (list-your-business) ===== */
+    /* generic form layout primitives, borrowing .search__input's look */
     .form-field { display: flex; flex-direction: column; gap: 1rem; max-width: 560px; }
     .form-row { display: flex; flex-direction: column; gap: 0.35rem; }
     .form-row label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
@@ -455,58 +431,3 @@
       background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
     .form-success a { color: var(--accent); font-weight: 600; }
     .form-error { color: #9a2b2b; font-size: 0.9rem; margin: 0; }
-
-    /* free/promoted tier radio cards on the sell form */
-    .tier-options { display: flex; flex-direction: column; gap: 0.7rem; }
-    .tier-option {
-      display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer;
-      border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0.9rem 1rem; background: var(--surface);
-    }
-    .tier-option input { margin-top: 0.2rem; }
-    .tier-option.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
-    .tier-option .badge-featured { margin-right: 0.4em; }
-
-    /* surfboard-only fields block on the sell form, shown/hidden by category */
-    .form-surfboard-fields { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
-    .form-surfboard-fields legend { padding: 0; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-    .dimensions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
-    .dimensions-grid label { font-size: 0.78rem; color: var(--muted); }
-    @media (max-width: 560px) { .dimensions-grid { grid-template-columns: repeat(2, 1fr); } }
-
-    /* "Local pickup only" checkbox row — the generic .form-row input rule above
-       is meant for text inputs/selects, not checkboxes */
-    .form-row--checkbox label { display: flex; align-items: center; gap: 0.5em; font-weight: 500; color: var(--ink); }
-    .form-row input[type="checkbox"] { padding: 0; border: 0; background: none; width: auto; min-height: auto; accent-color: var(--accent); }
-
-    /* pickup tag on grid cards */
-    .card__body .tags { margin-top: 0.2rem; }
-
-    /* /marketplace/[slug] image gallery */
-    .gallery { list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; }
-    .gallery__thumb {
-      aspect-ratio: 4 / 3; border-radius: var(--radius-md); overflow: hidden; background: var(--line);
-      display: block; width: 100%; border: 0; padding: 0; cursor: zoom-in;
-    }
-    .gallery__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .gallery__thumb--empty { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem; cursor: default; }
-    .gallery__thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .detail__facts .price { font-size: 1.4rem; font-weight: 700; margin: 0.3rem 0; }
-
-    /* full-size image lightbox, triggered from .gallery__thumb */
-    .lightbox { border: 0; padding: 0; background: transparent; max-width: 92vw; max-height: 92vh; }
-    .lightbox::backdrop { background: rgba(0, 0, 0, 0.82); }
-    .lightbox img { display: block; max-width: 92vw; max-height: 88vh; border-radius: var(--radius-md); }
-    .lightbox__close {
-      position: absolute; top: -0.5rem; right: -0.5rem; width: 2.2rem; height: 2.2rem;
-      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; line-height: 1;
-      color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 50%;
-      cursor: pointer;
-    }
-    .lightbox__close:hover { border-color: var(--accent); }
-
-    /* copy above the marketplace inquiry form clarifying it messages the seller, not surflist */
-    .detail__contact-heading { margin: 1.6rem 0 0.3rem; }
-    .detail__contact-note { color: var(--muted); font-size: 0.9rem; margin: 0 0 1rem; }
-
-    /* seller-supplied external "buy it directly" link (e.g. an existing eBay listing) */
-    .detail__buy-link { display: inline-flex; margin: 0.8rem 0; }
