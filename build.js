@@ -584,21 +584,6 @@ function renderRegionHub(country, region) {
   "</body>\n</html>\n";
 }
 
-/* ---------- marketplace cross-promotion widget (client-fetched; see marketplace-widget.js) ----------
-   Kept for when the marketplace launches — not currently called from any
-   generated page; see marketplaceWidgetSection's former call sites in git
-   history to re-wire.
-   Region-scoped: cross-promotion filters by region_slug, not town, so a town
-   hub's widget shows the same region-wide listings as its region hub — just
-   labelled with the town's name for relevance. */
-function marketplaceWidgetSection(region, town) {
-  var slug = rSlug(region);
-  var label = town || region;
-  return '<section class="hub-cat" id="marketplace"><div class="marketplace-widget" id="marketplace-widget" ' +
-    'data-region-slug="' + esc(slug) + '" data-title="Local Gear for Sale in ' + esc(label) + '" ' +
-    'data-sell-region="' + esc(slug) + '"></div></section>';
-}
-
 /* ---------- town hub (the core asset) ---------- */
 function editorialSlot(label, key) {
   return "\n<!-- EDITORIAL SLOT · " + label + " — add TOWN_CONTENT[\"" + key + "\"]." + label + " -->\n";
@@ -1102,99 +1087,6 @@ function renderAbout() {
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
-/* ---------- marketplace: index + sell (data lives in D1, fetched client-side by
-   marketplace-widget.js; these are just static shells, same as every other page) ---------- */
-function marketplaceRegionOptions() {
-  return countries().map(function (c) {
-    var regions = regionsIn(c);
-    if (!regions.length) return "";
-    return '<optgroup label="' + esc(c) + '">' +
-      regions.map(function (r) { return '<option value="' + esc(rSlug(r)) + '">' + esc(r) + "</option>"; }).join("") +
-      "</optgroup>";
-  }).join("");
-}
-function renderMarketplaceIndex() {
-  var pageUrl = SITE + "/marketplace/";
-  var trail = [{ name: "Home", href: "/" }, { name: "Marketplace" }];
-  return head({
-    title: "Marketplace — Buy & Sell Surf Gear | surflist",
-    desc: "Buy and sell secondhand surfboards, bodyboards and surf gear directly with other surfers on surflist.",
-    canonical: pageUrl,
-  }) +
-  "<body>\n" + header() +
-  '<main class="wrap" id="marketplace-index-root">' + crumbs(trail) +
-  '<section class="hero"><h1>Surflist Marketplace</h1>' +
-  "<p>Buy and sell secondhand surfboards, bodyboards and gear directly with other surfers — no middleman, straight to your inbox.</p>" +
-  '<a class="btn" href="/marketplace/sell/">+ Sell your gear</a></section>\n' +
-  '<div class="marketplace-filterbar">' +
-  '<div class="chip-nav" id="marketplace-category-tabs">' +
-  '<a href="#" class="is-active" data-value="">All</a>' +
-  '<a href="#" data-value="surfboards">Surfboards</a>' +
-  '<a href="#" data-value="bodyboards">Bodyboards</a>' +
-  "</div>" +
-  '<select id="marketplace-region-select" class="search__input" aria-label="Filter by region"><option value="">All regions</option>' +
-  marketplaceRegionOptions() + "</select>" +
-  '<input id="marketplace-search-input" class="search__input" type="search" placeholder="Search listings…" aria-label="Search listings" />' +
-  "</div>\n" +
-  '<ul class="grid" id="marketplace-grid"></ul>' +
-  '<p id="marketplace-empty" hidden>No listings match your filters yet — <a href="/marketplace/sell/">be the first to list something</a>.</p>' +
-  "</main>\n" + FOOTER + '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
-}
-function renderMarketplaceSell() {
-  var pageUrl = SITE + "/marketplace/sell/";
-  var trail = [{ name: "Home", href: "/" }, { name: "Marketplace", href: "/marketplace/" }, { name: "Sell" }];
-  return head({
-    title: "Sell Your Surf Gear — surflist Marketplace",
-    desc: "List a surfboard or bodyboard for sale on surflist. Free listings, or get featured for £5/30 days.",
-    canonical: pageUrl,
-  }) +
-  "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
-  '<section class="hero"><h1>Sell your gear</h1><p>List a surfboard or bodyboard for sale. Buyers message you directly — no account needed.</p></section>\n' +
-  '<form id="marketplace-sell-form" class="form-field">' +
-  '<div class="form-row"><label for="mp-title">Title</label><input id="mp-title" name="title" maxlength="140" required></div>' +
-  '<div class="form-row"><label for="mp-category">Category</label><select id="mp-category" name="category" required>' +
-  '<option value="surfboards">Surfboards</option><option value="bodyboards">Bodyboards</option></select></div>' +
-  '<fieldset id="mp-surfboard-fields" class="form-surfboard-fields"><legend>Board details</legend>' +
-  '<div class="form-row"><label for="mp-board-type">Type / shape</label>' +
-  '<input id="mp-board-type" name="board_type" maxlength="80" required placeholder="e.g. Shortboard, Fish, Longboard, Funboard, Gun, SUP, Bodyboard"></div>' +
-  '<div class="form-row"><label id="mp-dimensions-label">Dimensions</label>' +
-  '<div class="dimensions-grid" role="group" aria-labelledby="mp-dimensions-label">' +
-  '<div><label for="mp-dim-length" class="form-hint">Length</label><input id="mp-dim-length" name="dimension_length" maxlength="40" placeholder="6&#39;2&quot;"></div>' +
-  '<div><label for="mp-dim-width" class="form-hint">Width</label><input id="mp-dim-width" name="dimension_width" maxlength="40" placeholder="19&quot;"></div>' +
-  '<div><label for="mp-dim-thickness" class="form-hint">Thickness</label><input id="mp-dim-thickness" name="dimension_thickness" maxlength="40" placeholder="2 3/8&quot;"></div>' +
-  '<div><label for="mp-dim-volume" class="form-hint">Volume</label><input id="mp-dim-volume" name="dimension_volume" maxlength="40" placeholder="32L"></div>' +
-  "</div></div>" +
-  '<div class="form-row"><label for="mp-condition">Condition</label><select id="mp-condition" name="condition" required>' +
-  '<option value="">— select —</option><option value="mint">Mint</option>' +
-  '<option value="minor_dings_repaired">Minor Dings (Repaired)</option>' +
-  '<option value="needs_repair">Needs Repair</option><option value="beater">Beater</option></select></div>' +
-  "</fieldset>" +
-  '<div class="form-row"><label for="mp-price">Price (£)</label><input id="mp-price" name="price" type="number" min="0.50" step="0.01" required></div>' +
-  '<div class="form-row"><label for="mp-description">Description</label><textarea id="mp-description" name="description" required></textarea></div>' +
-  '<div class="form-row"><label for="mp-location">Location</label><input id="mp-location" name="location" maxlength="140" required></div>' +
-  '<div class="form-row form-row--checkbox"><label for="mp-local-pickup"><input id="mp-local-pickup" type="checkbox" name="local_pickup_only"> Local pickup only</label>' +
-  '<p class="form-hint">Buyers can&#39;t arrange shipping — pickup near "Location" only.</p></div>' +
-  '<div class="form-row"><label for="mp-region">Region / directory tag</label><select id="mp-region" name="region_slug"><option value="">— none —</option>' +
-  marketplaceRegionOptions() + "</select></div>" +
-  '<div class="form-row"><label for="mp-external-url">Link to buy directly (optional)</label>' +
-  '<input id="mp-external-url" name="external_url" type="url" maxlength="500" placeholder="https://www.ebay.co.uk/itm/...">' +
-  '<p class="form-hint">Already listed on eBay, Depop, or elsewhere? Buyers can click straight through.</p></div>' +
-  '<div class="form-row"><label for="mp-photos">Photos (up to 4)</label><input id="mp-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple></div>' +
-  '<div class="form-row"><label for="mp-seller-name">Your name</label><input id="mp-seller-name" name="seller_name" maxlength="140" required></div>' +
-  '<div class="form-row"><label for="mp-seller-email">Your email</label><input id="mp-seller-email" name="seller_email" type="email" required></div>' +
-  '<div class="form-row"><label for="mp-seller-phone">Phone (optional)</label><input id="mp-seller-phone" name="seller_phone"></div>' +
-  '<div class="tier-options">' +
-  '<label class="tier-option"><input type="radio" name="tier" value="free" checked><span><strong>Free listing</strong> — standard ranking, basic visibility</span></label>' +
-  '<label class="tier-option is-featured"><input type="radio" name="tier" value="promoted"><span><span class="badge-featured">Featured</span> <strong>Promoted listing — £5 for 30 days</strong> — pinned to the top of category &amp; region pages</span></label>' +
-  "</div>" +
-  '<div class="form-actions"><button type="submit" class="btn">List it</button></div>' +
-  '<p class="form-error" id="marketplace-sell-error" hidden></p>' +
-  "</form>" +
-  '<div class="form-success" hidden></div>' +
-  "</main>\n" + FOOTER + '<script src="/marketplace-widget.js" defer></script>\n</body>\n</html>\n';
-}
-
 /* ---------- robots.txt ---------- */
 const SEARCH_CRAWLERS = ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot"];
 const AI_CRAWLERS = [
@@ -1326,7 +1218,7 @@ uniqSorted(
   CATEGORIES.map(function (c) { return c.slug; })
     .concat(countries().map(function (c) { return cSlug(c); }))
     // legacy: old builds put regions at the root and used /schools/
-    // "marketplace": not launched yet — see the writePage calls note above
+    // "marketplace": removed feature — kept only to clean up a stale directory from an old build
     .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace"])
 ).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
 // legacy redirect file no longer used (nothing is indexed to protect)
@@ -1340,10 +1232,6 @@ urls.push(SITE + "/list-your-business/");
 
 writePage("about", renderAbout());
 urls.push(SITE + "/about/");
-
-// marketplace not launched yet — renderMarketplaceIndex/renderMarketplaceSell
-// are kept defined but unused; re-add these writePage/urls.push calls to
-// launch. The functions/ backend and marketplace-widget.js stay live.
 
 // browse-all category pages + verified business pages (flat, canonical)
 CATEGORIES.forEach(function (cat) {

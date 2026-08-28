@@ -1,4 +1,4 @@
-// lib/response.ts — standard JSON response shape for every marketplace endpoint.
+// lib/response.ts — standard JSON response shape for the Pages Function API routes.
 
 export function jsonOk(data: Record<string, unknown> = {}, status = 200): Response {
   return new Response(JSON.stringify({ ok: true, ...data }), {
