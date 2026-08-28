@@ -93,8 +93,19 @@ add a new one. Order inside the array doesn't matter; the build sorts things.
 
 ### Tier 1 — a free listing (the common case)
 
-Free listings show as a card that links out to the business. **Copy an existing
-free entry from the same file** and change the details:
+Free listings are the research default (`verified: false`). **Copy an existing
+free entry from the same file** and change the details.
+
+**Surf schools** each get a Surflist listing page at `/surf-schools/<slug>/`.
+Hub cards and search results link to that page, not straight off-site; the
+business website (and a booking URL, if present) stay as CTAs on the listing
+page. A thin school entry (name, place, url, blurb, levels, socials) is enough
+for a complete page — extra fields render when present and are omitted when
+empty.
+
+**Shops, stays and services** still show as a card that links out to the
+business, until those categories get the same treatment. Only a verified listing
+in those categories gets its own page.
 
 ```js
 { name: "Business Name", country: "England", region: "Cornwall", town: "Bude",
@@ -139,13 +150,14 @@ Special-field values in use:
   new one, so the type filter doesn't fragment)
 - services `serviceType`: e.g. `Board repair`
 
-### Tier 2 — a verified (paid) listing (gets its own page)
+### Tier 2 — a verified (paid) listing
 
 `verified: true` is the **paid upgrade**: the site owner sets it when a business
-pays, and the business then earns its **own detail page** (e.g.
-`/surf-schools/cornish-wave-surf-school/`) with rich schema markup for SEO and
-LLMs. It is never set by research or as a reward for being well-checked — a new
-listing, however thoroughly confirmed, always starts free (`verified: false`).
+pays. It is a badge and extra prominence — **not** the gate for having a school
+page (every school already has `/surf-schools/<slug>/`). For shops, stays and
+services, verified is still what unlocks a detail page. It is never set by
+research or as a reward for being well-checked — a new listing, however
+thoroughly confirmed, always starts free (`verified: false`).
 When you do upgrade a paid listing, the extra fields below are all optional; fill
 what's accurate and leave out the rest. A real one to copy from:
 
@@ -176,12 +188,34 @@ what's accurate and leave out the rest. A real one to copy from:
   lastVerified: "2026-08-24" },
 ```
 
-- **`lastVerified`** is the date (`YYYY-MM-DD`) you last checked the details
-  against their site. It also drives homepage ordering (below), so keep it fresh.
+- **`lastVerified`** is the paid-verification date (`YYYY-MM-DD`). It is **not**
+  the same as research freshness (`lastChecked` below). Do not set it on a free
+  listing.
 - Paragraph breaks inside `description` are written as `\n\n`.
 - Each list field (`lessons`, `pricing`, `surfSpots`, …) renders as its own
   section. Only include ones you have real content for.
 - `lat` / `lng` are supported if you have exact coordinates, but aren't required.
+
+Optional listing-page fields (render when present on any school page, paid or
+free; omit if unknown — never invent, never add empty placeholders):
+
+- **`description`** — longer write-up; falls back to `blurb` if omitted.
+- **`services`**, **`lessons`**, **`rentals`**, **`camps`**, **`pricing`** — arrays
+  of short strings; each becomes its own section.
+- **`priceRange`** — a compact range for the sidebar (e.g. `£40–£489pp`).
+- **`openingHours`** — a string or array of strings.
+- **`streetAddress`**, **`phone`**, **`email`**, **`url`** (website).
+- **`bookingUrl`** — off-site booking CTA on the listing page only.
+- **`socials`** — Instagram, Facebook, TikTok, YouTube, X (confirmed handles).
+- **`lat` / `lng`**, **`surfSpots`** (areas served).
+- **`surfConditions`** — conditions or reports they publish (string or array).
+- **`seasonal`** — when they operate.
+- **`appearsActive`** — set `false` only when you know they may be closed; omit
+  if unknown. A quiet note renders on the page; do not guess.
+- **`lastChecked`** — research freshness (`YYYY-MM-DD`). Distinct from
+  **`lastVerified`** (paid last-reviewed date).
+- Paid-profile extras, still rendered when present: `groupSize`, `minAge`,
+  `equipment`, `spotNotes`, `amenities`, `accreditations`, `faq`.
 
 ### The verification standard (non-negotiable)
 
@@ -215,7 +249,7 @@ You don't place things on pages — the build derives it all from the data.
 /england/cornwall/newquay/surf-schools/   town + category page
 
 /surf-schools/                            browse all schools
-/surf-schools/cornish-wave-surf-school/   a verified school's own page
+/surf-schools/cornish-wave-surf-school/   a school's own page (every school)
 ```
 
 **Threshold rule:** a town hub only generates with **≥2 listings**, and a
@@ -229,10 +263,11 @@ second and it does.
   count**, then alphabetical. To feature a town, give it more listings.
 - **Latest listings**: a random 8 drawn from **every listing in every
   category** (free and verified alike), reshuffled client-side on each page
-  load. Verified listings show their blurb and a "Surflist verified" badge
-  and link to their own page; free listings link straight out to the
-  business's site. There's no `lastVerified`-based ordering or schools-only
-  featuring — every listing has an equal chance of appearing.
+  load. Surf school cards (and any verified listing) show their blurb, link to
+  their Surflist page, and use "View". Other free listings link straight out to
+  the business's site. The verified badge appears only when `verified: true`.
+  There's no `lastVerified`-based ordering or schools-only featuring — every
+  listing has an equal chance of appearing.
 
 There's no separate "homepage" list to edit — the homepage curates itself from
 your data.
@@ -356,13 +391,15 @@ repo changes and there's nothing to keep in sync here.
 
 **`node build.js --check`** (run first): prints the full place tree with counts,
 flags any town below the 2-listing threshold, and **fails (non-zero exit) if a
-spelling typo has forked one place into two slugs**. Fix collisions before
-building.
+spelling typo has forked one place into two slugs**, or if two listing pages
+would share the same path after town-suffix disambiguation. Fix collisions
+before building.
 
-**`node build.js`**: regenerates the homepage, every hub, every verified page,
-plus `sitemap.xml`, `robots.txt` and `llms.txt`. It does not validate internal
-links or JSON-LD itself, so spot-check new or changed pages in the browser (or
-a link checker) before committing.
+**`node build.js`**: regenerates the homepage, every hub, every surf-school
+listing page (and any verified pages in other categories), plus `sitemap.xml`,
+`robots.txt` and `llms.txt`. It does not validate internal links or JSON-LD
+itself, so spot-check new or changed pages in the browser (or a link checker)
+before committing.
 
 Then commit both source and generated files and push; Cloudflare Pages rebuilds
 on push.
@@ -380,6 +417,12 @@ should list it; `git add -A`.
 **A town appears twice, or `--check` reports a collision.** Two listings spell the
 town/region differently ("St Ives" vs "St. Ives", a trailing space, etc.). Each
 spelling becomes its own slug. Pick one spelling and make every listing match.
+
+**`--check` reports a listing-slug collision.** Two schools (or other listings
+that get a page) would write the same `/surf-schools/<slug>/` path even after
+appending the town. Rename one, or set an explicit `slug` on one entry. Duplicate
+names in *different* towns are disambiguated automatically
+(`stoked-surf-school-perranporth` vs `stoked-surf-school-christchurch`).
 
 **A phantom "United Kingdom" country appeared.** A listing has
 `country: "United Kingdom"`. Countries are real names (`England`, `Wales`,
@@ -425,8 +468,9 @@ stays `stayType:"…"` · services `serviceType:"…"`
 **Hub threshold:** 2 listings for a town hub; 2 in a category for a town+category
 page.
 
-**Homepage is automatic:** popular towns = most listings; featured schools =
-verified, most recent `lastVerified`.
+**Homepage is automatic:** popular towns = most listings; latest listings =
+random sample of every listing. School cards link to their Surflist page;
+`verified` is a paid badge, not the gate for having a school page.
 
 **New flag:**
 `curl -sfL "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/4x3/<code>.svg" -o flags/<code>.svg`

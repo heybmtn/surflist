@@ -183,8 +183,12 @@
     }
     .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
     .btn:active { filter: brightness(0.96); transform: translateY(0); }
+    .btn--secondary {
+      background: var(--surface); color: var(--ink); border-color: var(--line);
+    }
+    .btn--secondary:hover { filter: none; background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border-color: var(--accent); }
 
-    /* ---- verified listing page ---- */
+    /* ---- listing page ---- */
     .detail { padding-bottom: 3.5rem; }
     .back { display: inline-block; color: var(--muted); text-decoration: none; font-size: 0.9rem; margin-bottom: 1.4rem; }
     .back:hover { color: var(--accent); }
@@ -319,8 +323,9 @@
     /* ===== verified profile additions (surf spots, lessons, prices, season, demo) ===== */
     /* "Verified by surflist · last checked …" line under the title/badge */
     .verified-meta { width: 100%; margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
+    .detail__note { margin: 0 0 1.1rem; font-size: 0.92rem; color: var(--muted); }
 
-    /* content blocks on the verified page: Surf spots / Lessons / Prices / When to go */
+    /* content blocks on the listing page: Surf spots / Lessons / Prices / When to go */
     .detail__section { margin-top: 1.9rem; }
     .detail__section h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); margin: 0 0 0.6rem; }
 
