@@ -1144,13 +1144,14 @@ function renderHub() {
 function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
   return head({
-    title: "Get Listed — Add Your Surf Business | surflist",
-    desc: "List your surf school, shop, stay or service on surflist. Every surf school gets its own page; verified is a paid upgrade with a badge and extra prominence.",
+    title: "Get listed on Surflist",
+    desc: "Ask to be listed on Surflist. We check every business against its own official website. Verified listings help you get mentioned by AI agents.",
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Get your business listed on surflist</h1>' +
-  "<p>Every surf school on Surflist gets its own page. Share your details below and we'll follow up about adding your listing, or upgrading to a verified profile with a badge, extra prominence and richer details. Shops, stays and services currently start as a card that links to your site.</p></section>\n" +
+  '<main class="wrap"><section class="hero"><h1>Get listed on Surflist</h1>' +
+  "<p>Surflist is a curated directory of surf schools, shops, stays and services. We check every business against its own official website.</p>" +
+  "<p>Send your details and we'll follow up about adding you, or about Verified if you're already listed. Verified listings help you get mentioned by AI agents.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
   '<form id="list-your-business-form" class="form-field">' +
   '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
@@ -1158,7 +1159,7 @@ function renderListYourBusiness() {
   '<div class="form-row"><label for="lyb-socials">Socials</label><textarea id="lyb-socials" name="socials" maxlength="1000" placeholder="Instagram, Facebook, TikTok — one per line"></textarea>' +
   '<p class="form-hint">Optional, but the more we can find you, the better your listing.</p></div>' +
   '<div class="form-row"><label for="lyb-contact-email">Contact email</label><input id="lyb-contact-email" name="contact_email" type="email" required></div>' +
-  '<div class="form-actions"><button type="submit" class="btn">Submit</button></div>' +
+  '<div class="form-actions"><button type="submit" class="btn">Send details</button></div>' +
   '<p class="form-error" id="list-your-business-error" hidden></p>' +
   "</form>" +
   '<div class="form-success" hidden></div>' +
@@ -1175,7 +1176,7 @@ function renderAbout() {
     "@id": SITE + "/#organization",
     name: "Surflist",
     url: SITE,
-    description: "Surflist is a curated directory of surf businesses — surf schools, surf shops, and surf-focused places to stay — organised by country, region, and town. Every listing is checked against the business's official website before inclusion.",
+    description: "Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.",
     foundingDate: "2026",
     founder: { "@id": SITE + "/#founder" },
     knowsAbout: ["Surfing", "Surf schools", "Surf shops", "Surf camps", "Surf travel"],
@@ -1190,20 +1191,18 @@ function renderAbout() {
   };
   return head({
     title: "About Surflist",
-    desc: "Surflist is a curated directory of surf businesses — surf schools, surf shops, and places to stay — organised by country, region, and town.",
+    desc: "Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.",
     canonical: pageUrl,
     jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [org, founder, breadcrumbJsonLd(trail)] }, null, 2),
   }) +
   "<body>\n" + header() +
   '<main class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>About Surflist</h1>' +
-  "<p>Surflist is a curated directory of surf businesses — surf schools, surf shops, and places to stay — organised by country, region, and town.</p></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>A directory you can trust</h2></div>' +
-  "<p>The idea is simple: a directory you can trust. Every business listed here has been checked against its own official website before it goes in. If a business can't be confirmed as real and operating from its own site, it isn't listed — no auto-scraped filler, no dead links, no guesswork.</p></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>Founded in 2026</h2></div>' +
-  "<p>Founded in 2026 by Ben Manton, Surflist covers surf destinations worldwide and grows one town at a time as each is researched and verified.</p></section>\n" +
-  '<section class="hub-cat"><div class="hub-cat__head"><h2>Get listed</h2></div>' +
-  '<p>Every surf school on Surflist has its own page. Verified is a paid upgrade — a badge, extra prominence, and richer profile details. Surf shops, stays and services currently appear as cards that link to the business; a verified listing in those categories gets its own page. <a href="/list-your-business/">List your business &rarr;</a></p></section>\n' +
+  "<p>Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.</p>" +
+  "<p>Every listing is checked against the business's own official website. If we can't confirm a business is real and operating from its own site, it isn't listed.</p>" +
+  "<p>Verified listings help you get mentioned by AI agents.</p>" +
+  "<p>Founded in 2026 by Ben Manton.</p>" +
+  '<p>If you run a surf business, <a href="/list-your-business/">get listed</a>.</p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
@@ -1268,7 +1267,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Every surf school has a dedicated page on surflist. Verified is a paid upgrade (badge and extra prominence), not the gate for having a school page. Shops, stays and services currently appear as cards that link out unless they are verified. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more about surflist at " + SITE + "/about/.");
+  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. Verified listings help you get mentioned by AI agents. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/.");
   out.push("");
   return out.join("\n");
 }
