@@ -1207,6 +1207,20 @@ function renderAbout() {
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 
+function renderNotFound() {
+  return head({
+    title: "Page not found | surflist",
+    desc: "That page isn't on Surflist.",
+    canonical: SITE + "/",
+    noindex: true,
+  }) +
+  "<body>\n" + header() +
+  '<main class="wrap"><section class="hero hero--copy"><h1>Page not found</h1>' +
+  "<p>That page isn't on Surflist.</p>" +
+  '<a class="btn" href="/">Back to the directory</a></section>\n' +
+  "</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+
 /* ---------- robots.txt ---------- */
 const SEARCH_CRAWLERS = ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot"];
 const AI_CRAWLERS = [
@@ -1368,8 +1382,11 @@ uniqSorted(
     // "marketplace": removed feature — kept only to clean up a stale directory from an old build
     .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace"])
 ).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
-// legacy redirect file no longer used (nothing is indexed to protect)
-fs.rmSync(path.join(ROOT, "_redirects"), { force: true });
+// Cloudflare Pages: trailing-slash sitemap/robots otherwise 200 the homepage.
+// Do not add a /* /index.html 200 SPA fallback — that is the missing-path bug.
+fs.writeFileSync(path.join(ROOT, "_redirects"),
+  "/sitemap.xml/ /sitemap.xml 301\n" +
+  "/robots.txt/ /robots.txt 301\n");
 
 var urls = [SITE + "/"];
 fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
@@ -1437,6 +1454,11 @@ var DEMO_LISTING = {
 writePage("verified-demo", renderDetail(DEMO_LISTING, CATEGORIES[0], "verified-demo", { demo: true }));
 // intentionally NOT added to `urls` (kept out of sitemap.xml)
 
+// Cloudflare Pages serves root 404.html with HTTP 404 for missing files.
+// Without it, unknown paths (and trailing-slash sitemap/robots) 200 the homepage.
+fs.writeFileSync(path.join(ROOT, "404.html"), renderNotFound());
+// intentionally NOT added to `urls` (kept out of sitemap.xml)
+
 // Content-Type is set in _headers (text/xml; charset=UTF-8) so GSC can fetch the sitemap.
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
@@ -1449,4 +1471,4 @@ var schoolPages = CATEGORIES.filter(function (c) { return c.slug === "surf-schoo
   .reduce(function (a, c) { return a + c.items.length; }, 0);
 console.log("Built: homepage, " + stats.countries + " country + " + stats.regions + " region + " + stats.towns +
   " town hubs, " + stats.townCats + " town-category pages, " + CATEGORIES.length + " browse-all pages, " +
-  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt.");
+  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt, 404.html, _redirects.");
