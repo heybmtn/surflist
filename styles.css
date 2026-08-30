@@ -22,6 +22,14 @@
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; height: 100%; }
+    .skip-link {
+      position: absolute; left: 0.8rem; top: 0.8rem; z-index: 100;
+      transform: translateY(-200%);
+      background: var(--accent); color: var(--accent-ink);
+      padding: 0.6em 1.1em; border-radius: var(--radius-sm);
+      font-weight: 600; text-decoration: none;
+    }
+    .skip-link:focus { transform: none; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -67,6 +75,7 @@
     .side-opt .n { font-size: 0.8em; opacity: 0.55; }
     .side-opt.is-active .n { opacity: 0.85; }
     .side-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .side-opt[hidden] { display: none; }
 
     /* count */
     .count { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.2rem; }
@@ -88,7 +97,16 @@
     .card.is-verified { border-color: color-mix(in srgb, var(--dot) 60%, var(--line)); }
     .card__media { position: relative; aspect-ratio: 16 / 10; background: var(--line); }
     .card__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s; }
-    .card:hover .card__media img { transform: scale(1.05); }
+    .card:hover .card__media img, .card:hover .card__ph { transform: scale(1.05); }
+    .card__ph { width: 100%; height: 100%; position: relative; overflow: hidden; transition: transform .25s; }
+    .card__ph::after {
+      content: ""; position: absolute; left: -10%; right: -10%; bottom: -8%; height: 48%;
+      background: rgba(255,255,255,0.14); border-radius: 50% 45% 0 0;
+    }
+    .card__ph--surf-schools { background: linear-gradient(135deg, hsl(189, 62%, 46%), hsl(212, 55%, 24%)); }
+    .card__ph--surf-shops { background: linear-gradient(135deg, hsl(32, 78%, 52%), hsl(14, 52%, 30%)); }
+    .card__ph--surf-stays { background: linear-gradient(135deg, hsl(152, 36%, 40%), hsl(166, 40%, 18%)); }
+    .card__ph--surf-services { background: linear-gradient(135deg, hsl(232, 20%, 42%), hsl(230, 34%, 15%)); }
     /* shared visual recipe for .badge-verified and .badge-featured — same
        shape, different color, so the two are never confused */
     .badge-verified, .badge-featured {
@@ -453,3 +471,7 @@
       background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
     .form-success a { color: var(--accent); font-weight: 600; }
     .form-error { color: #9a2b2b; font-size: 0.9rem; margin: 0; }
+    /* honeypot — visually hidden, not display:none, so bots still fill it */
+    .form-hp {
+      position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;
+    }

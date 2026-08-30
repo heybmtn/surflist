@@ -37,7 +37,7 @@ the human's call.
 git checkout main && git pull
 git checkout -b add/bude-schools     # branch name: <verb>/<place>-<category>
 # …make the edit (see below)…
-node build.js --check     # place-integrity: fails on slug-fork typos and listing-slug collisions; flags thin towns
+node build.js --check     # place-integrity: fails on slug-fork typos, listing-slug collisions, missing country codes / flag files; flags thin towns
 node build.js             # regenerates every page from the data
 git add -A                # source + regenerated output — one commit
 git commit -m "…"         # see convention below

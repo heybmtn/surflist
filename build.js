@@ -195,6 +195,11 @@ function esc(s) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
   });
 }
+/* JSON-LD is embedded in a <script> tag — escape < so a listing name cannot
+   break out of it (JSON.stringify does not do this on its own). */
+function safeJsonLd(s) {
+  return String(s == null ? "" : s).replace(/</g, "\\u003c");
+}
 function uniqSorted(arr) {
   return arr.filter(function (v, i) { return arr.indexOf(v) === i; }).sort(function (a, b) { return a.localeCompare(b); });
 }
@@ -284,6 +289,7 @@ var HEADER_STATS = {
   schools: categoryCount("surf-schools"),
   shops: categoryCount("surf-shops"),
   stays: categoryCount("surf-stays"),
+  services: categoryCount("surf-services"),
 };
 
 /* every (listing, category) pair, for whole-tree passes */
@@ -295,9 +301,13 @@ CATEGORIES.forEach(function (cat) { cat.items.forEach(function (d) { ALL.push({ 
   var bad = [];
   CATEGORIES.forEach(function (cat) {
     cat.items.forEach(function (d) {
-      if (!d.country) bad.push(cat.data + ': "' + d.name + '" has no country');
-      if (!d.region) bad.push(cat.data + ': "' + d.name + '" has no region');
-      if (!d.town) bad.push(cat.data + ': "' + d.name + '" has no town');
+      if (!d.name) bad.push(cat.data + ": a listing is missing a name");
+      if (!d.country) bad.push(cat.data + ': "' + (d.name || "?") + '" has no country');
+      if (!d.region) bad.push(cat.data + ': "' + (d.name || "?") + '" has no region');
+      if (!d.town) bad.push(cat.data + ': "' + (d.name || "?") + '" has no town');
+      if (!d.url || !/^https?:\/\//i.test(String(d.url)))
+        bad.push(cat.data + ': "' + (d.name || "?") + '" needs a valid http(s) url');
+      if (!d.blurb) bad.push(cat.data + ': "' + (d.name || "?") + '" has no blurb');
     });
   });
   if (bad.length) throw new Error("Every listing needs country, region and town:\n" + bad.join("\n"));
@@ -376,17 +386,25 @@ var listingSlugDisambiguations = [];
 
 /* ---------- shared chrome ---------- */
 function header() {
-  return '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
+  var nav = '<nav class="nav" aria-label="Primary">' +
+    CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
+    "</nav>";
+  return '<a class="skip-link" href="#main">Skip to content</a>\n' +
+    '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
+    nav +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
-    HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " + HEADER_STATS.stays + " places to stay</p></div>" +
+    HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +
+    HEADER_STATS.stays + " places to stay · " + HEADER_STATS.services + " surf services</p></div>" +
     "</header>\n";
 }
 const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer">' +
+  CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
+  '<a href="/about/">About</a></nav></div>' +
   "</div></footer>\n";
 
 function head(o) {
@@ -396,19 +414,19 @@ function head(o) {
     "<title>" + esc(o.title) + "</title>\n" +
     '<meta name="description" content="' + esc(o.desc) + '" />\n' +
     (o.noindex ? '<meta name="robots" content="noindex, nofollow" />\n' : "") +
-    '<link rel="canonical" href="' + o.canonical + '" />\n' +
+    '<link rel="canonical" href="' + esc(o.canonical) + '" />\n' +
     '<meta property="og:type" content="website" />\n' +
     '<meta property="og:title" content="' + esc(o.title) + '" />\n' +
     '<meta property="og:description" content="' + esc(o.desc) + '" />\n' +
-    '<meta property="og:url" content="' + o.canonical + '" />\n' +
+    '<meta property="og:url" content="' + esc(o.canonical) + '" />\n' +
     (o.ogImage ? '<meta property="og:image" content="' + esc(o.ogImage) + '" />\n' : "") +
-    '<meta name="twitter:card" content="summary_large_image" />\n' +
+    '<meta name="twitter:card" content="' + (o.ogImage ? "summary_large_image" : "summary") + '" />\n' +
     '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n' +
     '<link rel="preload" href="/fonts/hanken-400.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="stylesheet" href="' + STYLES_HREF + '" />\n' +
-    (o.jsonld ? '<script type="application/ld+json">\n' + o.jsonld + "\n</script>\n" : "") +
-    '<script type="application/ld+json">\n' + WEBSITE_JSONLD + "\n</script>\n" +
+    (o.jsonld ? '<script type="application/ld+json">\n' + safeJsonLd(o.jsonld) + "\n</script>\n" : "") +
+    '<script type="application/ld+json">\n' + safeJsonLd(WEBSITE_JSONLD) + "\n</script>\n" +
     "</head>\n";
 }
 const WEBSITE_JSONLD = JSON.stringify({
@@ -528,7 +546,12 @@ const FILTER_JS =
 "el=document.getElementById('count'),noun=el.getAttribute('data-noun'),nounp=el.getAttribute('data-nounp')," +
 "st={country:'All',region:'All',facet:'All'};" +
 "function act(b,a,v){[].slice.call(b.querySelectorAll('.side-opt')).forEach(function(x){x.classList.toggle('is-active',x.getAttribute(a)===v);});}" +
-"function apply(){var n=0;cards.forEach(function(c){var ok=(st.country==='All'||c.getAttribute('data-country')===st.country)&&(st.region==='All'||c.getAttribute('data-region')===st.region)&&(st.facet==='All'||(c.getAttribute('data-facet')||'').indexOf('|'+st.facet+'|')>-1);c.hidden=!ok;if(ok)n++;});" +
+"function inCountry(c){return st.country==='All'||c.getAttribute('data-country')===st.country;}" +
+"function apply(){" +
+"if(R){var regionOk=st.region==='All'||cards.some(function(c){return inCountry(c)&&c.getAttribute('data-region')===st.region;});" +
+"if(!regionOk){st.region='All';act(R,'data-region','All');}" +
+"[].slice.call(R.querySelectorAll('.side-opt')).forEach(function(x){var v=x.getAttribute('data-region');x.hidden=v!=='All'&&!cards.some(function(c){return inCountry(c)&&c.getAttribute('data-region')===v;});});}" +
+"var n=0;cards.forEach(function(c){var ok=inCountry(c)&&(st.region==='All'||c.getAttribute('data-region')===st.region)&&(st.facet==='All'||(c.getAttribute('data-facet')||'').indexOf('|'+st.facet+'|')>-1);c.hidden=!ok;if(ok)n++;});" +
 "var bits=[];if(st.region!=='All')bits.push(st.region);if(st.country!=='All')bits.push(st.country);var where=bits.length?' in '+bits.join(', '):'';" +
 "el.textContent=n+' '+(n===1?noun:nounp)+where;}" +
 "if(F){F.addEventListener('click',function(e){var b=e.target.closest('.side-opt');if(!b)return;st.facet=b.getAttribute('data-facet');act(F,'data-facet',st.facet);apply();});}" +
@@ -590,7 +613,7 @@ function renderCountryHub(country) {
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + country + " — surflist", place: place, trail: trail }),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>' + flagHtml(country) + "Surfing in " + esc(country) + "</h1><p>" + esc(intro) + "</p></section>\n" +
   '<section class="hub-cat" id="regions"><div class="hub-cat__head"><h2>Where in ' + esc(country) + "?</h2></div>" +
   '<ul class="grid">' + cards + "</ul></section>\n" +
@@ -630,7 +653,7 @@ function renderRegionHub(country, region) {
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + region + " — surflist", place: place, trail: trail }),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(region) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
   townSection + "\n" + sections + "\n</main>\n" + FOOTER +
   "</body>\n</html>\n";
@@ -719,7 +742,7 @@ function renderTownHub(country, region, town) {
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: "Surfing in " + town + " — surflist", place: place, trail: trail, extra: faqExtra }),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
   sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER +
   "</body>\n</html>\n";
@@ -747,7 +770,7 @@ function renderTownCategory(country, region, town, cat) {
     jsonld: collectionJsonLd({ pageUrl: pageUrl, name: title + " — surflist", place: place, trail: trail }),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<a class="back" href="' + townUrl(country, region, town) + '">&larr; Surfing in ' + esc(town) + "</a>\n" +
   '<div class="cat-head"><h1>' + esc(title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
   '<div class="layout">' + renderSidebar(cat, { items: items, scoped: true }) +
@@ -769,7 +792,7 @@ function renderCategory(cat) {
     jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), breadcrumbJsonLd(trail)] }, null, 2),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<div class="cat-head"><h1>' + esc(cat.title) + "</h1><p>" + esc(cat.intro) + "</p></div>" +
   '<div class="layout">' + renderSidebar(cat, { items: items }) +
   '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="' + esc(cat.singular) + '" data-nounp="' + esc(cat.plural) + '">' +
@@ -990,7 +1013,7 @@ function renderDetail(d, cat, slug, opts) {
     noindex: !!opts.demo,
   }) +
   "<body>\n" + header() +
-  '<main class="wrap detail">' + demoBanner +
+  '<main id="main" class="wrap detail">' + demoBanner +
   (opts.demo ? "" : crumbs(trail) + '\n<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
   badge + verifiedMeta + "</div>\n" +
@@ -1034,15 +1057,17 @@ function latestPool() {
       var verified = isVerified(d);
       var href = listingHref(d, cat);
       if (!href) return;
-      out.push({
+      var row = {
         n: d.name,
         p: [d.town, d.region].filter(Boolean).join(", "),
         cat: cat.singular,
+        cs: cat.slug,
         u: href,
-        v: verified,
-        img: d.image ? d.image : placeholderImage(d.name, cat.slug),
-        b: (verified || cat.slug === "surf-schools") && d.blurb ? d.blurb : "",
-      });
+      };
+      if (verified) row.v = true;
+      if (d.image) row.img = d.image;
+      if ((verified || cat.slug === "surf-schools") && d.blurb) row.b = d.blurb;
+      out.push(row);
     });
   });
   return out;
@@ -1070,7 +1095,10 @@ const SEARCH_JS =
 "box.hidden=false;input.setAttribute('aria-expanded','true');}" +
 "function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
 "var r=items.filter(function(d){return (d.n+' '+d.p+' '+d.c+' '+(d.f||'')).toLowerCase().indexOf(q)>-1;});" +
-"r.sort(function(a,b){var ad=a.c==='destination'?0:1,bd=b.c==='destination'?0:1;return ad-bd;});return r.slice(0,8);}" +
+"r.sort(function(a,b){var an=a.n.toLowerCase(),bn=b.n.toLowerCase();" +
+"var ap=an.indexOf(q)===0?0:1,bp=bn.indexOf(q)===0?0:1;if(ap!==bp)return ap-bp;" +
+"var ad=a.c==='destination'?0:1,bd=b.c==='destination'?0:1;if(ad!==bd)return ad-bd;" +
+"return an<bn?-1:an>bn?1:0;});return r.slice(0,8);}" +
 "input.addEventListener('input',function(){render(search(input.value));});" +
 "input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
 "if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,opts.length-1);highlight(opts);}" +
@@ -1120,8 +1148,9 @@ const LATEST_JS =
 "function card(d){var badge=d.v?'<span class=\"badge-verified\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z\"/></svg>Surflist verified</span>':'';" +
 "var onsite=d.u.charAt(0)==='/';var attrs=onsite?'':' target=\"_blank\" rel=\"noopener\"';var text=onsite?'View':'Visit';" +
 "var name=onsite?'<a class=\"card__name-link\" href=\"'+esc(d.u)+'\">'+esc(d.n)+'</a>':esc(d.n);" +
+"var media=d.img?'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">':'<div class=\"card__ph card__ph--'+esc(d.cs||'')+'\" aria-hidden=\"true\"></div>';" +
 "return '<li class=\"card'+(d.v?' is-verified':'')+'\"><div class=\"card__media\">'+" +
-"(onsite?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">'+(onsite?'</a>':'')+badge+'</div>'+" +
+"(onsite?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+media+(onsite?'</a>':'')+badge+'</div>'+" +
 "'<div class=\"card__body\"><span class=\"card__place\">'+esc(d.p)+' &middot; '+esc(d.cat)+'</span><h3 class=\"card__name\">'+name+'</h3>'+" +
 "(d.b?'<p class=\"card__blurb\">'+esc(d.b)+'</p>':'')+" +
 "'<div class=\"card__foot\"><a class=\"visit\" href=\"'+esc(d.u)+'\"'+attrs+'>'+text+' &rarr;</a></div></div></li>';}" +
@@ -1133,7 +1162,7 @@ function renderHub() {
     canonical: SITE + "/",
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
+  '<main id="main" class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
   "<p>Find surf schools, shops, stays and board repair by destination.</p>" +
   renderSearch() + "</section>\n" +
   renderDestinations() +
@@ -1149,17 +1178,22 @@ function renderListYourBusiness() {
     canonical: pageUrl,
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero hero--copy"><h1>Get listed on Surflist</h1>' +
+  '<main id="main" class="wrap"><section class="hero hero--copy"><h1>Get listed on Surflist</h1>' +
   "<p>Surflist is a curated directory of surf schools, shops, stays and services.</p>" +
   "<p>We check every business against its own official website.</p>" +
   "<p>Send your details and we'll follow up about adding you.</p></section>\n" +
   '<section class="hub-cat"><div class="hub-cat__head"><h2>Tell us about your business</h2></div>' +
   '<form id="list-your-business-form" class="form-field">' +
-  '<div class="form-row"><label for="lyb-business-name">Business name</label><input id="lyb-business-name" name="business_name" maxlength="140" required></div>' +
-  '<div class="form-row"><label for="lyb-website">Website</label><input id="lyb-website" name="website" type="url" maxlength="500" required placeholder="https://www.yourbusiness.com"></div>' +
+  '<div class="form-hp" aria-hidden="true"><label for="lyb-company">Company</label>' +
+  '<input id="lyb-company" name="company" tabindex="-1" autocomplete="off"></div>' +
+  '<div class="form-row"><label for="lyb-business-name">Business name</label>' +
+  '<input id="lyb-business-name" name="business_name" maxlength="140" required autocomplete="organization"></div>' +
+  '<div class="form-row"><label for="lyb-website">Website</label>' +
+  '<input id="lyb-website" name="website" type="url" maxlength="500" required placeholder="https://www.yourbusiness.com" autocomplete="url"></div>' +
   '<div class="form-row"><label for="lyb-socials">Socials</label><textarea id="lyb-socials" name="socials" maxlength="1000" placeholder="Instagram, Facebook, TikTok — one per line"></textarea>' +
   '<p class="form-hint">Optional, but the more we can find you, the better your listing.</p></div>' +
-  '<div class="form-row"><label for="lyb-contact-email">Contact email</label><input id="lyb-contact-email" name="contact_email" type="email" required></div>' +
+  '<div class="form-row"><label for="lyb-contact-email">Contact email</label>' +
+  '<input id="lyb-contact-email" name="contact_email" type="email" required autocomplete="email"></div>' +
   '<div class="form-actions"><button type="submit" class="btn">Send details</button></div>' +
   '<p class="form-error" id="list-your-business-error" hidden></p>' +
   "</form>" +
@@ -1179,16 +1213,15 @@ function renderAbout() {
     url: SITE,
     description: "Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.",
     foundingDate: "2026",
+    logo: SITE + "/favicon.svg",
     founder: { "@id": SITE + "/#founder" },
     knowsAbout: ["Surfing", "Surf schools", "Surf shops", "Surf camps", "Surf travel"],
-    sameAs: [],
   };
   var founder = {
     "@type": "Person",
     "@id": SITE + "/#founder",
     name: "Ben Manton",
     worksFor: { "@id": SITE + "/#organization" },
-    sameAs: [],
   };
   return head({
     title: "About Surflist",
@@ -1197,7 +1230,7 @@ function renderAbout() {
     jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [org, founder, breadcrumbJsonLd(trail)] }, null, 2),
   }) +
   "<body>\n" + header() +
-  '<main class="wrap">' + crumbs(trail) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero hero--copy"><h1>About Surflist</h1>' +
   "<p>Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town.</p>" +
   "<p>Every listing is checked against the business's own official website.</p>" +
@@ -1215,7 +1248,7 @@ function renderNotFound() {
     noindex: true,
   }) +
   "<body>\n" + header() +
-  '<main class="wrap"><section class="hero hero--copy"><h1>Page not found</h1>' +
+  '<main id="main" class="wrap"><section class="hero hero--copy"><h1>Page not found</h1>' +
   "<p>That page isn't on Surflist.</p>" +
   '<a class="btn" href="/">Back to the directory</a></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
@@ -1351,20 +1384,58 @@ function placeReport() {
       listingSlugCollisions.join("\n  - ") +
       "\n  Two listings would write the same path. Give one an explicit slug, or rename so they differ."
     : "No listing-slug collisions.");
-  return { report: out.join("\n"), collisions: collisions, singletons: singletons };
+
+  var integrity = dataIntegrity();
+  integrity.warnings.forEach(function (w) { out.push("note: " + w); });
+  out.push(integrity.errors.length
+    ? "\n! " + integrity.errors.length + " data integrity error(s):\n  - " + integrity.errors.join("\n  - ")
+    : "Data integrity checks passed (country codes, flag files).");
+
+  return { report: out.join("\n"), collisions: collisions, singletons: singletons, errors: integrity.errors, warnings: integrity.warnings };
+}
+function dataIntegrity() {
+  var errors = [], warnings = [];
+  uniqSorted(ALL.map(function (x) { return x.d.country; })).forEach(function (c) {
+    if (!shared.countryCode(c))
+      errors.push('country "' + c + '" has no ISO code in shared.js COUNTRY_CODES — schema.org addressCountry will be empty');
+  });
+  COUNTRIES.forEach(function (m) {
+    if (m.flag && !fs.existsSync(path.join(ROOT, "flags", m.flag + ".svg")))
+      errors.push('COUNTRIES "' + m.name + '" is missing flags/' + m.flag + ".svg");
+  });
+  CATEGORIES.forEach(function (cat) {
+    var seen = {};
+    cat.items.forEach(function (d) {
+      var key = String(d.name || "").toLowerCase() + "\0" + d.town + "\0" + d.country;
+      if (seen[key]) warnings.push(cat.data + ': duplicate "' + d.name + '" in ' + d.town + ", " + d.country);
+      seen[key] = true;
+      Object.keys(d.socials || {}).forEach(function (k) {
+        if (SOCIAL_ORDER.indexOf(k) < 0)
+          warnings.push(cat.data + ': "' + d.name + '" has unknown social key "' + k + '"');
+        else if (d.socials[k] && !/^https?:\/\//i.test(String(d.socials[k])))
+          warnings.push(cat.data + ': "' + d.name + '" ' + k + " is not an http(s) URL");
+      });
+    });
+  });
+  return { errors: errors, warnings: warnings };
 }
 (function () {
   var r = placeReport();
   // passive warning on every build
   r.collisions.forEach(function (c) { console.warn("  ! " + c); });
   listingSlugCollisions.forEach(function (c) { console.warn("  ! " + c); });
+  r.warnings.forEach(function (w) { console.warn("  note: " + w); });
+  r.errors.forEach(function (e) { console.warn("  ! " + e); });
   // --check: print the full report and stop before writing anything
   if (process.argv.indexOf("--check") > -1) {
     process.stdout.write(r.report + "\n");
-    process.exit((r.collisions.length || listingSlugCollisions.length) ? 1 : 0);
+    process.exit((r.collisions.length || listingSlugCollisions.length || r.errors.length) ? 1 : 0);
   }
   if (listingSlugCollisions.length) {
     throw new Error("Listing slug collisions:\n  - " + listingSlugCollisions.join("\n  - "));
+  }
+  if (r.errors.length) {
+    throw new Error("Data integrity errors:\n  - " + r.errors.join("\n  - "));
   }
 })();
 

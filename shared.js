@@ -19,6 +19,7 @@
     "australia": "AU", "new zealand": "NZ", "south africa": "ZA", "indonesia": "ID",
     "mexico": "MX", "costa rica": "CR", "brazil": "BR", "canada": "CA", "norway": "NO",
     "sweden": "SE", "denmark": "DK", "iceland": "IS", "el salvador": "SV", "sri lanka": "LK",
+    "nicaragua": "NI", "thailand": "TH", "vietnam": "VN",
   };
   function countryCode(name) {
     return COUNTRY_CODES[String(name == null ? "" : name).toLowerCase().trim()] || "";

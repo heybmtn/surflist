@@ -391,9 +391,11 @@ repo changes and there's nothing to keep in sync here.
 
 **`node build.js --check`** (run first): prints the full place tree with counts,
 flags any town below the 2-listing threshold, and **fails (non-zero exit) if a
-spelling typo has forked one place into two slugs**, or if two listing pages
-would share the same path after town-suffix disambiguation. Fix collisions
-before building.
+spelling typo has forked one place into two slugs**, if two listing pages
+would share the same path after town-suffix disambiguation, if a country is
+missing an ISO code in `shared.js`, or if a `COUNTRIES` flag SVG is missing.
+It also notes duplicate names in the same town and unknown social keys.
+Fix collisions before building.
 
 **`node build.js`**: regenerates the homepage, every hub, every surf-school
 listing page (and any verified pages in other categories), plus `sitemap.xml`,

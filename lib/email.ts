@@ -1,5 +1,6 @@
-// lib/email.ts — Resend wrapper. Every call site treats a failed send as
-// non-fatal: a broken email integration must never fail the parent request.
+// lib/email.ts — Resend wrapper. The confirmation email to the submitter is
+// best-effort (a broken copy-back must never fail the parent request). The
+// staff inbox send is treated as required by the get-listed route.
 
 export { escapeHtml } from "./html";
 
@@ -12,6 +13,10 @@ export interface SendEmailOptions {
 }
 
 export async function sendEmail(apiKey: string, opts: SendEmailOptions): Promise<boolean> {
+  if (!apiKey) {
+    console.error("Resend send skipped: missing API key");
+    return false;
+  }
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
