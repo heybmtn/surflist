@@ -386,12 +386,8 @@ var listingSlugDisambiguations = [];
 
 /* ---------- shared chrome ---------- */
 function header() {
-  var nav = '<nav class="nav" aria-label="Primary">' +
-    CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
-    "</nav>";
   return '<a class="skip-link" href="#main">Skip to content</a>\n' +
     '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
-    nav +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
     HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +
@@ -402,9 +398,7 @@ const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer">' +
-  CATEGORIES.map(function (c) { return '<a href="/' + c.slug + '/">' + esc(c.nav) + "</a>"; }).join("") +
-  '<a href="/about/">About</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a></nav></div>' +
   "</div></footer>\n";
 
 function head(o) {
