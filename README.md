@@ -65,7 +65,8 @@ node build.js
 It regenerates the homepage, every hub, every surf-school listing page (and any
 verified pages in other categories), plus `sitemap.xml`, `robots.txt` and
 `llms.txt`. There's also an integrity check that prints the place tree, flags
-thin towns, and fails on place-slug or listing-slug collisions:
+thin towns, and fails on place-slug or listing-slug collisions, missing country
+ISO codes, or missing flag files:
 
 ```bash
 node build.js --check

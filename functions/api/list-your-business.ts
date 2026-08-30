@@ -12,11 +12,27 @@ import { LISTINGS_FROM, escapeHtml, sendEmail } from "../../lib/email";
 const DEFAULT_LISTINGS_INBOX = "listings@surflist.co";
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const origin = request.headers.get("origin") || "";
+  if (origin) {
+    try {
+      if (new URL(origin).origin !== new URL(request.url).origin) {
+        return jsonError("FORBIDDEN", "Unexpected origin.", 403);
+      }
+    } catch {
+      return jsonError("FORBIDDEN", "Unexpected origin.", 403);
+    }
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
     return jsonError("INVALID_BODY", "Expected JSON.", 400);
+  }
+
+  // Honeypot: bots fill hidden "company". Pretend success; don't email.
+  if (String(body.company ?? "").trim()) {
+    return jsonOk({});
   }
 
   const businessName = requireNonEmpty(body.business_name, 140);
@@ -33,7 +49,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonError("VALIDATION_ERROR", "Some fields need attention.", 400, { fields: fieldErrors });
   }
 
-  await sendEmail(env.RESEND_API_KEY, {
+  const inboxOk = await sendEmail(env.RESEND_API_KEY, {
     to: env.LISTINGS_INBOX || DEFAULT_LISTINGS_INBOX,
     from: LISTINGS_FROM,
     replyTo: contactEmail,
@@ -44,6 +60,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       `<p><strong>Socials:</strong><br>${escapeHtml(socials).replace(/\n/g, "<br>") || "—"}</p>` +
       `<p><strong>Contact email:</strong> ${escapeHtml(contactEmail)}</p>`,
   });
+
+  if (!inboxOk) {
+    return jsonError(
+      "SEND_FAILED",
+      "Could not submit your details. Please email listings@surflist.co.",
+      502
+    );
+  }
 
   await sendEmail(env.RESEND_API_KEY, {
     to: contactEmail,
