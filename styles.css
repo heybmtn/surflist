@@ -488,7 +488,43 @@
     .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
       outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
     }
-    .form-actions { margin-top: 0.2rem; }
+    .form-actions {
+      margin-top: 0.2rem;
+      display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center;
+    }
+    button.btn { font-family: inherit; cursor: pointer; }
+
+    /* agency page */
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.2rem; }
+    .copy { max-width: 640px; }
+    .copy p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin: 0; }
+    .copy p + p { margin-top: 0.9rem; }
+    .copy em { font-style: italic; color: var(--ink); }
+    .hub-cat .copy { margin-bottom: 1rem; }
+    .pullquote {
+      margin: 1.1rem 0;
+      padding: 1rem 1.15rem;
+      border-left: 3px solid var(--accent);
+      background: var(--surface);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .pullquote p, .hero .pullquote p {
+      color: var(--ink); font-size: 1.05rem; font-style: italic; margin: 0; line-height: 1.55;
+    }
+    .agency-qs { list-style: none; margin: 0 0 1rem; padding: 0; max-width: 640px; }
+    .agency-qs li {
+      padding: 0.75rem 0; border-bottom: 1px solid var(--line);
+      font-style: italic; color: var(--ink);
+    }
+    .agency-qs li:first-child { padding-top: 0; }
+    .agency-compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+      margin: 0 0 1rem; max-width: 720px;
+    }
+    .agency-tagline { font-weight: 600; font-size: 1.12rem; margin: 0; color: var(--ink); max-width: 640px; }
+    @media (max-width: 640px) {
+      .agency-compare { grid-template-columns: 1fr; }
+    }
     .form-success { margin-top: 1rem; padding: 0.9rem 1.1rem; border-radius: var(--radius-md); color: var(--ink);
       background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
     .form-success a { color: var(--accent); font-weight: 600; }
