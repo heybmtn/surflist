@@ -1,15 +1,14 @@
 // functions/api/agency.ts — POST /api/agency
 //
-// Intake for the agency enquiry form: validate and best-effort email the
-// details to the team (listings@) with Reply-To the submitter, plus a short
-// confirmation back to the submitter.
+// Intake for the agency enquiry form: validate and email the details to
+// hello@ with Reply-To the submitter, plus a short confirmation back.
 
 import type { Env, PagesFunction } from "../../lib/types";
 import { jsonError, jsonOk } from "../../lib/response";
 import { clampText, isValidEmail, isValidUrl, requireNonEmpty } from "../../lib/validate";
 import { LISTINGS_FROM, escapeHtml, sendEmail } from "../../lib/email";
 
-const DEFAULT_LISTINGS_INBOX = "listings@surflist.co";
+const AGENCY_INBOX = "hello@surflist.co";
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const origin = request.headers.get("origin") || "";
@@ -50,7 +49,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   const inboxOk = await sendEmail(env.RESEND_API_KEY, {
-    to: env.LISTINGS_INBOX || DEFAULT_LISTINGS_INBOX,
+    to: AGENCY_INBOX,
     from: LISTINGS_FROM,
     replyTo: contactEmail,
     subject: `Agency enquiry: ${businessName}`,
@@ -64,7 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!inboxOk) {
     return jsonError(
       "SEND_FAILED",
-      "Could not submit your details. Please email listings@surflist.co.",
+      "Could not submit your details. Please email hello@surflist.co.",
       502
     );
   }

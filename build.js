@@ -1250,7 +1250,7 @@ function renderAgency() {
   var pageUrl = SITE + "/agency/";
   var trail = [{ name: "Home", href: "/" }, { name: "Agency" }];
   var desc = "We help surf businesses get talked about — blogger outreach, digital PR and brand mentions that get you recommended by customers, search engines and AI.";
-  var callMailto = "mailto:listings@surflist.co?subject=Book%20a%2015-min%20call";
+  var callMailto = "mailto:hello@surflist.co?subject=Book%20a%2015-min%20call";
   function ctas(primaryHref) {
     return '<div class="hero-actions">' +
       '<a class="btn" href="' + primaryHref + '">Get your surf business mentioned &rarr;</a>' +
