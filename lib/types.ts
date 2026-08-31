@@ -9,6 +9,28 @@ export interface Env {
   RESEND_API_KEY: string;
   /** Optional override for the get-listed staff inbox. Defaults to listings@. */
   LISTINGS_INBOX?: string;
+  /** Pages D1 binding (`surflist-marketplace`). Used by the visitor counter. */
+  DB?: D1Database;
+}
+
+/** Minimal D1 surface used by Pages Functions in this repo. */
+export interface D1Database {
+  exec(query: string): Promise<unknown>;
+  prepare(query: string): D1PreparedStatement;
+  batch<T = unknown>(statements: D1PreparedStatement[]): Promise<D1Result<T>[]>;
+}
+
+export interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  first<T = unknown>(colName?: string): Promise<T | null>;
+  run(): Promise<D1Result>;
+  all<T = unknown>(): Promise<D1Result<T>>;
+}
+
+export interface D1Result<T = unknown> {
+  results: T[];
+  success: boolean;
+  meta?: { changes?: number };
 }
 
 export interface EventContext<E> {

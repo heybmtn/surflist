@@ -46,6 +46,9 @@ const SITE = "https://surflist.co"; // change if your domain differs
 const STYLES_HREF = "/styles.css?" + crypto.createHash("md5")
   .update(fs.readFileSync(path.join(ROOT, "styles.css")))
   .digest("hex").slice(0, 8);
+const VISITORS_HREF = "/visitors.js?" + crypto.createHash("md5")
+  .update(fs.readFileSync(path.join(ROOT, "visitors.js")))
+  .digest("hex").slice(0, 8);
 
 /* ---------- category registry ---------- */
 const CATEGORIES = [
@@ -388,6 +391,12 @@ var listingSlugDisambiguations = [];
 function header() {
   return '<a class="skip-link" href="#main">Skip to content</a>\n' +
     '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
+    '<p class="header__visitors" aria-label="People on the site">' +
+    '<span class="header__visitors-live">' +
+    '<span class="header__visitors-dot" aria-hidden="true"></span>' +
+    '<span data-visitors-live>0</span> live</span>' +
+    '<span class="header__visitors-sep" aria-hidden="true">·</span>' +
+    '<span><span data-visitors-total>0</span> total</span></p>' +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
     HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +
@@ -399,7 +408,8 @@ const FOOTER =
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
   '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a></nav></div>' +
-  "</div></footer>\n";
+  "</div></footer>\n" +
+  '<script src="' + VISITORS_HREF + '" defer></script>\n';
 
 function head(o) {
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
