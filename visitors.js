@@ -31,7 +31,6 @@
   function paint(live, total) {
     if (liveEl) liveEl.textContent = format(live);
     if (totalEl) totalEl.textContent = format(total);
-    el.hidden = false;
   }
 
   function beat() {
@@ -49,8 +48,7 @@
         }
       })
       .catch(function () {
-        // Local static preview has no Functions: show a stub so the chrome is visible.
-        if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && el.hidden) paint(1, 1);
+        if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) paint(1, 1);
       });
   }
 

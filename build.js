@@ -391,7 +391,7 @@ var listingSlugDisambiguations = [];
 function header() {
   return '<a class="skip-link" href="#main">Skip to content</a>\n' +
     '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
-    '<p class="header__visitors" hidden aria-label="People on the site">' +
+    '<p class="header__visitors" aria-label="People on the site">' +
     '<span class="header__visitors-live">' +
     '<span class="header__visitors-dot" aria-hidden="true"></span>' +
     '<span data-visitors-live>0</span> live</span>' +
