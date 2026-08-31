@@ -397,6 +397,7 @@ function header() {
     '<span data-visitors-live>0</span> live</span>' +
     '<span class="header__visitors-sep" aria-hidden="true">·</span>' +
     '<span><span data-visitors-total>0</span> total</span></p>' +
+    '<script>(function(){try{var c=JSON.parse(localStorage.getItem("sl_visitors")||"null");if(!c)return;var p=document.currentScript.previousElementSibling;var l=p.querySelector("[data-visitors-live]");var t=p.querySelector("[data-visitors-total]");if(l&&typeof c.live==="number")l.textContent=c.live.toLocaleString();if(t&&typeof c.total==="number")t.textContent=c.total.toLocaleString();}catch(e){}})();</script>' +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
     HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +

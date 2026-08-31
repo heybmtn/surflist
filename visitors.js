@@ -5,6 +5,7 @@
   var liveEl = el.querySelector("[data-visitors-live]");
   var totalEl = el.querySelector("[data-visitors-total]");
   var STORAGE_KEY = "sl_sid";
+  var CACHE_KEY = "sl_visitors";
   var INTERVAL_MS = 25000;
 
   function randomId() {
@@ -28,10 +29,22 @@
     try { return num.toLocaleString(); } catch (err) { return String(num); }
   }
 
-  function paint(live, total) {
+  function paint(live, total, persist) {
     if (liveEl) liveEl.textContent = format(live);
     if (totalEl) totalEl.textContent = format(total);
+    if (persist === false) return;
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        live: Number(live) || 0,
+        total: Number(total) || 0,
+      }));
+    } catch (err) {}
   }
+
+  try {
+    var cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (cached && typeof cached.total === "number") paint(cached.live, cached.total, false);
+  } catch (err) {}
 
   function beat() {
     fetch("/api/visitors", {
@@ -48,7 +61,9 @@
         }
       })
       .catch(function () {
-        if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) paint(1, 1);
+        if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+        try { if (localStorage.getItem(CACHE_KEY)) return; } catch (err) {}
+        paint(1, 1);
       });
   }
 
