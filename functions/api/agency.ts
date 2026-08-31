@@ -1,0 +1,80 @@
+// functions/api/agency.ts — POST /api/agency
+//
+// Intake for the agency enquiry form: validate and best-effort email the
+// details to the team (listings@) with Reply-To the submitter, plus a short
+// confirmation back to the submitter.
+
+import type { Env, PagesFunction } from "../../lib/types";
+import { jsonError, jsonOk } from "../../lib/response";
+import { clampText, isValidEmail, isValidUrl, requireNonEmpty } from "../../lib/validate";
+import { LISTINGS_FROM, escapeHtml, sendEmail } from "../../lib/email";
+
+const DEFAULT_LISTINGS_INBOX = "listings@surflist.co";
+
+export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const origin = request.headers.get("origin") || "";
+  if (origin) {
+    try {
+      if (new URL(origin).origin !== new URL(request.url).origin) {
+        return jsonError("FORBIDDEN", "Unexpected origin.", 403);
+      }
+    } catch {
+      return jsonError("FORBIDDEN", "Unexpected origin.", 403);
+    }
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonError("INVALID_BODY", "Expected JSON.", 400);
+  }
+
+  // Honeypot: bots fill hidden "company". Pretend success; don't email.
+  if (String(body.company ?? "").trim()) {
+    return jsonOk({});
+  }
+
+  const businessName = requireNonEmpty(body.business_name, 140);
+  const website = String(body.website ?? "").trim();
+  const contactEmail = String(body.contact_email ?? "").trim();
+  const message = clampText(body.message, 2000);
+
+  const fieldErrors: Record<string, string> = {};
+  if (!businessName) fieldErrors.business_name = "Business name is required.";
+  if (!isValidUrl(website)) fieldErrors.website = "A valid website (http/https) is required.";
+  if (!isValidEmail(contactEmail)) fieldErrors.contact_email = "A valid email is required.";
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return jsonError("VALIDATION_ERROR", "Some fields need attention.", 400, { fields: fieldErrors });
+  }
+
+  const inboxOk = await sendEmail(env.RESEND_API_KEY, {
+    to: env.LISTINGS_INBOX || DEFAULT_LISTINGS_INBOX,
+    from: LISTINGS_FROM,
+    replyTo: contactEmail,
+    subject: `Agency enquiry: ${businessName}`,
+    html:
+      `<p><strong>Business:</strong> ${escapeHtml(businessName as string)}</p>` +
+      `<p><strong>Website:</strong> <a href="${escapeHtml(website)}">${escapeHtml(website)}</a></p>` +
+      `<p><strong>Contact email:</strong> ${escapeHtml(contactEmail)}</p>` +
+      `<p><strong>Message:</strong><br>${escapeHtml(message).replace(/\n/g, "<br>") || "—"}</p>`,
+  });
+
+  if (!inboxOk) {
+    return jsonError(
+      "SEND_FAILED",
+      "Could not submit your details. Please email listings@surflist.co.",
+      502
+    );
+  }
+
+  await sendEmail(env.RESEND_API_KEY, {
+    to: contactEmail,
+    from: LISTINGS_FROM,
+    subject: "We've got your enquiry",
+    html: `<p>Thanks — we've received your enquiry for ${escapeHtml(businessName as string)} and will be in touch shortly.</p>`,
+  });
+
+  return jsonOk({});
+};

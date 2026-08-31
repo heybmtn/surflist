@@ -467,4 +467,4 @@
 
 ## About
 
-Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see https://surflist.co/list-your-business/ or email listings@surflist.co. Read more at https://surflist.co/about/.
+Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see https://surflist.co/list-your-business/ or email listings@surflist.co. Read more at https://surflist.co/about/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: https://surflist.co/agency/.
