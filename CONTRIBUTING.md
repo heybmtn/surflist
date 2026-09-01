@@ -22,7 +22,8 @@ everything else.
 1. **Never edit the generated HTML.** `index.html`, `surf-schools/index.html`,
    `england/cornwall/newquay/index.html` and every other `.html` file are
    **generated**. `node build.js` overwrites them on every run. You only ever
-   edit the files in `data/` and — occasionally — `build.js` and `styles.css`.
+   edit the files in `data/` and — occasionally — `build.js`, `styles.css` and
+   `search.js`. `search.json` is generated too; don't hand-edit it.
 
 2. **Always start from the latest repo.** `git pull` (or re-clone) before you
    edit. If you edit an old copy of `build.js` and then build, you silently wipe

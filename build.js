@@ -49,6 +49,10 @@ const STYLES_HREF = "/styles.css?" + crypto.createHash("md5")
 const VISITORS_HREF = "/visitors.js?" + crypto.createHash("md5")
   .update(fs.readFileSync(path.join(ROOT, "visitors.js")))
   .digest("hex").slice(0, 8);
+const SEARCH_JS_HREF = "/search.js?" + crypto.createHash("md5")
+  .update(fs.readFileSync(path.join(ROOT, "search.js")))
+  .digest("hex").slice(0, 8);
+var SEARCH_JSON_HREF = "/search.json";
 
 /* ---------- category registry ---------- */
 const CATEGORIES = [
@@ -388,9 +392,12 @@ var listingSlugDisambiguations = [];
 })();
 
 /* ---------- shared chrome ---------- */
-function header() {
+function header(opts) {
+  opts = opts || {};
+  var search = opts.search === false ? "" : renderSearch({ compact: true });
   return '<a class="skip-link" href="#main">Skip to content</a>\n' +
     '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
+    search +
     '<p class="header__visitors" aria-label="People on the site">' +
     '<span class="header__visitors-live">' +
     '<span class="header__visitors-dot" aria-hidden="true"></span>' +
@@ -410,7 +417,8 @@ const FOOTER =
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
   '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a><a href="/agency/">Agency</a></nav></div>' +
   "</div></footer>\n" +
-  '<script src="' + VISITORS_HREF + '" defer></script>\n';
+  '<script src="' + VISITORS_HREF + '" defer></script>\n' +
+  '<script src="' + SEARCH_JS_HREF + '" defer></script>\n';
 
 function head(o) {
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
@@ -430,6 +438,7 @@ function head(o) {
     '<link rel="preload" href="/fonts/hanken-400.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="stylesheet" href="' + STYLES_HREF + '" />\n' +
+    (o.preloadSearch ? '<link rel="preload" href="' + SEARCH_JSON_HREF + '" as="fetch" crossorigin />\n' : "") +
     (o.jsonld ? '<script type="application/ld+json">\n' + safeJsonLd(o.jsonld) + "\n</script>\n" : "") +
     '<script type="application/ld+json">\n' + safeJsonLd(WEBSITE_JSONLD) + "\n</script>\n" +
     "</head>\n";
@@ -441,6 +450,14 @@ const WEBSITE_JSONLD = JSON.stringify({
   url: SITE,
   name: "Surflist",
   publisher: { "@id": SITE + "/#organization" },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: SITE + "/search/?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
 }, null, 2);
 
 /* ---------- breadcrumbs ---------- */
@@ -1031,26 +1048,76 @@ function renderDetail(d, cat, slug, opts) {
 }
 
 /* ---------- search (businesses + destinations) ---------- */
+const SEARCH_ALIASES = {
+  USA: ["United States", "America"],
+  Oahu: ["Hawaii"],
+  Maui: ["Hawaii"],
+  "Canary Islands": ["Canaries", "Canarias"],
+  England: ["UK", "United Kingdom"],
+  Wales: ["UK", "United Kingdom"],
+  Scotland: ["UK", "United Kingdom"],
+  Haleiwa: ["North Shore"],
+};
+function aliasesFor() {
+  var out = [];
+  for (var i = 0; i < arguments.length; i++) {
+    (SEARCH_ALIASES[arguments[i]] || []).forEach(function (a) {
+      if (out.indexOf(a) < 0) out.push(a);
+    });
+  }
+  return out.join(" ");
+}
 function searchIndex() {
   var idx = [];
-  // destinations first so a place match ranks visibly
+  function push(row) {
+    if (!row.k) delete row.k;
+    if (!row.v) delete row.v;
+    idx.push(row);
+  }
   countries().forEach(function (c) {
-    idx.push({ n: c, p: "Country", c: "destination", u: countryUrl(c), v: true });
+    push({ n: c, p: "Country", c: "Country", t: "country", u: countryUrl(c), k: aliasesFor(c) });
     regionsIn(c).forEach(function (r) {
-      idx.push({ n: r, p: c, c: "destination", u: regionUrl(c, r), v: true });
+      push({ n: r, p: c, c: "Region", t: "region", u: regionUrl(c, r), k: aliasesFor(r) });
       townsWithHub(c, r).forEach(function (t) {
-        idx.push({ n: t, p: [r, c].join(", "), c: "destination", u: townUrl(c, r, t), v: true });
+        push({ n: t, p: [r, c].join(", "), c: "Town", t: "town", u: townUrl(c, r, t), k: aliasesFor(t, r) });
+        CATEGORIES.forEach(function (cat) {
+          if (!townCatPageExists(c, r, t, cat)) return;
+          push({
+            n: cat.title + " in " + t,
+            p: [r, c].join(", "),
+            c: cat.title,
+            t: "town-cat",
+            u: townCatUrl(c, r, t, cat),
+            k: [cat.plural, cat.singular, aliasesFor(t, r)].filter(Boolean).join(" "),
+          });
+        });
       });
     });
   });
-  // businesses
   CATEGORIES.forEach(function (cat) {
+    push({
+      n: cat.title,
+      p: "All destinations",
+      c: "Category",
+      t: "category",
+      u: "/" + cat.slug + "/",
+      k: [cat.plural, cat.singular, cat.nav].join(" "),
+    });
     cat.items.forEach(function (d) {
       var href = listingHref(d, cat);
       if (!href) return;
       var facetVal = d[cat.facetField];
       var f = Array.isArray(facetVal) ? facetVal.join(" ") : (facetVal || "");
-      idx.push({ n: d.name, p: [d.town, d.region, d.country].filter(Boolean).join(", "), c: cat.singular, f: f, u: href, v: isVerified(d) });
+      var row = {
+        n: d.name,
+        p: [d.town, d.region, d.country].filter(Boolean).join(", "),
+        c: cat.singular,
+        t: "listing",
+        u: href,
+        k: [f, aliasesFor(d.town, d.region)].filter(Boolean).join(" "),
+      };
+      if (isVerified(d)) row.v = true;
+      push(row);
     });
   });
   return idx;
@@ -1077,40 +1144,28 @@ function latestPool() {
   });
   return out;
 }
-function renderSearch() {
-  return '<div class="search" role="search">' +
-    '<input type="text" id="search-input" class="search__input" placeholder="Search a destination, town or surf business&hellip;" ' +
-    'autocomplete="off" spellcheck="false" aria-label="Search destinations and listings" role="combobox" aria-expanded="false" ' +
-    'aria-controls="search-results" aria-autocomplete="list" />' +
-    '<ul id="search-results" class="search__results" role="listbox" hidden></ul>' +
-    '<script type="application/json" id="search-data">' + JSON.stringify(searchIndex()).replace(/</g, "\\u003c") + "</script>" +
-    "</div>";
+var searchWidgetSeq = 0;
+const SEARCH_ICON =
+  '<span class="search__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/></svg></span>';
+function renderSearch(opts) {
+  opts = opts || {};
+  var id = "search-" + (++searchWidgetSeq);
+  var compact = !!opts.compact;
+  var placeholder = compact
+    ? "Search destinations &amp; listings"
+    : "Search a destination, town or surf business&hellip;";
+  var value = opts.value ? ' value="' + esc(opts.value) + '"' : "";
+  return '<div class="search' + (compact ? " search--compact" : "") + '" role="search" data-index="' + SEARCH_JSON_HREF + '">' +
+    '<form class="search__form" action="/search/" method="get">' +
+    SEARCH_ICON +
+    '<input type="search" name="q" id="' + id + '-input" class="search__input" placeholder="' + placeholder + '" ' +
+    'autocomplete="off" spellcheck="false" enterkeyhint="search" inputmode="search" ' +
+    'aria-label="Search destinations and listings" role="combobox" aria-expanded="false" ' +
+    'aria-controls="' + id + '-results" aria-autocomplete="list"' + value + (opts.autofocus ? " autofocus" : "") + " />" +
+    '<button type="button" class="search__clear" hidden aria-label="Clear search">&times;</button>' +
+    '<ul id="' + id + '-results" class="search__results" role="listbox" hidden></ul>' +
+    "</form></div>";
 }
-const SEARCH_JS =
-"(function(){var input=document.getElementById('search-input');if(!input)return;var box=document.getElementById('search-results');" +
-"var items=JSON.parse(document.getElementById('search-data').textContent);var active=-1;" +
-"function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
-"function highlight(opts){opts.forEach(function(o,i){o.classList.toggle('is-active',i===active);});input.setAttribute('aria-activedescendant',active>-1?opts[active].parentElement.id:'');}" +
-"function render(list){box.innerHTML='';active=-1;" +
-"if(!list.length){box.hidden=true;input.setAttribute('aria-expanded','false');return;}" +
-"list.forEach(function(d,i){var li=document.createElement('li');li.setAttribute('role','option');li.id='search-opt-'+i;" +
-"var a=document.createElement('a');a.href=d.u;a.className='search__result';if(d.u.charAt(0)!=='/'){a.target='_blank';a.rel='noopener';}" +
-"a.innerHTML='<span class=\"search__name\">'+esc(d.n)+'</span><span class=\"search__meta\">'+esc(d.c)+(d.p?' &middot; '+esc(d.p):'')+'</span>';" +
-"li.appendChild(a);box.appendChild(li);});" +
-"box.hidden=false;input.setAttribute('aria-expanded','true');}" +
-"function search(q){q=q.trim().toLowerCase();if(!q)return [];" +
-"var r=items.filter(function(d){return (d.n+' '+d.p+' '+d.c+' '+(d.f||'')).toLowerCase().indexOf(q)>-1;});" +
-"r.sort(function(a,b){var an=a.n.toLowerCase(),bn=b.n.toLowerCase();" +
-"var ap=an.indexOf(q)===0?0:1,bp=bn.indexOf(q)===0?0:1;if(ap!==bp)return ap-bp;" +
-"var ad=a.c==='destination'?0:1,bd=b.c==='destination'?0:1;if(ad!==bd)return ad-bd;" +
-"return an<bn?-1:an>bn?1:0;});return r.slice(0,8);}" +
-"input.addEventListener('input',function(){render(search(input.value));});" +
-"input.addEventListener('keydown',function(e){var opts=box.querySelectorAll('.search__result');if(!opts.length)return;" +
-"if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,opts.length-1);highlight(opts);}" +
-"else if(e.key==='ArrowUp'){e.preventDefault();active=Math.max(active-1,-1);highlight(opts);}" +
-"else if(e.key==='Enter'){if(active>-1){e.preventDefault();opts[active].click();}}" +
-"else if(e.key==='Escape'){box.hidden=true;input.setAttribute('aria-expanded','false');}});" +
-"document.addEventListener('click',function(e){if(!e.target.closest('.search'))box.hidden=true;});})();";
 
 /* ---------- homepage ---------- */
 function renderDestinations() {
@@ -1165,15 +1220,38 @@ function renderHub() {
     title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
     desc: "Find everything you need for your next surf trip: surf schools, shops, places to stay and board repair, by destination.",
     canonical: SITE + "/",
+    preloadSearch: true,
   }) +
-  "<body>\n" + header() +
+  "<body>\n" + header({ search: false }) +
   '<main id="main" class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
   "<p>Find surf schools, shops, stays and board repair by destination.</p>" +
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
   renderLatestListings() +
-  "</main>\n" + FOOTER + "<script>" + SEARCH_JS + LATEST_JS + "</script>\n</body>\n</html>\n";
+  "</main>\n" + FOOTER + "<script>" + LATEST_JS + "</script>\n</body>\n</html>\n";
+}
+function renderSearchPage() {
+  var trail = [{ name: "Home", href: "/" }, { name: "Search" }];
+  return head({
+    title: "Search — surflist",
+    desc: "Search Surflist for surf destinations, schools, shops, stays and services.",
+    canonical: SITE + "/search/",
+    preloadSearch: true,
+    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), breadcrumbJsonLd(trail)] }, null, 2),
+  }) +
+  "<body>\n" + header({ search: false }) +
+  '<main id="main" class="wrap">' + crumbs(trail) +
+  '<section class="hero search-page"><h1>Search</h1>' +
+  "<p>Find a destination, town or surf business.</p>" +
+  renderSearch({ autofocus: true }) +
+  '<p class="search-page__status" id="search-page-status">Type a destination, town or surf business.</p>' +
+  '<section class="search-page__group" id="search-page-dest-wrap" hidden><h2>Destinations</h2>' +
+  '<ul class="search-page__list" id="search-page-dest"></ul></section>' +
+  '<section class="search-page__group" id="search-page-list-wrap" hidden><h2>Listings</h2>' +
+  '<ul class="search-page__list" id="search-page-list"></ul></section>' +
+  "<noscript><p>Search needs JavaScript.</p></noscript>" +
+  "</section></main>\n" + FOOTER + "</body>\n</html>\n";
 }
 function renderListYourBusiness() {
   var pageUrl = SITE + "/list-your-business/";
@@ -1541,16 +1619,24 @@ uniqSorted(
     .concat(countries().map(function (c) { return cSlug(c); }))
     // legacy: old builds put regions at the root and used /schools/
     // "marketplace": removed feature — kept only to clean up a stale directory from an old build
-    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace"])
+    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace", "search"])
 ).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
 // Cloudflare Pages: trailing-slash sitemap/robots otherwise 200 the homepage.
 // Do not add a /* /index.html 200 SPA fallback — that is the missing-path bug.
 fs.writeFileSync(path.join(ROOT, "_redirects"),
   "/sitemap.xml/ /sitemap.xml 301\n" +
-  "/robots.txt/ /robots.txt 301\n");
+  "/robots.txt/ /robots.txt 301\n" +
+  "/search.json/ /search.json 301\n");
+
+var searchJson = JSON.stringify(searchIndex());
+SEARCH_JSON_HREF = "/search.json?" + crypto.createHash("md5").update(searchJson).digest("hex").slice(0, 8);
+fs.writeFileSync(path.join(ROOT, "search.json"), searchJson);
 
 var urls = [SITE + "/"];
 fs.writeFileSync(path.join(ROOT, "index.html"), renderHub());
+
+writePage("search", renderSearchPage());
+urls.push(SITE + "/search/");
 
 writePage("list-your-business", renderListYourBusiness());
 urls.push(SITE + "/list-your-business/");
@@ -1635,4 +1721,4 @@ var schoolPages = CATEGORIES.filter(function (c) { return c.slug === "surf-schoo
   .reduce(function (a, c) { return a + c.items.length; }, 0);
 console.log("Built: homepage, " + stats.countries + " country + " + stats.regions + " region + " + stats.towns +
   " town hubs, " + stats.townCats + " town-category pages, " + CATEGORIES.length + " browse-all pages, " +
-  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt, 404.html, _redirects.");
+  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt, 404.html, search.json, _redirects.");

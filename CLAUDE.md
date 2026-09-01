@@ -11,9 +11,9 @@ How the chat + Code lanes fit together: **WORKFLOW.md**.
 ## Non-negotiables
 
 1. **Never hand-edit generated HTML.** All `.html` files, `sitemap.xml`,
-   `robots.txt`, `llms.txt` and the `<country>/<region>/<town>/…` tree are
-   generated. `node build.js` overwrites them. Only edit `data/*.js`, and — when
-   a task truly requires it — `build.js` / `styles.css`.
+   `robots.txt`, `llms.txt`, `search.json` and the `<country>/<region>/<town>/…`
+   tree are generated. `node build.js` overwrites them. Only edit `data/*.js`,
+   and — when a task truly requires it — `build.js` / `styles.css` / `search.js`.
 2. **Always work from the latest.** `git pull` (or ensure a clean, current
    checkout) before you touch anything. Never apply a change onto a stale tree.
 3. **Never replace a whole file from a paste.** Especially `build.js`. Make
