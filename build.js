@@ -1311,7 +1311,7 @@ function renderHub() {
   }) +
   "<body>\n" + header({ search: false }) +
   '<main id="main" class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
-  "<p>Find surf schools, shops, stays and board repair by destination.</p>" +
+  "<p>Find surf schools, shops, and stays by destination.</p>" +
   renderSearch() + "</section>\n" +
   renderDestinations() +
   renderPopularTowns() +
