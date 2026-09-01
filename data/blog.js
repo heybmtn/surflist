@@ -1,5 +1,5 @@
 // data/blog.js — Surflist editorial posts
-// Facet field: tags (array) — Guides / Destinations / Surflist
+// Facet field: tags (array) — Guides / Destinations / Reviews / Surflist
 // Copy the shape in CONTRIBUTING.md when adding a post.
 window.POSTS = [
   { title: "Mavrex Paddle Trainer Review: Building Surf Fitness at Home",
@@ -7,7 +7,7 @@ window.POSTS = [
     date: "2026-09-01",
     description: "A 5/5 review of the Mavrex paddle trainer — a door-anchor kit for surf paddle fitness at home, with steady resistance from 2.5kg to 7.5kg.",
     blurb: "A door-anchor paddle trainer that's earned its place in my week — 5/5 for staying surf-fit when the sea is flat.",
-    tags: ["Guides"],
+    tags: ["Reviews"],
     relatedHref: "https://exitwatersports.com/products/the-mavrex-paddle-trainer-for-surf-swim-strength-conditioning",
     relatedLabel: "Check out the Mavrex Paddle Trainer",
     body: [

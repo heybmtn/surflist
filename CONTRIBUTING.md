@@ -316,7 +316,7 @@ first. Copy an existing post and change the fields.
   date: "2026-09-01",            // YYYY-MM-DD; required
   description: "SEO meta description, one or two sentences.",
   blurb: "One sentence for the card.",
-  tags: ["Guides"],             // Guides / Destinations / Surflist
+  tags: ["Guides"],             // Guides / Destinations / Reviews / Surflist
   lead: "Opening paragraph on the article page.",
   places: [                     // optional; town chips in the sidebar
     { country: "England", region: "Cornwall", town: "Newquay" },
