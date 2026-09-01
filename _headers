@@ -1,2 +1,5 @@
 /sitemap.xml
   Content-Type: text/xml; charset=UTF-8
+
+/blog/feed.xml
+  Content-Type: application/rss+xml; charset=UTF-8

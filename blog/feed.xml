@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Surflist blog</title>
+    <link>https://surflist.co/blog/</link>
+    <atom:link href="https://surflist.co/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Guides for planning a surf trip — schools, destinations, and how Surflist lists businesses.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Tue, 01 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>How to choose a surf school</title>
+      <link>https://surflist.co/blog/how-to-choose-a-surf-school/</link>
+      <guid isPermaLink="true">https://surflist.co/blog/how-to-choose-a-surf-school/</guid>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+      <description>What to check before you book a surf lesson: group size, instructor qualifications, the beach, kit and whether the school is a real, operating business.</description>
+      <category>Guides</category>
+    </item>
+    <item>
+      <title>How to plan a surf trip with Surflist</title>
+      <link>https://surflist.co/blog/how-to-plan-a-surf-trip/</link>
+      <guid isPermaLink="true">https://surflist.co/blog/how-to-plan-a-surf-trip/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Plan a surf trip by destination, not by brand. Use Surflist's country, region and town pages to find schools, shops, stays and board repair in one place.</description>
+      <category>Guides</category>
+      <category>Destinations</category>
+    </item>
+    <item>
+      <title>What Surflist lists — and what it doesn't</title>
+      <link>https://surflist.co/blog/what-surflist-lists/</link>
+      <guid isPermaLink="true">https://surflist.co/blog/what-surflist-lists/</guid>
+      <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+      <description>How Surflist decides what appears: real businesses confirmed on their own website, organised by country, region and town. Verified is paid, not a quality score.</description>
+      <category>Surflist</category>
+    </item>
+    <item>
+      <title>Beginner-friendly surf destinations on Surflist</title>
+      <link>https://surflist.co/blog/beginner-friendly-surf-destinations/</link>
+      <guid isPermaLink="true">https://surflist.co/blog/beginner-friendly-surf-destinations/</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Towns on Surflist where you can find beginner surf schools — sandy beach-break hubs in England, Morocco, Costa Rica, Indonesia and Mexico, with links to each town.</description>
+      <category>Destinations</category>
+      <category>Guides</category>
+    </item>
+  </channel>
+</rss>

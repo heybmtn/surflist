@@ -1,11 +1,12 @@
 # surflist
 
-A directory for surf trips, in four categories:
+A directory for surf trips, in four categories, plus a blog:
 
 - **Surf schools** — `/surf-schools/`
 - **Surf shops** — `/surf-shops/`
 - **Places to stay** (camps, hostels, eco-pods, campervans) — `/surf-stays/`
 - **Surf services** (board repair, etc.) — `/surf-services/`
+- **Blog** — `/blog/` (guides; one page per article at `/blog/<slug>/`)
 
 The canonical hub for every place is its geographic page — country → region →
 town (`/england/cornwall/newquay/`) — with a browse-all page per category and a
@@ -38,6 +39,7 @@ data/
   shops.js
   stays.js
   services.js
+  blog.js           <- blog posts (title, slug, date, body)
 build.js            the generator (run: node build.js)
 styles.css          all styling
 search.js           client-side search (header, homepage, `/search/`)
@@ -50,6 +52,9 @@ fonts/              self-hosted Hanken Grotesk
 index.html                              the homepage hub
 search.json                             the search index
 search/index.html                       the search results page
+blog/index.html                         the blog index
+blog/<slug>/index.html                  a page per article
+blog/feed.xml                           RSS
 <country>/<region>/<town>/...           the geographic hub tree
 surf-schools/index.html                 a category directory page...
 surf-schools/<slug>/index.html          ...and a page per surf school
@@ -66,10 +71,11 @@ node build.js
 ```
 
 It regenerates the homepage, every hub, every surf-school listing page (and any
-verified pages in other categories), plus `sitemap.xml`, `robots.txt` and
-`llms.txt`. There's also an integrity check that prints the place tree, flags
-thin towns, and fails on place-slug or listing-slug collisions, missing country
-ISO codes, or missing flag files:
+verified pages in other categories), the blog index and article pages, plus
+`sitemap.xml`, `robots.txt`, `llms.txt` and `/blog/feed.xml`. There's also an
+integrity check that prints the place tree, flags thin towns, and fails on
+place-slug, listing-slug or blog-slug collisions, missing country ISO codes, or
+missing flag files:
 
 ```bash
 node build.js --check

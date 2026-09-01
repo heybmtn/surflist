@@ -66,6 +66,9 @@ one or more listing entries. To apply it:
    intentionally suppressed). In the PR body, list what was added and flag
    anything thin or ruled out.
 
+If a hand-off describes a **blog post**, add it to `data/blog.js` (copy an
+existing post). Don't invent listing facts; link to directory pages instead.
+
 If a hand-off describes a **structural change** (a new feature, a registry edit,
 CSS), make the minimal edit to the real `build.js` / `styles.css` — never paste a
 whole replacement file.
@@ -80,6 +83,7 @@ Data files and their one category-specific ("facet") field:
 | `data/shops.js`    | `offerings`   | array  |
 | `data/stays.js`    | `stayType`    | string |
 | `data/services.js` | `serviceType` | string |
+| `data/blog.js`     | `tags`        | array  |
 
 Registries near the top of `build.js`:
 
@@ -91,6 +95,9 @@ Registries near the top of `build.js`:
 - **`TOWN_CONTENT`** — keyed by `"<country-slug>/<region-slug>/<town-slug>"`;
   optional `intro` / `beaches` / `whenToSurf` / `faq`. Omitted fields render as
   HTML-comment placeholders. FAQ emits `FAQPage` schema.
+- **`data/blog.js`** — posts (`title`, `slug`, `date`, `description`, `blurb`,
+  `tags`, `body`). Builds `/blog/` and `/blog/<slug>/`. Link towns that already
+  have a hub; do not invent listing facts in a post.
 
 Thresholds: a town hub needs **≥2 listings**; a town+category page needs **≥2 in
 that category**. Homepage "popular towns" = top 8 by listing count; "latest

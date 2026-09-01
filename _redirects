@@ -1,3 +1,6 @@
 /sitemap.xml/ /sitemap.xml 301
 /robots.txt/ /robots.txt 301
 /search.json/ /search.json 301
+/feed.xml /blog/feed.xml 301
+/feed.xml/ /blog/feed.xml 301
+/blog/feed.xml/ /blog/feed.xml 301

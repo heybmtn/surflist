@@ -198,6 +198,14 @@
 - [Surf shops](https://surflist.co/surf-shops/): Independent surf shops for boards, wetsuits, rentals and repairs.
 - [Places to stay](https://surflist.co/surf-stays/): Surf camps, hostels, eco-pods and campervans close to the waves.
 - [Surf services](https://surflist.co/surf-services/): Board repair, ding fixes and other surf services.
+- [Blog](https://surflist.co/blog/): Guides for planning a surf trip.
+
+## Blog
+
+- [How to choose a surf school](https://surflist.co/blog/how-to-choose-a-surf-school/): What to check before you book a surf lesson: group size, instructor qualifications, the beach, kit and whether the school is a real, operating business.
+- [How to plan a surf trip with Surflist](https://surflist.co/blog/how-to-plan-a-surf-trip/): Plan a surf trip by destination, not by brand. Use Surflist's country, region and town pages to find schools, shops, stays and board repair in one place.
+- [What Surflist lists — and what it doesn't](https://surflist.co/blog/what-surflist-lists/): How Surflist decides what appears: real businesses confirmed on their own website, organised by country, region and town. Verified is paid, not a quality score.
+- [Beginner-friendly surf destinations on Surflist](https://surflist.co/blog/beginner-friendly-surf-destinations/): Towns on Surflist where you can find beginner surf schools — sandy beach-break hubs in England, Morocco, Costa Rica, Indonesia and Mexico, with links to each town.
 
 ## Surf schools
 
@@ -467,4 +475,4 @@
 
 ## About
 
-Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see https://surflist.co/list-your-business/ or email listings@surflist.co. Read more at https://surflist.co/about/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: https://surflist.co/agency/.
+Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see https://surflist.co/list-your-business/ or email listings@surflist.co. Read more at https://surflist.co/about/. Trip guides: https://surflist.co/blog/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: https://surflist.co/agency/.
