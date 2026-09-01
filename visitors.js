@@ -1,4 +1,4 @@
-/* Header live/total visitor counter — POSTs a heartbeat to /api/visitors. */
+/* Header online/visitors counter — POSTs a heartbeat to /api/visitors. */
 (function () {
   var el = document.querySelector(".header__visitors");
   if (!el) return;

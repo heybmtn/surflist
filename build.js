@@ -359,7 +359,6 @@ var HEADER_STATS = {
   schools: categoryCount("surf-schools"),
   shops: categoryCount("surf-shops"),
   stays: categoryCount("surf-stays"),
-  services: categoryCount("surf-services"),
 };
 
 /* every (listing, category) pair, for whole-tree passes */
@@ -464,14 +463,14 @@ function header(opts) {
     '<p class="header__visitors" aria-label="People on the site">' +
     '<span class="header__visitors-live">' +
     '<span class="header__visitors-dot" aria-hidden="true"></span>' +
-    '<span data-visitors-live>0</span> live</span>' +
+    '<span data-visitors-live>0</span> online</span>' +
     '<span class="header__visitors-sep" aria-hidden="true">·</span>' +
-    '<span><span data-visitors-total>0</span> total</span></p>' +
+    '<span><span data-visitors-total>0</span> visitors</span></p>' +
     '<script>(function(){try{var c=JSON.parse(localStorage.getItem("sl_visitors")||"null");if(!c)return;var p=document.currentScript.previousElementSibling;var l=p.querySelector("[data-visitors-live]");var t=p.querySelector("[data-visitors-total]");if(l&&typeof c.live==="number")l.textContent=c.live.toLocaleString();if(t&&typeof c.total==="number")t.textContent=c.total.toLocaleString();}catch(e){}})();</script>' +
     "</div>" +
     '<div class="wrap"><p class="header__stats">' +
     HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +
-    HEADER_STATS.stays + " places to stay · " + HEADER_STATS.services + " surf services</p></div>" +
+    HEADER_STATS.stays + " places to stay</p></div>" +
     "</header>\n";
 }
 const FOOTER =
