@@ -27,6 +27,9 @@
                              REGIONS entry for an intro + custom slug
    Add town editorial ...... add a TOWN_CONTENT["<c>/<r>/<t>"] entry (beaches,
                              when-to-surf, FAQ). Town hubs render slots for these.
+   Add a blog post ......... add an entry to data/blog.js (title, slug, date,
+                             description, blurb, tags, body). Builds /blog/ and
+                             /blog/<slug>/ plus RSS at /blog/feed.xml.
 
    Real pre-rendered HTML, self-hosted font, zero dependencies. Run: node build.js
 */
@@ -237,6 +240,7 @@ const CATEGORY_PALETTE = {
   "surf-shops": { from: [32, 78, 52], to: [14, 52, 30] },      // amber/sunset orange -> deep terracotta
   "surf-stays": { from: [152, 36, 40], to: [166, 40, 18] },    // sage/emerald -> deep pine
   "surf-services": { from: [232, 20, 42], to: [230, 34, 15] }, // slate/indigo -> midnight navy
+  "blog": { from: [176, 52, 38], to: [176, 70, 18] },          // site teal
 };
 function placeholderImage(seed, catSlug) {
   var h = 0; seed = String(seed || "");
@@ -286,6 +290,74 @@ function loadData(file) {
   });
 }
 CATEGORIES.forEach(function (c) { c.items = loadData(c.data); });
+
+/* ---------- blog posts ---------- */
+function loadPosts() {
+  var file = path.join(ROOT, "data", "blog.js");
+  if (!fs.existsSync(file)) return [];
+  var win = {};
+  new Function("window", fs.readFileSync(file, "utf8"))(win);
+  return (win.POSTS || []).slice().map(function (p) {
+    p.slug = p.slug || shared.slugify(p.title);
+    p.tags = Array.isArray(p.tags) ? p.tags.filter(Boolean) : [];
+    p.author = p.author || "Ben Manton";
+    p.places = Array.isArray(p.places) ? p.places : [];
+    return p;
+  }).sort(function (a, b) {
+    return String(b.date || "").localeCompare(String(a.date || "")) ||
+      String(a.title || "").localeCompare(String(b.title || ""));
+  });
+}
+var BLOG_POSTS = loadPosts();
+var BLOG_RSS = SITE + "/blog/feed.xml";
+var blogSlugCollisions = [];
+(function validatePosts() {
+  var bad = [], used = {};
+  BLOG_POSTS.forEach(function (p) {
+    var label = p.title || p.slug || "?";
+    if (!p.title) bad.push("blog: a post is missing a title");
+    if (!p.slug) bad.push("blog: \"" + label + "\" has no slug");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(p.date || "")))
+      bad.push("blog: \"" + label + "\" needs a date as YYYY-MM-DD");
+    if (p.updated && !/^\d{4}-\d{2}-\d{2}$/.test(String(p.updated)))
+      bad.push("blog: \"" + label + "\" updated must be YYYY-MM-DD");
+    if (!p.description) bad.push("blog: \"" + label + "\" has no description");
+    if (!p.blurb) bad.push("blog: \"" + label + "\" has no blurb");
+    if (!Array.isArray(p.body) || !p.body.length) bad.push("blog: \"" + label + "\" has no body");
+    if (p.slug) {
+      if (used[p.slug]) blogSlugCollisions.push("/blog/" + p.slug + "/ would be used by \"" + used[p.slug] + "\" and \"" + label + "\"");
+      else used[p.slug] = label;
+    }
+    p.places.forEach(function (pl) {
+      if (!pl || !pl.country || !pl.region || !pl.town)
+        bad.push("blog: \"" + label + "\" has a place missing country, region or town");
+    });
+  });
+  if (bad.length) throw new Error("Blog posts failed validation:\n" + bad.join("\n"));
+})();
+function blogHref(p) { return "/blog/" + p.slug + "/"; }
+function postPlainText(p) {
+  var parts = [];
+  if (p.lead) parts.push(p.lead);
+  if (p.blurb) parts.push(p.blurb);
+  (p.body || []).forEach(function (b) {
+    if (typeof b === "string") parts.push(b);
+    else if (!b) return;
+    else if (b.p) parts.push(b.p);
+    else if (b.h2) parts.push(b.h2);
+    else if (b.h3) parts.push(b.h3);
+    else if (b.quote) parts.push(b.quote);
+    else if (Array.isArray(b.ul)) parts.push(b.ul.join(" "));
+    else if (Array.isArray(b.ol)) parts.push(b.ol.join(" "));
+  });
+  return parts.join(" ");
+}
+function wordCount(s) {
+  return String(s || "").trim().split(/\s+/).filter(Boolean).length;
+}
+function readingMins(p) {
+  return Math.max(1, Math.round(wordCount(postPlainText(p)) / 200));
+}
 
 /* header stat counts — read once from the loaded data so they stay correct as listings are added */
 function categoryCount(slug) {
@@ -415,25 +487,44 @@ const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/about/">About</a><a href="/agency/">Agency</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/agency/">Agency</a></nav></div>' +
   "</div></footer>\n" +
   '<script src="' + VISITORS_HREF + '" defer></script>\n' +
   '<script src="' + SEARCH_JS_HREF + '" defer></script>\n';
 
 function head(o) {
+  var ogType = o.ogType || "website";
+  var robots = o.noindex
+    ? '<meta name="robots" content="noindex, nofollow" />\n'
+    : (o.robots ? '<meta name="robots" content="' + esc(o.robots) + '" />\n' : "");
   return '<!doctype html>\n<html lang="en">\n<head>\n' +
     '<meta charset="utf-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n' +
     '<meta name="theme-color" content="#0c5c57" />\n' +
     "<title>" + esc(o.title) + "</title>\n" +
     '<meta name="description" content="' + esc(o.desc) + '" />\n' +
-    (o.noindex ? '<meta name="robots" content="noindex, nofollow" />\n' : "") +
+    (o.author ? '<meta name="author" content="' + esc(o.author) + '" />\n' : "") +
+    (o.keywords ? '<meta name="keywords" content="' + esc(o.keywords) + '" />\n' : "") +
+    robots +
     '<link rel="canonical" href="' + esc(o.canonical) + '" />\n' +
-    '<meta property="og:type" content="website" />\n' +
-    '<meta property="og:title" content="' + esc(o.title) + '" />\n' +
+    (o.rss ? '<link rel="alternate" type="application/rss+xml" title="Surflist blog" href="' + esc(o.rss) + '" />\n' : "") +
+    '<meta property="og:type" content="' + esc(ogType) + '" />\n' +
+    '<meta property="og:site_name" content="Surflist" />\n' +
+    '<meta property="og:locale" content="en_GB" />\n' +
+    '<meta property="og:title" content="' + esc(o.ogTitle || o.title) + '" />\n' +
     '<meta property="og:description" content="' + esc(o.desc) + '" />\n' +
     '<meta property="og:url" content="' + esc(o.canonical) + '" />\n' +
     (o.ogImage ? '<meta property="og:image" content="' + esc(o.ogImage) + '" />\n' : "") +
+    (o.publishedTime ? '<meta property="article:published_time" content="' + esc(o.publishedTime) + '" />\n' : "") +
+    (o.modifiedTime ? '<meta property="article:modified_time" content="' + esc(o.modifiedTime) + '" />\n' : "") +
+    (o.author && ogType === "article" ? '<meta property="article:author" content="' + esc(o.author) + '" />\n' : "") +
+    (Array.isArray(o.articleTags) ? o.articleTags.map(function (t) {
+      return '<meta property="article:tag" content="' + esc(t) + '" />\n';
+    }).join("") : "") +
+    (o.articleSection ? '<meta property="article:section" content="' + esc(o.articleSection) + '" />\n' : "") +
     '<meta name="twitter:card" content="' + (o.ogImage ? "summary_large_image" : "summary") + '" />\n' +
+    '<meta name="twitter:title" content="' + esc(o.ogTitle || o.title) + '" />\n' +
+    '<meta name="twitter:description" content="' + esc(o.desc) + '" />\n' +
+    (o.ogImage ? '<meta name="twitter:image" content="' + esc(o.ogImage) + '" />\n' : "") +
     '<link rel="icon" type="image/svg+xml" href="/favicon.svg" />\n' +
     '<link rel="preload" href="/fonts/hanken-400.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
@@ -1120,6 +1211,24 @@ function searchIndex() {
       push(row);
     });
   });
+  push({
+    n: "Blog",
+    p: "Guides and advice",
+    c: "Blog",
+    t: "category",
+    u: "/blog/",
+    k: "articles guides advice blog",
+  });
+  BLOG_POSTS.forEach(function (p) {
+    push({
+      n: p.title,
+      p: (p.tags || []).join(", ") || "Article",
+      c: "Article",
+      t: "blog",
+      u: blogHref(p),
+      k: [p.blurb, p.description, (p.tags || []).join(" ")].filter(Boolean).join(" "),
+    });
+  });
   return idx;
 }
 function latestPool() {
@@ -1200,6 +1309,13 @@ function renderLatestListings() {
     '<script type="application/json" id="latest-data">' + JSON.stringify(pool).replace(/</g, "\\u003c") + "</script>" +
     "</section>\n";
 }
+function renderLatestBlog() {
+  var posts = BLOG_POSTS.slice(0, 3);
+  if (!posts.length) return "";
+  return '<section class="hub-cat" id="blog"><div class="hub-cat__head"><h2>From the blog</h2>' +
+    '<a href="/blog/">All articles &rarr;</a></div>' +
+    '<ul class="grid">' + posts.map(function (p) { return renderBlogCard(p, "h3"); }).join("") + "</ul></section>\n";
+}
 const LATEST_JS =
 "(function(){var ul=document.getElementById('latest-listings');if(!ul)return;" +
 "var pool=JSON.parse(document.getElementById('latest-data').textContent);" +
@@ -1229,13 +1345,14 @@ function renderHub() {
   renderDestinations() +
   renderPopularTowns() +
   renderLatestListings() +
+  renderLatestBlog() +
   "</main>\n" + FOOTER + "<script>" + LATEST_JS + "</script>\n</body>\n</html>\n";
 }
 function renderSearchPage() {
   var trail = [{ name: "Home", href: "/" }, { name: "Search" }];
   return head({
     title: "Search — surflist",
-    desc: "Search Surflist for surf destinations, schools, shops, stays and services.",
+    desc: "Search Surflist for surf destinations, schools, shops, stays, services and guides.",
     canonical: SITE + "/search/",
     preloadSearch: true,
     jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [surflistEntity(), breadcrumbJsonLd(trail)] }, null, 2),
@@ -1243,13 +1360,15 @@ function renderSearchPage() {
   "<body>\n" + header({ search: false }) +
   '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero search-page"><h1>Search</h1>' +
-  "<p>Find a destination, town or surf business.</p>" +
+  "<p>Find a destination, town, surf business or guide.</p>" +
   renderSearch({ autofocus: true }) +
-  '<p class="search-page__status" id="search-page-status">Type a destination, town or surf business.</p>' +
+  '<p class="search-page__status" id="search-page-status">Type a destination, town, surf business or guide.</p>' +
   '<section class="search-page__group" id="search-page-dest-wrap" hidden><h2>Destinations</h2>' +
   '<ul class="search-page__list" id="search-page-dest"></ul></section>' +
   '<section class="search-page__group" id="search-page-list-wrap" hidden><h2>Listings</h2>' +
   '<ul class="search-page__list" id="search-page-list"></ul></section>' +
+  '<section class="search-page__group" id="search-page-blog-wrap" hidden><h2>Articles</h2>' +
+  '<ul class="search-page__list" id="search-page-blog"></ul></section>' +
   "<noscript><p>Search needs JavaScript.</p></noscript>" +
   "</section></main>\n" + FOOTER + "</body>\n</html>\n";
 }
@@ -1298,7 +1417,7 @@ function renderAbout() {
     foundingDate: "2026",
     logo: SITE + "/favicon.svg",
     founder: { "@id": SITE + "/#founder" },
-    knowsAbout: ["Surfing", "Surf schools", "Surf shops", "Surf camps", "Surf travel"],
+    knowsAbout: ["Surfing", "Surf schools", "Surf shops", "Surf camps", "Surf travel", "Surf trip planning"],
   };
   var founder = {
     "@type": "Person",
@@ -1319,6 +1438,7 @@ function renderAbout() {
   "<p>Every listing is checked against the business's own official website.</p>" +
   "<p>If we can't confirm a business is real and operating from its own site, it isn't listed.</p>" +
   "<p>Founded in 2026 by Ben Manton.</p>" +
+  '<p>Guides for planning a trip live on the <a href="/blog/">blog</a>.</p>' +
   '<p>If you run a surf business, <a href="/list-your-business/">get listed</a>.</p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
@@ -1408,6 +1528,269 @@ function renderAgency() {
   "</main>\n" + FOOTER + '<script src="/agency.js" defer></script>\n</body>\n</html>\n';
 }
 
+/* ---------- blog ---------- */
+function renderInline(s) {
+  var str = String(s == null ? "" : s);
+  var re = /\[([^\]]+)\]\((\/[^)\s]+|https?:\/\/[^)\s]+)\)/g;
+  var out = "", last = 0, m;
+  while ((m = re.exec(str))) {
+    out += esc(str.slice(last, m.index));
+    var ext = /^https?:\/\//.test(m[2]);
+    out += '<a href="' + esc(m[2]) + '"' + (ext ? ' target="_blank" rel="noopener"' : "") + ">" + esc(m[1]) + "</a>";
+    last = m.index + m[0].length;
+  }
+  return out + esc(str.slice(last));
+}
+function renderBlogBody(blocks) {
+  return (blocks || []).map(function (b) {
+    if (typeof b === "string") return "<p>" + renderInline(b) + "</p>";
+    if (!b) return "";
+    if (b.h2) return "<h2>" + renderInline(b.h2) + "</h2>";
+    if (b.h3) return "<h3>" + renderInline(b.h3) + "</h3>";
+    if (b.p) return "<p>" + renderInline(b.p) + "</p>";
+    if (b.quote) return '<blockquote class="pullquote"><p>' + renderInline(b.quote) + "</p></blockquote>";
+    if (Array.isArray(b.ul) && b.ul.length)
+      return "<ul>" + b.ul.map(function (i) { return "<li>" + renderInline(i) + "</li>"; }).join("") + "</ul>";
+    if (Array.isArray(b.ol) && b.ol.length)
+      return "<ol>" + b.ol.map(function (i) { return "<li>" + renderInline(i) + "</li>"; }).join("") + "</ol>";
+    return "";
+  }).join("");
+}
+function renderBlogCard(p, nameTag) {
+  nameTag = nameTag || "h2";
+  var href = blogHref(p);
+  var name = esc(p.title);
+  var img = p.image ? esc(p.image) : placeholderImage(p.title, "blog");
+  var tags = (p.tags || []).map(function (t) { return '<span class="lvl">' + esc(t) + "</span>"; }).join("");
+  var date = fmtDate(p.date);
+  return '<li class="card" data-facet="|' + esc((p.tags || []).join("|")) + '|">' +
+    '<div class="card__media"><a href="' + esc(href) + '" aria-label="' + name + '">' +
+    '<img src="' + img + '" alt="" loading="lazy"></a></div>' +
+    '<div class="card__body"><span class="card__place">' + date + "</span>" +
+    "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">" +
+    (p.blurb ? '<p class="card__blurb">' + esc(p.blurb) + "</p>" : "") +
+    (tags ? '<div class="card__levels">' + tags + "</div>" : "") +
+    '<div class="card__foot"><a class="visit" href="' + esc(href) + '">Read &rarr;</a></div></div></li>';
+}
+function relatedPosts(post, n) {
+  n = n || 3;
+  return BLOG_POSTS.filter(function (p) { return p.slug !== post.slug; }).map(function (p) {
+    var score = 0;
+    (post.tags || []).forEach(function (t) {
+      if ((p.tags || []).indexOf(t) > -1) score++;
+    });
+    return { p: p, score: score };
+  }).sort(function (a, b) {
+    return b.score - a.score || String(b.p.date).localeCompare(String(a.p.date));
+  }).slice(0, n).map(function (x) { return x.p; });
+}
+function renderBlogSidebar() {
+  var allTags = [];
+  BLOG_POSTS.forEach(function (p) { allTags = allTags.concat(p.tags || []); });
+  var tags = uniqSorted(allTags);
+  if (!tags.length) return "";
+  var fbtn = opt("data-facet", "All", "All", BLOG_POSTS.length, true);
+  tags.forEach(function (t) {
+    var n = BLOG_POSTS.filter(function (p) { return (p.tags || []).indexOf(t) > -1; }).length;
+    fbtn += opt("data-facet", t, t, n, false);
+  });
+  return '<aside class="sidebar" aria-label="Filter articles"><p class="filter-label">Topic</p>' +
+    '<div class="side-list" id="facets">' + fbtn + "</div></aside>";
+}
+function blogIndexJsonLd(pageUrl, trail) {
+  var blogId = SITE + "/blog/#blog";
+  var graph = [surflistEntity(), {
+    "@type": "Blog",
+    "@id": blogId,
+    name: "Surflist blog",
+    url: pageUrl,
+    description: "Guides for planning a surf trip — schools, destinations, and how the directory works.",
+    inLanguage: "en-GB",
+    publisher: { "@id": SITE + "/#organization" },
+    blogPost: BLOG_POSTS.map(function (p) {
+      return { "@id": SITE + blogHref(p) + "#article" };
+    }),
+  }, {
+    "@type": "CollectionPage",
+    "@id": pageUrl,
+    url: pageUrl,
+    name: "Surflist blog",
+    isPartOf: { "@id": SITE + "/#website" },
+    mainEntity: { "@id": blogId },
+  }, {
+    "@type": "ItemList",
+    "@id": pageUrl + "#list",
+    itemListElement: BLOG_POSTS.map(function (p, i) {
+      return { "@type": "ListItem", position: i + 1, url: SITE + blogHref(p), name: p.title };
+    }),
+  }, breadcrumbJsonLd(trail)];
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2);
+}
+function renderBlogIndex() {
+  var n = BLOG_POSTS.length;
+  var pageUrl = SITE + "/blog/";
+  var trail = [{ name: "Home", href: "/" }, { name: "Blog" }];
+  var intro = "Guides for planning a surf trip — how to pick a school, where beginners learn, and how Surflist lists businesses.";
+  return head({
+    title: "Surf trip guides — surflist",
+    desc: intro,
+    canonical: pageUrl,
+    rss: BLOG_RSS,
+    jsonld: blogIndexJsonLd(pageUrl, trail),
+  }) +
+  "<body>\n" + header() +
+  '<main id="main" class="wrap">' + crumbs(trail) +
+  '<div class="cat-head"><h1>Blog</h1><p>' + esc(intro) + "</p></div>" +
+  '<div class="layout">' + renderBlogSidebar() +
+  '<div class="main"><p class="count" id="count" aria-live="polite" data-noun="article" data-nounp="articles">' +
+  n + " " + (n === 1 ? "article" : "articles") + "</p>" +
+  '<ul class="grid" id="list">' + BLOG_POSTS.map(function (p) { return renderBlogCard(p, "h2"); }).join("") +
+  "</ul></div></div></main>\n" +
+  FOOTER + "<script>" + FILTER_JS + "</script>\n</body>\n</html>\n";
+}
+function placeLinks(post) {
+  return (post.places || []).filter(function (pl) {
+    return townHubExists(pl.country, pl.region, pl.town);
+  }).map(function (pl) {
+    return '<a href="' + esc(townUrl(pl.country, pl.region, pl.town)) + '">' + esc(pl.town) + "</a>";
+  });
+}
+function renderBlogPost(p) {
+  var pageUrl = SITE + blogHref(p);
+  var trail = [{ name: "Home", href: "/" }, { name: "Blog", href: "/blog/" }, { name: p.title }];
+  var modified = p.updated || p.date;
+  var words = wordCount(postPlainText(p));
+  var mins = readingMins(p);
+  var img = p.image ? (p.image.indexOf("http") === 0 ? p.image : SITE + p.image) : "";
+  var faq = faqBlock(p.faq, "FAQs", pageUrl);
+  var related = relatedPosts(p, 3);
+  var places = placeLinks(p);
+  var facts = "";
+  function fact(dt, dd) { return "<div><dt>" + dt + "</dt><dd>" + dd + "</dd></div>"; }
+  facts += fact("Published", '<time datetime="' + esc(p.date) + '">' + fmtDate(p.date) + "</time>");
+  if (p.updated && p.updated !== p.date)
+    facts += fact("Updated", '<time datetime="' + esc(p.updated) + '">' + fmtDate(p.updated) + "</time>");
+  facts += fact("Author", '<a href="/about/">' + esc(p.author) + "</a>");
+  facts += fact("Length", mins + " min read");
+  if ((p.tags || []).length) facts += fact("Topic", esc(p.tags.join(", ")));
+
+  var article = {
+    "@type": "BlogPosting",
+    "@id": pageUrl + "#article",
+    headline: p.title,
+    description: p.description,
+    datePublished: p.date,
+    dateModified: modified,
+    inLanguage: "en-GB",
+    wordCount: words,
+    author: { "@id": SITE + "/#founder", "@type": "Person", name: p.author },
+    publisher: {
+      "@type": "Organization",
+      "@id": SITE + "/#organization",
+      name: "Surflist",
+      url: SITE,
+      logo: { "@type": "ImageObject", url: SITE + "/favicon.svg" },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    isPartOf: { "@id": SITE + "/blog/#blog" },
+    url: pageUrl,
+  };
+  if (img) article.image = img;
+  if ((p.tags || []).length) {
+    article.keywords = p.tags.join(", ");
+    article.articleSection = p.tags[0];
+  }
+  var page = {
+    "@type": "WebPage",
+    "@id": pageUrl,
+    url: pageUrl,
+    name: p.title,
+    description: p.description,
+    isPartOf: { "@id": SITE + "/#website" },
+    datePublished: p.date,
+    dateModified: modified,
+    primaryImageOfPage: img || undefined,
+    speakable: { "@type": "SpeakableSpecification", cssSelector: [".detail__title", ".article-prose"] },
+  };
+  var graph = [surflistEntity(), article, page, breadcrumbJsonLd(trail)];
+  if (faq.jsonld) graph.push(faq.jsonld);
+
+  var cta = "";
+  if (p.relatedHref) cta += '<a class="btn" href="' + esc(p.relatedHref) + '">' + esc(p.relatedLabel || "Read more") + " &rarr;</a>";
+  cta += '<a class="btn' + (p.relatedHref ? " btn--secondary" : "") + '" href="/blog/">More articles &rarr;</a>';
+
+  var relatedHtml = related.length
+    ? '<section class="hub-cat" id="related"><div class="hub-cat__head"><h2>More from the blog</h2>' +
+      '<a href="/blog/">All articles &rarr;</a></div>' +
+      '<ul class="grid">' + related.map(function (r) { return renderBlogCard(r, "h3"); }).join("") + "</ul></section>"
+    : "";
+
+  return head({
+    title: p.title + " | surflist",
+    desc: p.description,
+    canonical: pageUrl,
+    author: p.author,
+    keywords: (p.tags || []).join(", "),
+    ogType: "article",
+    ogImage: img,
+    publishedTime: p.date,
+    modifiedTime: modified,
+    articleTags: p.tags,
+    articleSection: (p.tags || [])[0] || "Guides",
+    rss: BLOG_RSS,
+    robots: "index, follow, max-image-preview:large",
+    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2),
+  }) +
+  "<body>\n" + header() +
+  '<main id="main" class="wrap detail">' + crumbs(trail) +
+  '\n<a class="back" href="/blog/">&larr; All articles</a>\n' +
+  '  <article class="article" itemscope itemtype="https://schema.org/BlogPosting">' +
+  '  <div class="detail__head"><p class="detail__eyebrow">' +
+  '<time datetime="' + esc(p.date) + '" itemprop="datePublished">' + fmtDate(p.date) + "</time>" +
+  " &middot; " + mins + " min read</p>" +
+  '<h1 class="detail__title" itemprop="headline">' + esc(p.title) + "</h1></div>\n" +
+  (p.image ? '  <div class="detail__media"><img src="' + esc(p.image) + '" alt="" itemprop="image" /></div>\n' : "") +
+  '  <div class="detail__grid"><div class="detail__body">' +
+  (p.lead ? '<p class="detail__lead">' + renderInline(p.lead) + "</p>" : "") +
+  '<div class="article-prose" itemprop="articleBody">' + renderBlogBody(p.body) + "</div>" +
+  faq.html + "</div>\n" +
+  '    <aside class="detail__facts"><h2>Article</h2><dl class="facts">' + facts + "</dl>" +
+  (places.length ? '<p class="filter-label">Places in this guide</p><nav class="chip-nav" aria-label="Places in this guide">' +
+    places.join("") + "</nav>" : "") +
+  cta + "</aside>\n" +
+  "  </div></article>" + relatedHtml + "</main>\n" + FOOTER + "</body>\n</html>\n";
+}
+function rfc822Date(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ""));
+  if (!m) return "";
+  return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toUTCString();
+}
+function xmlText(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function renderBlogFeed() {
+  var items = BLOG_POSTS.map(function (p) {
+    return "    <item>\n" +
+      "      <title>" + xmlText(p.title) + "</title>\n" +
+      "      <link>" + xmlText(SITE + blogHref(p)) + "</link>\n" +
+      "      <guid isPermaLink=\"true\">" + xmlText(SITE + blogHref(p)) + "</guid>\n" +
+      "      <pubDate>" + rfc822Date(p.date) + "</pubDate>\n" +
+      "      <description>" + xmlText(p.description) + "</description>\n" +
+      ((p.tags || []).map(function (t) { return "      <category>" + xmlText(t) + "</category>\n"; }).join("")) +
+      "    </item>";
+  }).join("\n");
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n" +
+    "  <channel>\n" +
+    "    <title>Surflist blog</title>\n" +
+    "    <link>" + SITE + "/blog/</link>\n" +
+    "    <atom:link href=\"" + BLOG_RSS + "\" rel=\"self\" type=\"application/rss+xml\"/>\n" +
+    "    <description>Guides for planning a surf trip — schools, destinations, and how Surflist lists businesses.</description>\n" +
+    "    <language>en-gb</language>\n" +
+    "    <lastBuildDate>" + rfc822Date((BLOG_POSTS[0] && BLOG_POSTS[0].date) || "") + "</lastBuildDate>\n" +
+    items + "\n  </channel>\n</rss>\n";
+}
+
 function renderNotFound() {
   return head({
     title: "Page not found | surflist",
@@ -1456,7 +1839,16 @@ function renderLlms() {
   out.push("## Browse by type");
   out.push("");
   CATEGORIES.forEach(function (c) { out.push("- [" + c.title + "](" + SITE + "/" + c.slug + "/): " + c.intro); });
+  out.push("- [Blog](" + SITE + "/blog/): Guides for planning a surf trip.");
   out.push("");
+  if (BLOG_POSTS.length) {
+    out.push("## Blog");
+    out.push("");
+    BLOG_POSTS.forEach(function (p) {
+      out.push("- [" + p.title + "](" + SITE + blogHref(p) + "): " + String(p.description || p.blurb || "").replace(/\s+/g, " ").trim());
+    });
+    out.push("");
+  }
   CATEGORIES.forEach(function (cat) {
     if (cat.slug === "surf-schools") {
       if (!cat.items.length) return;
@@ -1483,7 +1875,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: " + SITE + "/agency/.");
+  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Trip guides: " + SITE + "/blog/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: " + SITE + "/agency/.");
   out.push("");
   return out.join("\n");
 }
@@ -1552,6 +1944,9 @@ function placeReport() {
       listingSlugCollisions.join("\n  - ") +
       "\n  Two listings would write the same path. Give one an explicit slug, or rename so they differ."
     : "No listing-slug collisions.");
+  out.push(blogSlugCollisions.length
+    ? "\n! " + blogSlugCollisions.length + " blog slug collision(s):\n  - " + blogSlugCollisions.join("\n  - ")
+    : "No blog-slug collisions.");
 
   var integrity = dataIntegrity();
   integrity.warnings.forEach(function (w) { out.push("note: " + w); });
@@ -1592,15 +1987,19 @@ function dataIntegrity() {
   // passive warning on every build
   r.collisions.forEach(function (c) { console.warn("  ! " + c); });
   listingSlugCollisions.forEach(function (c) { console.warn("  ! " + c); });
+  blogSlugCollisions.forEach(function (c) { console.warn("  ! " + c); });
   r.warnings.forEach(function (w) { console.warn("  note: " + w); });
   r.errors.forEach(function (e) { console.warn("  ! " + e); });
   // --check: print the full report and stop before writing anything
   if (process.argv.indexOf("--check") > -1) {
     process.stdout.write(r.report + "\n");
-    process.exit((r.collisions.length || listingSlugCollisions.length || r.errors.length) ? 1 : 0);
+    process.exit((r.collisions.length || listingSlugCollisions.length || blogSlugCollisions.length || r.errors.length) ? 1 : 0);
   }
   if (listingSlugCollisions.length) {
     throw new Error("Listing slug collisions:\n  - " + listingSlugCollisions.join("\n  - "));
+  }
+  if (blogSlugCollisions.length) {
+    throw new Error("Blog slug collisions:\n  - " + blogSlugCollisions.join("\n  - "));
   }
   if (r.errors.length) {
     throw new Error("Data integrity errors:\n  - " + r.errors.join("\n  - "));
@@ -1619,14 +2018,17 @@ uniqSorted(
     .concat(countries().map(function (c) { return cSlug(c); }))
     // legacy: old builds put regions at the root and used /schools/
     // "marketplace": removed feature — kept only to clean up a stale directory from an old build
-    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace", "search"])
+    .concat(["cornwall", "devon", "swansea", "schools", "verified-demo", "marketplace", "search", "blog"])
 ).forEach(function (s) { fs.rmSync(path.join(ROOT, s), { recursive: true, force: true }); });
 // Cloudflare Pages: trailing-slash sitemap/robots otherwise 200 the homepage.
 // Do not add a /* /index.html 200 SPA fallback — that is the missing-path bug.
 fs.writeFileSync(path.join(ROOT, "_redirects"),
   "/sitemap.xml/ /sitemap.xml 301\n" +
   "/robots.txt/ /robots.txt 301\n" +
-  "/search.json/ /search.json 301\n");
+  "/search.json/ /search.json 301\n" +
+  "/feed.xml /blog/feed.xml 301\n" +
+  "/feed.xml/ /blog/feed.xml 301\n" +
+  "/blog/feed.xml/ /blog/feed.xml 301\n");
 
 var searchJson = JSON.stringify(searchIndex());
 SEARCH_JSON_HREF = "/search.json?" + crypto.createHash("md5").update(searchJson).digest("hex").slice(0, 8);
@@ -1646,6 +2048,15 @@ urls.push(SITE + "/about/");
 
 writePage("agency", renderAgency());
 urls.push(SITE + "/agency/");
+
+writePage("blog", renderBlogIndex());
+urls.push({ loc: SITE + "/blog/", lastmod: (BLOG_POSTS[0] && BLOG_POSTS[0].date) || "" });
+BLOG_POSTS.forEach(function (p) {
+  writePage("blog/" + p.slug, renderBlogPost(p));
+  urls.push({ loc: SITE + blogHref(p), lastmod: p.updated || p.date });
+});
+fs.mkdirSync(path.join(ROOT, "blog"), { recursive: true });
+fs.writeFileSync(path.join(ROOT, "blog", "feed.xml"), renderBlogFeed());
 
 // browse-all category pages + listing pages (schools: every listing; other cats: verified only)
 var listingPages = 0;
@@ -1710,9 +2121,14 @@ fs.writeFileSync(path.join(ROOT, "404.html"), renderNotFound());
 // intentionally NOT added to `urls` (kept out of sitemap.xml)
 
 // Content-Type is set in _headers (text/xml; charset=UTF-8) so GSC can fetch the sitemap.
+function sitemapEntry(u) {
+  var loc = typeof u === "string" ? u : u.loc;
+  var lastmod = typeof u === "string" ? "" : (u.lastmod || "");
+  return "  <url><loc>" + loc + "</loc>" + (lastmod ? "<lastmod>" + lastmod + "</lastmod>" : "") + "</url>";
+}
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-  urls.map(function (u) { return "  <url><loc>" + u + "</loc></url>"; }).join("\n") + "\n</urlset>\n");
+  urls.map(sitemapEntry).join("\n") + "\n</urlset>\n");
 fs.writeFileSync(path.join(ROOT, "robots.txt"), renderRobots());
 fs.writeFileSync(path.join(ROOT, "llms.txt"), renderLlms());
 
@@ -1721,4 +2137,5 @@ var schoolPages = CATEGORIES.filter(function (c) { return c.slug === "surf-schoo
   .reduce(function (a, c) { return a + c.items.length; }, 0);
 console.log("Built: homepage, " + stats.countries + " country + " + stats.regions + " region + " + stats.towns +
   " town hubs, " + stats.townCats + " town-category pages, " + CATEGORIES.length + " browse-all pages, " +
-  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt, 404.html, search.json, _redirects.");
+  listingPages + " listing page(s) (" + schoolPages + " schools, " + totalV + " verified), " +
+  BLOG_POSTS.length + " blog post(s). Wrote sitemap.xml (" + urls.length + " urls), robots.txt, llms.txt, 404.html, search.json, _redirects.");

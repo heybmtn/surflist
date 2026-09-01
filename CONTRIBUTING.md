@@ -1,8 +1,9 @@
 # Contributing to Surflist
 
 This is the working guide for keeping Surflist (surflist.co) up to date — adding
-surf schools, shops, stays and services, and wiring up new towns, regions and
-countries. It lives in the repo so it's always next to the code it describes.
+surf schools, shops, stays and services, wiring up new towns, regions and
+countries, and publishing blog posts. It lives in the repo so it's always next
+to the code it describes.
 
 **What Surflist is:** a static directory of surf destinations. A Node script
 (`build.js`) reads plain data files and generates every HTML page. No frameworks,
@@ -302,6 +303,45 @@ emits `FAQPage` schema. Only add local knowledge you can stand behind.
 
 ---
 
+## Add a blog post
+
+Posts live in `data/blog.js` inside `window.POSTS = [ ... ]`. The build writes
+`/blog/` (the same card grid as listings, filterable by tag) and
+`/blog/<slug>/` for each article, plus RSS at `/blog/feed.xml`. Newest date
+first. Copy an existing post and change the fields.
+
+```js
+{ title: "How to choose a surf school",
+  slug: "how-to-choose-a-surf-school",
+  date: "2026-09-01",            // YYYY-MM-DD; required
+  description: "SEO meta description, one or two sentences.",
+  blurb: "One sentence for the card.",
+  tags: ["Guides"],             // Guides / Destinations / Surflist
+  lead: "Opening paragraph on the article page.",
+  places: [                     // optional; town chips in the sidebar
+    { country: "England", region: "Cornwall", town: "Newquay" },
+  ],
+  relatedHref: "/surf-schools/",
+  relatedLabel: "Browse surf schools",
+  faq: [ { q: "…", a: "…" } ],  // optional; also emits FAQPage schema
+  body: [
+    { h2: "A heading" },
+    "A paragraph. Internal links use [Newquay](/england/cornwall/newquay/).",
+    { ul: ["Bullet one", "Bullet two"] },
+    { ol: ["Step one", "Step two"] },
+  ] },
+```
+
+- **`slug`** — URL path under `/blog/`. Unique. If omitted, it is derived from the title.
+- **`date`** / optional **`updated`** — `YYYY-MM-DD`. `date` is published; `updated` only if the article actually changed.
+- **`description`** — meta description. Keep it under ~155 characters and true.
+- **`body`** — mix of strings (paragraphs), `{ h2 }` / `{ h3 }`, `{ ul }` / `{ ol }`, `{ quote }`. Links in any of those strings: `[label](/path/)` or `[label](https://…)`.
+- **`places`** — only towns that already have a hub. A typo 404s the chip.
+- Do not invent listing facts in a post. Link to the directory page instead.
+- `verified` does not apply to posts.
+
+---
+
 ## Add a new region
 
 Regions are discovered from the data automatically — using a new `region` value
@@ -448,6 +488,9 @@ directory URLs that need a server.
 
 **Loop:** `git pull` → edit `data/` → `node build.js --check` → `node build.js`
 → preview → `git add -A` → `commit` → `push`.
+
+**Blog post:** edit `data/blog.js` (`title`, `slug`, `date`, `description`,
+`blurb`, `tags`, `body`). Builds `/blog/<slug>/`.
 
 **Free listing:**
 

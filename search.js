@@ -95,7 +95,7 @@
     if (toks.every(function (t) { return wordPrefix(placeWords, t); })) s += 70;
     else if (toks.some(function (t) { return wordPrefix(placeWords, t); })) s += 35;
     var nameHit = toks.some(function (t) { return name.indexOf(t) > -1; });
-    var kindBoost = { country: 52, region: 58, town: nameHit ? 64 : 18, "town-cat": nameHit ? 50 : 16, category: 22 };
+    var kindBoost = { country: 52, region: 58, town: nameHit ? 64 : 18, "town-cat": nameHit ? 50 : 16, category: 22, blog: 30 };
     if (kindBoost[d.t]) s += kindBoost[d.t];
     if (d.v) s += 16;
     s -= Math.min(name.length, 48) * 0.12;
@@ -138,9 +138,13 @@
     if (d.t === "town") return "Town";
     if (d.t === "town-cat") return d.c || "Directory";
     if (d.t === "category") return "Category";
+    if (d.t === "blog") return "Article";
     return d.c || "Listing";
   }
-  function isDest(d) { return d.t && d.t !== "listing"; }
+  function isDest(d) {
+    return d.t === "country" || d.t === "region" || d.t === "town" || d.t === "town-cat" || d.t === "category";
+  }
+  function isArticle(d) { return d.t === "blog"; }
 
   function resultHtml(d, toks, extraClass) {
     var cls = "search__result" + (extraClass ? " " + extraClass : "");
@@ -243,27 +247,38 @@
     function paintPage(result, q) {
       var destEl = document.getElementById("search-page-dest");
       var listEl = document.getElementById("search-page-list");
+      var blogEl = document.getElementById("search-page-blog");
       var status = document.getElementById("search-page-status");
       var destWrap = document.getElementById("search-page-dest-wrap");
       var listWrap = document.getElementById("search-page-list-wrap");
+      var blogWrap = document.getElementById("search-page-blog-wrap");
       if (!destEl || !listEl || !status) return;
       var dest = [];
       var list = [];
-      result.hits.forEach(function (d) { (isDest(d) ? dest : list).push(d); });
+      var articles = [];
+      result.hits.forEach(function (d) {
+        if (isArticle(d)) articles.push(d);
+        else if (isDest(d)) dest.push(d);
+        else list.push(d);
+      });
       if (!q) {
-        status.textContent = "Type a destination, town or surf business.";
+        status.textContent = "Type a destination, town, surf business or guide.";
         destEl.innerHTML = "";
         listEl.innerHTML = "";
+        if (blogEl) blogEl.innerHTML = "";
         if (destWrap) destWrap.hidden = true;
         if (listWrap) listWrap.hidden = true;
+        if (blogWrap) blogWrap.hidden = true;
         return;
       }
       if (!result.hits.length) {
         status.textContent = "No matches for “" + q + "”.";
         destEl.innerHTML = "";
         listEl.innerHTML = "";
+        if (blogEl) blogEl.innerHTML = "";
         if (destWrap) destWrap.hidden = true;
         if (listWrap) listWrap.hidden = true;
+        if (blogWrap) blogWrap.hidden = true;
         return;
       }
       var shown = result.hits.length;
@@ -276,8 +291,14 @@
       listEl.innerHTML = list.map(function (d) {
         return "<li>" + resultHtml(d, result.toks, "search__result--page") + "</li>";
       }).join("");
+      if (blogEl) {
+        blogEl.innerHTML = articles.map(function (d) {
+          return "<li>" + resultHtml(d, result.toks, "search__result--page") + "</li>";
+        }).join("");
+      }
       if (destWrap) destWrap.hidden = !dest.length;
       if (listWrap) listWrap.hidden = !list.length;
+      if (blogWrap) blogWrap.hidden = !articles.length;
     }
     function run(q) {
       var trimmed = String(q || "").trim();
