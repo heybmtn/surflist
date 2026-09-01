@@ -193,9 +193,13 @@
       box.hidden = !open;
     }
     function markActive(opts) {
-      opts.forEach(function (o, i) { o.classList.toggle("is-active", i === active); });
-      var sel = active > -1 && opts[active] ? opts[active].parentElement.id : "";
-      input.setAttribute("aria-activedescendant", sel);
+      opts.forEach(function (o, i) {
+        var on = i === active;
+        o.classList.toggle("is-active", on);
+        var li = o.parentElement;
+        if (li && li.getAttribute("role") === "option") li.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      input.setAttribute("aria-activedescendant", active > -1 && opts[active] && opts[active].parentElement ? opts[active].parentElement.id : "");
       if (opts[active]) opts[active].scrollIntoView({ block: "nearest" });
     }
     function syncClear() {
@@ -233,6 +237,8 @@
         box.appendChild(more);
       }
       setExpanded(true);
+      var opts = box.querySelectorAll(".search__result");
+      if (opts.length) { active = 0; markActive(opts); }
     }
     function paintPage(result, q) {
       var destEl = document.getElementById("search-page-dest");
