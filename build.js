@@ -1716,7 +1716,12 @@ function renderBlogPost(p) {
   if (faq.jsonld) graph.push(faq.jsonld);
 
   var cta = "";
-  if (p.relatedHref) cta += '<a class="btn" href="' + esc(p.relatedHref) + '">' + esc(p.relatedLabel || "Read more") + " &rarr;</a>";
+  if (p.relatedHref) {
+    var extCta = /^https?:\/\//.test(p.relatedHref);
+    cta += '<a class="btn" href="' + esc(p.relatedHref) + '"' +
+      (extCta ? ' target="_blank" rel="noopener"' : "") + ">" +
+      esc(p.relatedLabel || "Read more") + " &rarr;</a>";
+  }
   cta += '<a class="btn' + (p.relatedHref ? " btn--secondary" : "") + '" href="/blog/">More articles &rarr;</a>';
 
   var relatedHtml = related.length
