@@ -242,27 +242,18 @@ const CATEGORY_PALETTE = {
   "surf-services": { from: [232, 20, 42], to: [230, 34, 15] }, // slate/indigo -> midnight navy
   "blog": { from: [176, 52, 38], to: [176, 70, 18] },          // site teal
 };
-function placeholderImage(seed, catSlug) {
+function phClass(seed, catSlug) {
+  if (catSlug && CATEGORY_PALETTE[catSlug]) return "card__ph card__ph--" + catSlug;
+  var palettes = ["surf-schools", "surf-shops", "surf-stays", "surf-services"];
   var h = 0; seed = String(seed || "");
   for (var i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  var pal = CATEGORY_PALETTE[catSlug];
-  var hue1, sat1, lig1, hue2, sat2, lig2;
-  if (pal) {
-    var hj = (h % 11) - 5, lj = (h % 7) - 3;
-    hue1 = pal.from[0] + hj; sat1 = pal.from[1]; lig1 = pal.from[2] + lj;
-    hue2 = pal.to[0] + hj; sat2 = pal.to[1]; lig2 = pal.to[2] + lj;
-  } else {
-    hue1 = 168 + (h % 28); sat1 = 42; lig1 = 34;
-    hue2 = hue1 + 14; sat2 = 44; lig2 = 22;
+  return "card__ph card__ph--" + palettes[h % palettes.length];
+}
+function mediaInner(name, image, catSlug, seed) {
+  if (image) {
+    return '<img src="' + esc(image) + '" alt="' + esc(name) + '" width="400" height="250" loading="lazy" decoding="async">';
   }
-  var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">' +
-    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-    '<stop offset="0" stop-color="hsl(' + hue1 + ',' + sat1 + '%,' + lig1 + '%)"/>' +
-    '<stop offset="1" stop-color="hsl(' + hue2 + ',' + sat2 + '%,' + lig2 + '%)"/></linearGradient></defs>' +
-    '<rect width="400" height="300" fill="url(#g)"/>' +
-    '<path d="M0 206 C 80 178 140 236 220 210 C 300 186 350 224 400 204 L400 300 L0 300 Z" fill="rgba(255,255,255,0.10)"/>' +
-    '<path d="M0 230 C 90 204 150 256 240 234 C 320 216 360 244 400 230 L400 300 L0 300 Z" fill="rgba(255,255,255,0.14)"/></svg>';
-  return "data:image/svg+xml," + encodeURIComponent(svg);
+  return '<div class="' + phClass(seed || name, catSlug) + '" aria-hidden="true"></div>';
 }
 function socialsHtml(socials, googleUrl) {
   socials = socials || {};
@@ -530,6 +521,7 @@ function head(o) {
     '<link rel="preload" href="/fonts/hanken-700.woff2" as="font" type="font/woff2" crossorigin />\n' +
     '<link rel="stylesheet" href="' + STYLES_HREF + '" />\n' +
     (o.preloadSearch ? '<link rel="preload" href="' + SEARCH_JSON_HREF + '" as="fetch" crossorigin />\n' : "") +
+    (o.prefetchSearch ? '<link rel="prefetch" href="' + SEARCH_JSON_HREF + '" as="fetch" crossorigin />\n' : "") +
     (o.jsonld ? '<script type="application/ld+json">\n' + safeJsonLd(o.jsonld) + "\n</script>\n" : "") +
     '<script type="application/ld+json">\n' + safeJsonLd(WEBSITE_JSONLD) + "\n</script>\n" +
     "</head>\n";
@@ -578,7 +570,6 @@ function renderCard(d, cat, nameTag) {
   var hasPage = hasListingPage(d, cat);
   var name = esc(d.name);
   var place = [d.town, d.region].filter(Boolean).join(", ");
-  var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
   var vals = facetVals(d, cat);
   var tags = vals.map(function (l) { return '<span class="lvl">' + esc(l) + "</span>"; }).join("");
   var socials = socialsHtml(d.socials);
@@ -588,9 +579,10 @@ function renderCard(d, cat, nameTag) {
   var link = href ? '<a class="visit" href="' + esc(href) + '"' + linkAttrs + ">" + linkText + " &rarr;</a>" : "";
   var badge = verified ? '<span class="badge-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z"/></svg>Surflist verified</span>' : "";
   var foot = (socials || link) ? '<div class="card__foot">' + socials + link + "</div>" : "";
+  var inner = mediaInner(d.name, d.image, cat.slug);
   var media = hasPage
-    ? '<a href="' + esc(href) + '" aria-label="' + name + '"><img src="' + img + '" alt="' + name + '" loading="lazy"></a>'
-    : '<img src="' + img + '" alt="' + name + '" loading="lazy">';
+    ? '<a href="' + esc(href) + '" aria-label="' + name + '">' + inner + "</a>"
+    : inner;
   var nameHtml = hasPage
     ? "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">"
     : "<" + nameTag + ' class="card__name">' + name + "</" + nameTag + ">";
@@ -605,10 +597,8 @@ function renderCard(d, cat, nameTag) {
 
 /* a plain place card (country / region / town) */
 function placeCard(name, href, count, index, catSlug) {
-  var lazy = (index != null && index < 4) ? "" : ' loading="lazy"';
-  var img = placeholderImage(href, catSlug);
   return '<li class="card"><div class="card__media"><a href="' + esc(href) + '" aria-label="' + esc(name) + '">' +
-    '<img src="' + img + '" alt="' + esc(name) + '"' + lazy + "></a></div>" +
+    mediaInner(name, "", catSlug, href) + "</a></div>" +
     '<div class="card__body"><h3 class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + esc(name) + "</a></h3>" +
     '<p class="card__blurb">' + count + " listing" + (count === 1 ? "" : "s") + "</p></div></li>";
 }
@@ -1045,7 +1035,9 @@ function renderDetail(d, cat, slug, opts) {
   var pageUrl = SITE + "/" + (opts.demo ? "verified-demo" : cat.slug + "/" + slug) + "/";
   var place = [d.town, d.region, d.country].filter(Boolean).join(", ");
   var placeShort = [d.town, d.region].filter(Boolean).join(", ");
-  var img = d.image ? esc(d.image) : placeholderImage(d.name, cat.slug);
+  var img = d.image
+    ? '<img src="' + esc(d.image) + '" alt="' + esc(d.name) + '" width="800" height="450" decoding="async" />'
+    : '<div class="' + phClass(d.name, cat.slug) + '" aria-hidden="true"></div>';
   var vals = facetVals(d, cat);
   var lead = verified
     ? d.name + " is a Surflist-verified " + cat.singular + " in " + place + "."
@@ -1130,7 +1122,7 @@ function renderDetail(d, cat, slug, opts) {
   (opts.demo ? "" : crumbs(trail) + '\n<a class="back" href="' + backHref + '">&larr; ' + esc(backText) + "</a>\n") +
   '  <div class="detail__head"><p class="detail__eyebrow">' + esc(place) + '</p><h1 class="detail__title">' + esc(d.name) + "</h1>" +
   badge + verifiedMeta + "</div>\n" +
-  '  <div class="detail__media"><img src="' + img + '" alt="' + esc(d.name) + '" /></div>\n' +
+  '  <div class="detail__media">' + img + "</div>\n" +
   '  <div class="detail__grid"><div class="detail__body"><p class="detail__lead">' + esc(lead) + "</p>" + closedNote +
   (descText ? '<div class="detail__prose">' + String(descText).split(/\n\n+/).map(function (p) { return "<p>" + esc(p.trim()) + "</p>"; }).join("") + "</div>" : "") +
   sections + "</div>\n" +
@@ -1231,27 +1223,13 @@ function searchIndex() {
   });
   return idx;
 }
-function latestPool() {
-  var out = [];
-  CATEGORIES.forEach(function (cat) {
-    cat.items.forEach(function (d) {
-      var verified = isVerified(d);
-      var href = listingHref(d, cat);
-      if (!href) return;
-      var row = {
-        n: d.name,
-        p: [d.town, d.region].filter(Boolean).join(", "),
-        cat: cat.singular,
-        cs: cat.slug,
-        u: href,
-      };
-      if (verified) row.v = true;
-      if (d.image) row.img = d.image;
-      if ((verified || cat.slug === "surf-schools") && d.blurb) row.b = d.blurb;
-      out.push(row);
-    });
-  });
-  return out;
+function pickRandom(arr, n) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a.slice(0, n);
 }
 var searchWidgetSeq = 0;
 const SEARCH_ICON =
@@ -1302,12 +1280,21 @@ function renderPopularTowns() {
     "</nav></section>\n";
 }
 function renderLatestListings() {
-  var pool = latestPool();
-  if (!pool.length) return "";
+  // Pick at build time so the homepage does not ship the whole catalogue as JSON
+  // (that payload was ~95KB and delayed first paint). A new random 8 is chosen
+  // each time the site is rebuilt.
+  var pool = [];
+  CATEGORIES.forEach(function (cat) {
+    cat.items.forEach(function (d) {
+      if (listingHref(d, cat)) pool.push({ d: d, cat: cat });
+    });
+  });
+  var picked = pickRandom(pool, 8);
+  if (!picked.length) return "";
   return '<section class="hub-cat" id="latest"><div class="hub-cat__head"><h2>Latest listings</h2></div>' +
-    '<ul class="grid" id="latest-listings"></ul>' +
-    '<script type="application/json" id="latest-data">' + JSON.stringify(pool).replace(/</g, "\\u003c") + "</script>" +
-    "</section>\n";
+    '<ul class="grid" id="latest-listings">' +
+    picked.map(function (x) { return renderCard(x.d, x.cat, "h3"); }).join("") +
+    "</ul></section>\n";
 }
 function renderLatestBlog() {
   var posts = BLOG_POSTS.slice(0, 3);
@@ -1316,27 +1303,12 @@ function renderLatestBlog() {
     '<a href="/blog/">All articles &rarr;</a></div>' +
     '<ul class="grid">' + posts.map(function (p) { return renderBlogCard(p, "h3"); }).join("") + "</ul></section>\n";
 }
-const LATEST_JS =
-"(function(){var ul=document.getElementById('latest-listings');if(!ul)return;" +
-"var pool=JSON.parse(document.getElementById('latest-data').textContent);" +
-"for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}" +
-"function esc(s){return String(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}" +
-"function card(d){var badge=d.v?'<span class=\"badge-verified\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8-8 1.4 1.4z\"/></svg>Surflist verified</span>':'';" +
-"var onsite=d.u.charAt(0)==='/';var attrs=onsite?'':' target=\"_blank\" rel=\"noopener\"';var text=onsite?'View':'Visit';" +
-"var name=onsite?'<a class=\"card__name-link\" href=\"'+esc(d.u)+'\">'+esc(d.n)+'</a>':esc(d.n);" +
-"var media=d.img?'<img src=\"'+esc(d.img)+'\" alt=\"'+esc(d.n)+'\" loading=\"lazy\">':'<div class=\"card__ph card__ph--'+esc(d.cs||'')+'\" aria-hidden=\"true\"></div>';" +
-"return '<li class=\"card'+(d.v?' is-verified':'')+'\"><div class=\"card__media\">'+" +
-"(onsite?'<a href=\"'+esc(d.u)+'\" aria-label=\"'+esc(d.n)+'\">':'')+media+(onsite?'</a>':'')+badge+'</div>'+" +
-"'<div class=\"card__body\"><span class=\"card__place\">'+esc(d.p)+' &middot; '+esc(d.cat)+'</span><h3 class=\"card__name\">'+name+'</h3>'+" +
-"(d.b?'<p class=\"card__blurb\">'+esc(d.b)+'</p>':'')+" +
-"'<div class=\"card__foot\"><a class=\"visit\" href=\"'+esc(d.u)+'\"'+attrs+'>'+text+' &rarr;</a></div></div></li>';}" +
-"ul.innerHTML=pool.slice(0,8).map(card).join('');})();";
 function renderHub() {
   return head({
     title: "Surf Directory — Find Surf Schools, Shops & Stays | surflist",
     desc: "Find everything you need for your next surf trip: surf schools, shops, places to stay and board repair, by destination.",
     canonical: SITE + "/",
-    preloadSearch: true,
+    prefetchSearch: true,
   }) +
   "<body>\n" + header({ search: false }) +
   '<main id="main" class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
@@ -1346,7 +1318,7 @@ function renderHub() {
   renderPopularTowns() +
   renderLatestListings() +
   renderLatestBlog() +
-  "</main>\n" + FOOTER + "<script>" + LATEST_JS + "</script>\n</body>\n</html>\n";
+  "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 function renderSearchPage() {
   var trail = [{ name: "Home", href: "/" }, { name: "Search" }];
@@ -1560,12 +1532,11 @@ function renderBlogCard(p, nameTag) {
   nameTag = nameTag || "h2";
   var href = blogHref(p);
   var name = esc(p.title);
-  var img = p.image ? esc(p.image) : placeholderImage(p.title, "blog");
   var tags = (p.tags || []).map(function (t) { return '<span class="lvl">' + esc(t) + "</span>"; }).join("");
   var date = fmtDate(p.date);
   return '<li class="card" data-facet="|' + esc((p.tags || []).join("|")) + '|">' +
     '<div class="card__media"><a href="' + esc(href) + '" aria-label="' + name + '">' +
-    '<img src="' + img + '" alt="" loading="lazy"></a></div>' +
+    mediaInner(p.title, p.image, "blog") + "</a></div>" +
     '<div class="card__body"><span class="card__place">' + date + "</span>" +
     "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">" +
     (p.blurb ? '<p class="card__blurb">' + esc(p.blurb) + "</p>" : "") +

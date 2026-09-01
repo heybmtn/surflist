@@ -69,6 +69,7 @@
 
   var timer = null;
   function start() {
+    if (document.visibilityState === "hidden") return;
     beat();
     if (timer) clearInterval(timer);
     timer = setInterval(beat, INTERVAL_MS);
@@ -76,10 +77,19 @@
   function stop() {
     if (timer) { clearInterval(timer); timer = null; }
   }
+  function scheduleStart() {
+    if (document.visibilityState === "hidden") return;
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(function () { start(); }, { timeout: 4000 });
+    } else {
+      setTimeout(start, 1500);
+    }
+  }
 
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "hidden") stop();
     else start();
   });
-  if (document.visibilityState !== "hidden") start();
+  if (document.readyState === "complete") scheduleStart();
+  else window.addEventListener("load", scheduleStart);
 })();
