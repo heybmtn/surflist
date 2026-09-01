@@ -1213,11 +1213,11 @@ function searchIndex() {
   });
   push({
     n: "Blog",
-    p: "Guides and advice",
+    p: "Everything surfing",
     c: "Blog",
     t: "category",
     u: "/blog/",
-    k: "articles guides advice blog",
+    k: "articles blog everything surfing",
   });
   BLOG_POSTS.forEach(function (p) {
     push({
@@ -1438,7 +1438,7 @@ function renderAbout() {
   "<p>Every listing is checked against the business's own official website.</p>" +
   "<p>If we can't confirm a business is real and operating from its own site, it isn't listed.</p>" +
   "<p>Founded in 2026 by Ben Manton.</p>" +
-  '<p>Guides for planning a trip live on the <a href="/blog/">blog</a>.</p>' +
+  '<p>Everything surfing, on the <a href="/blog/">blog</a>.</p>' +
   '<p>If you run a surf business, <a href="/list-your-business/">get listed</a>.</p></section>\n' +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
@@ -1604,7 +1604,7 @@ function blogIndexJsonLd(pageUrl, trail) {
     "@id": blogId,
     name: "Surflist blog",
     url: pageUrl,
-    description: "Guides for planning a surf trip — schools, destinations, and how the directory works.",
+    description: "Everything surfing.",
     inLanguage: "en-GB",
     publisher: { "@id": SITE + "/#organization" },
     blogPost: BLOG_POSTS.map(function (p) {
@@ -1630,9 +1630,9 @@ function renderBlogIndex() {
   var n = BLOG_POSTS.length;
   var pageUrl = SITE + "/blog/";
   var trail = [{ name: "Home", href: "/" }, { name: "Blog" }];
-  var intro = "Guides for planning a surf trip — how to pick a school, where beginners learn, and how Surflist lists businesses.";
+  var intro = "Everything surfing.";
   return head({
-    title: "Surf trip guides — surflist",
+    title: "Everything surfing — surflist",
     desc: intro,
     canonical: pageUrl,
     rss: BLOG_RSS,
@@ -1790,7 +1790,7 @@ function renderBlogFeed() {
     "    <title>Surflist blog</title>\n" +
     "    <link>" + SITE + "/blog/</link>\n" +
     "    <atom:link href=\"" + BLOG_RSS + "\" rel=\"self\" type=\"application/rss+xml\"/>\n" +
-    "    <description>Guides for planning a surf trip — schools, destinations, and how Surflist lists businesses.</description>\n" +
+    "    <description>Everything surfing.</description>\n" +
     "    <language>en-gb</language>\n" +
     "    <lastBuildDate>" + rfc822Date((BLOG_POSTS[0] && BLOG_POSTS[0].date) || "") + "</lastBuildDate>\n" +
     items + "\n  </channel>\n</rss>\n";
@@ -1844,7 +1844,7 @@ function renderLlms() {
   out.push("## Browse by type");
   out.push("");
   CATEGORIES.forEach(function (c) { out.push("- [" + c.title + "](" + SITE + "/" + c.slug + "/): " + c.intro); });
-  out.push("- [Blog](" + SITE + "/blog/): Guides for planning a surf trip.");
+  out.push("- [Blog](" + SITE + "/blog/): Everything surfing.");
   out.push("");
   if (BLOG_POSTS.length) {
     out.push("## Blog");
@@ -1880,7 +1880,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Trip guides: " + SITE + "/blog/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: " + SITE + "/agency/.");
+  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Everything surfing: " + SITE + "/blog/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: " + SITE + "/agency/.");
   out.push("");
   return out.join("\n");
 }
