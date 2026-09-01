@@ -79,7 +79,7 @@
     }
     if (!strict) {
       for (var f = 0; f < toks.length; f++) {
-        if (!fuzzyHas(hay, toks[f])) return -1;
+        if (!fuzzyHas(hay, toks[f])) return null;
       }
     }
     var name = fold(d.n);
@@ -109,7 +109,7 @@
     var ranked = [];
     for (var i = 0; i < items.length; i++) {
       var sc = scoreItem(items[i], toks, foldedQ);
-      if (sc < 0) continue;
+      if (sc == null) continue;
       ranked.push({ d: items[i], s: sc });
     }
     ranked.sort(function (a, b) {
