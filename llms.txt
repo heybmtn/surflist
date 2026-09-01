@@ -200,6 +200,10 @@
 - [Surf services](https://surflist.co/surf-services/): Board repair, ding fixes and other surf services.
 - [Blog](https://surflist.co/blog/): Guides for planning a surf trip.
 
+## Blog
+
+- [Mavrex Paddle Trainer Review: Building Surf Fitness at Home](https://surflist.co/blog/mavrex-paddle-trainer-review/): A 5/5 review of the Mavrex paddle trainer — a door-anchor kit for surf paddle fitness at home, with steady resistance from 2.5kg to 7.5kg.
+
 ## Surf schools
 
 - [Coconut Harry's Surf Shop](https://surflist.co/surf-schools/coconut-harry-s-surf-shop/): surf school in Nosara, Guanacaste, Costa Rica — Full-service Guiones surf shop and school with a big rental quiver and small-group lessons for all ages.
