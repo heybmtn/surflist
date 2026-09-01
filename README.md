@@ -6,7 +6,7 @@ A directory for surf trips, in four categories, plus a blog:
 - **Surf shops** — `/surf-shops/`
 - **Places to stay** (camps, hostels, eco-pods, campervans) — `/surf-stays/`
 - **Surf services** (board repair, etc.) — `/surf-services/`
-- **Blog** — `/blog/` (guides; one page per article at `/blog/<slug>/`)
+- **Blog** — `/blog/` (everything surfing; one page per article at `/blog/<slug>/`)
 
 The canonical hub for every place is its geographic page — country → region →
 town (`/england/cornwall/newquay/`) — with a browse-all page per category and a
