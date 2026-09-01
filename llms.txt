@@ -182,13 +182,12 @@
     - [Surfing in Da Nang](https://surflist.co/vietnam/da-nang/da-nang/): 5 listings.
   - [Surfing in Khanh Hoa](https://surflist.co/vietnam/khanh-hoa/): 3 listings.
     - [Surfing in Nha Trang](https://surflist.co/vietnam/khanh-hoa/nha-trang/): 3 listings.
-- [Surfing in Wales](https://surflist.co/wales/): 12 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
+- [Surfing in Wales](https://surflist.co/wales/): 11 listings across Anglesey, Bridgend, Gower, Pembrokeshire.
   - [Surfing in Anglesey](https://surflist.co/wales/anglesey/): 2 listings.
     - [Surfing in Rhosneigr](https://surflist.co/wales/anglesey/rhosneigr/): 2 listings.
   - [Surfing in Bridgend](https://surflist.co/wales/bridgend/): 1 listings.
-  - [Surfing in Gower](https://surflist.co/wales/gower/): 5 listings.
+  - [Surfing in Gower](https://surflist.co/wales/gower/): 4 listings.
     - [Surfing in Caswell Bay](https://surflist.co/wales/gower/caswell-bay/): 2 listings.
-    - [Surfing in Llangennith](https://surflist.co/wales/gower/llangennith/): 2 listings.
   - [Surfing in Pembrokeshire](https://surflist.co/wales/pembrokeshire/): 4 listings.
     - [Surfing in Whitesands Bay](https://surflist.co/wales/pembrokeshire/whitesands-bay/): 4 listings.
 
@@ -465,7 +464,6 @@
 - [Gower Surf Academy](https://surflist.co/surf-schools/gower-surf-academy/): surf school in Caswell Bay, Gower, Wales — Caswell Bay's friendly, all-year school (also at Rhossili in summer) — group, family, kids and one-to-one lessons from qualified local coaches.
 - [Surfability UK](https://surflist.co/surf-schools/surfability-uk/): surf school in Caswell Bay, Gower, Wales — An award-winning charity at Caswell Bay making surfing accessible to people with disabilities and additional needs, with adaptive equipment and trained volunteers.
 - [Progress Surf School](https://surflist.co/surf-schools/progress-surf-school/): surf school in Llangennith, Gower, Wales — A Surfing Wales Centre of Excellence with 25+ years on Gower, teaching at Llangennith and sheltered Caswell — plus women's sessions and kids' clubs.
-- [The Welsh Surfing Federation Surf School](https://surflist.co/surf-schools/the-welsh-surfing-federation-surf-school/): surf school in Llangennith, Gower, Wales — Llangennith's original surf school, run by the Welsh Surfing Federation since 1981 on one of Wales' most consistent beaches — lessons for every level.
 - [Bae Surf School](https://surflist.co/surf-schools/bae-surf-school/): surf school in Rhossili, Gower, Wales — Small-group lessons and squad coaching on the dramatic sands of Rhossili and Llangennith, with low instructor ratios and plenty of water time.
 - [Cool Water Surf Adventure](https://surflist.co/surf-schools/cool-water-surf-adventure/): surf school in Whitesands Bay, Pembrokeshire, Wales — Father-and-son school at Whitesands Beach near St Davids since 2013, with fun, safe coaching for all ages along the Pembrokeshire coast.
 - [Pembrokeshire Surf School](https://surflist.co/surf-schools/pembrokeshire-surf-school/): surf school in Whitesands Bay, Pembrokeshire, Wales — Mobile Pembrokeshire school chasing the day's best waves across Whitesands, Newgale and Broad Haven, with beginner, improver and intermediate/advanced courses.
