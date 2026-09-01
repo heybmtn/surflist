@@ -200,13 +200,6 @@
 - [Surf services](https://surflist.co/surf-services/): Board repair, ding fixes and other surf services.
 - [Blog](https://surflist.co/blog/): Guides for planning a surf trip.
 
-## Blog
-
-- [How to choose a surf school](https://surflist.co/blog/how-to-choose-a-surf-school/): What to check before you book a surf lesson: group size, instructor qualifications, the beach, kit and whether the school is a real, operating business.
-- [How to plan a surf trip with Surflist](https://surflist.co/blog/how-to-plan-a-surf-trip/): Plan a surf trip by destination, not by brand. Use Surflist's country, region and town pages to find schools, shops, stays and board repair in one place.
-- [What Surflist lists — and what it doesn't](https://surflist.co/blog/what-surflist-lists/): How Surflist decides what appears: real businesses confirmed on their own website, organised by country, region and town. Verified is paid, not a quality score.
-- [Beginner-friendly surf destinations on Surflist](https://surflist.co/blog/beginner-friendly-surf-destinations/): Towns on Surflist where you can find beginner surf schools — sandy beach-break hubs in England, Morocco, Costa Rica, Indonesia and Mexico, with links to each town.
-
 ## Surf schools
 
 - [Coconut Harry's Surf Shop](https://surflist.co/surf-schools/coconut-harry-s-surf-shop/): surf school in Nosara, Guanacaste, Costa Rica — Full-service Guiones surf shop and school with a big rental quiver and small-group lessons for all ages.
