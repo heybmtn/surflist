@@ -1320,17 +1320,29 @@ function townGuideBlurb(t) {
   });
   return parts.join(", ") + " in " + t.name + ".";
 }
+/* Destination blog posts (first `places` entry + Destinations tag) become the
+   "View guide" target for that town's homepage card. Town hubs stay as-is. */
+function townGuidePost(t) {
+  return BLOG_POSTS.find(function (p) {
+    var pl = (p.places || [])[0];
+    return pl && pl.country === t.country && pl.region === t.region && pl.town === t.name &&
+      (p.tags || []).indexOf("Destinations") !== -1;
+  }) || null;
+}
 function renderDestinationGuideCard(t, nameTag) {
   nameTag = nameTag || "h3";
+  var post = townGuidePost(t);
+  var href = post ? blogHref(post) : t.href;
   var title = "Surfing in " + t.name;
   var place = [t.region, t.country].filter(Boolean).join(", ");
+  var blurb = (post && post.blurb) ? post.blurb : townGuideBlurb(t);
   return '<li class="card">' +
-    '<div class="card__media"><a href="' + esc(t.href) + '" aria-label="' + esc(title) + '">' +
-    mediaInner(title, "", "destination", t.href) + "</a></div>" +
+    '<div class="card__media"><a href="' + esc(href) + '" aria-label="' + esc(title) + '">' +
+    mediaInner(title, "", "destination", href) + "</a></div>" +
     '<div class="card__body"><span class="card__place">' + flagHtml(t.country) + esc(place) + "</span>" +
-    "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(t.href) + '">' + esc(title) + "</a></" + nameTag + ">" +
-    '<p class="card__blurb">' + esc(townGuideBlurb(t)) + "</p>" +
-    '<div class="card__foot"><a class="visit" href="' + esc(t.href) + '">View guide &rarr;</a></div></div></li>';
+    "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + esc(title) + "</a></" + nameTag + ">" +
+    '<p class="card__blurb">' + esc(blurb) + "</p>" +
+    '<div class="card__foot"><a class="visit" href="' + esc(href) + '">View guide &rarr;</a></div></div></li>';
 }
 function renderPopularGuides() {
   var towns = popularTowns(8);
@@ -2049,7 +2061,11 @@ fs.writeFileSync(path.join(ROOT, "_redirects"),
   "/search.json/ /search.json 301\n" +
   "/feed.xml /blog/feed.xml 301\n" +
   "/feed.xml/ /blog/feed.xml 301\n" +
-  "/blog/feed.xml/ /blog/feed.xml 301\n");
+  "/blog/feed.xml/ /blog/feed.xml 301\n" +
+  "/blog/surfing-in-portugal-2026 /blog/ 301\n" +
+  "/blog/surfing-in-portugal-2026/ /blog/ 301\n" +
+  "/blog/mavrex-paddle-trainer-review /blog/ 301\n" +
+  "/blog/mavrex-paddle-trainer-review/ /blog/ 301\n");
 
 var searchJson = JSON.stringify(searchIndex());
 SEARCH_JSON_HREF = "/search.json?" + crypto.createHash("md5").update(searchJson).digest("hex").slice(0, 8);
