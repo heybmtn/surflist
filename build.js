@@ -790,11 +790,6 @@ function renderTownHub(country, region, town) {
   var guideCta = guidePost
     ? '<div class="hero-actions"><a class="btn" href="' + esc(blogHref(guidePost)) + '">Read the surf guide &rarr;</a></div>'
     : "";
-  var guideHtml = guidePost
-    ? '<section class="hub-cat" id="guide"><div class="hub-cat__head"><h2>Surf guide</h2>' +
-      '<a href="' + esc(blogHref(guidePost)) + '">Read the full guide &rarr;</a></div>' +
-      '<ul class="grid">' + renderBlogCard(guidePost, "h3") + "</ul></section>\n"
-    : "";
 
   // category sections
   var sectionCats = CATEGORIES.filter(function (cat) { return itemsInTown(country, region, town, cat).length > 0; });
@@ -847,7 +842,6 @@ function renderTownHub(country, region, town) {
 
   // jump nav
   var jump = sectionCats.map(function (cat) { return '<a href="#' + cat.slug + '">' + esc(cat.title) + "</a>"; });
-  if (guidePost) jump.unshift('<a href="#guide">Surf guide</a>');
   if (Array.isArray(ed.beaches) && ed.beaches.length) jump.push('<a href="#beaches">Beaches</a>');
   if (ed.whenToSurf) jump.push('<a href="#when">When to surf</a>');
   if (Array.isArray(ed.faq) && ed.faq.length) jump.push('<a href="#faq">FAQ</a>');
@@ -862,7 +856,7 @@ function renderTownHub(country, region, town) {
   "<body>\n" + header() +
   '<main id="main" class="wrap">' + crumbs(trail) +
   '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + guideCta + jumpNav + "</section>\n" +
-  guideHtml + sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER +
+  sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER +
   "</body>\n</html>\n";
 }
 
@@ -1331,7 +1325,7 @@ function townGuideBlurb(t) {
   return parts.join(", ") + " in " + t.name + ".";
 }
 /* Destination blog posts (first `places` entry + Destinations tag) become the
-   "View guide" target for that town's homepage card, and a CTA + card on the
+   "View guide" target for that town's homepage card, and a hero CTA on the
    town hub. */
 function townGuidePost(t) {
   return BLOG_POSTS.find(function (p) {
