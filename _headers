@@ -7,6 +7,9 @@
 /styles.css
   Cache-Control: public, max-age=31536000, immutable
 
+/chrome.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /search.js
   Cache-Control: public, max-age=31536000, immutable
 
