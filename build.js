@@ -483,7 +483,7 @@ const FOOTER =
   '<footer><div class="wrap footer-grid">' +
   '<div class="footer-col"><a class="brand" href="/">surflist<span>.</span></a>' +
   '<p>Run a surf school, shop or stay? <a href="/list-your-business/">Get listed</a>.</p></div>' +
-  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/agency/">Agency</a></nav></div>' +
+  '<div class="footer-col"><nav class="footer-nav" aria-label="Footer"><a href="/blog/">Blog</a><a href="/about/">About</a><a href="/agency/">Agency</a><a href="https://www.instagram.com/surflistdotco/" target="_blank" rel="noopener">Instagram</a></nav></div>' +
   "</div></footer>\n" +
   '<script src="' + VISITORS_HREF + '" defer></script>\n' +
   '<script src="' + SEARCH_JS_HREF + '" defer></script>\n';
