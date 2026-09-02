@@ -259,7 +259,7 @@ town+category page only with **≥2 listings in that category** in that town. Th
 suppresses thin pages. Add a town's first listing and no hub appears yet; add a
 second and it does.
 
-### The homepage — both sections are automatic
+### The homepage — these sections are automatic
 
 - **Popular surf destinations** (town chips): the **top 8 towns by listing
   count**, then alphabetical. To feature a town, give it more listings.
@@ -270,6 +270,9 @@ second and it does.
   the business's site. The verified badge appears only when `verified: true`.
   There's no `lastVerified`-based ordering or schools-only featuring — every
   listing has an equal chance of appearing.
+- **Popular destination guides**: the same top 8 towns as cards linking to each
+  town hub (`Surfing in <town>`). The blurb is the town intro when one exists,
+  otherwise a count of listings by category.
 
 There's no separate "homepage" list to edit — the homepage curates itself from
 your data.
@@ -515,8 +518,9 @@ stays `stayType:"…"` · services `serviceType:"…"`
 page.
 
 **Homepage is automatic:** popular towns = most listings; latest listings =
-random sample of every listing. School cards link to their Surflist page;
-`verified` is a paid badge, not the gate for having a school page.
+random sample of every listing; destination guides = those same top towns as
+hub cards. School cards link to their Surflist page; `verified` is a paid
+badge, not the gate for having a school page.
 
 **New flag:**
 `curl -sfL "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/4x3/<code>.svg" -o flags/<code>.svg`

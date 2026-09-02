@@ -241,6 +241,7 @@ const CATEGORY_PALETTE = {
   "surf-stays": { from: [152, 36, 40], to: [166, 40, 18] },    // sage/emerald -> deep pine
   "surf-services": { from: [232, 20, 42], to: [230, 34, 15] }, // slate/indigo -> midnight navy
   "blog": { from: [176, 52, 38], to: [176, 70, 18] },          // site teal
+  "destination": { from: [189, 48, 42], to: [176, 55, 18] },   // ocean teal -> deep teal
 };
 function phClass(seed, catSlug) {
   if (catSlug && CATEGORY_PALETTE[catSlug]) return "card__ph card__ph--" + catSlug;
@@ -1266,17 +1267,26 @@ function renderDestinations() {
   return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
     '<nav class="dest-chips" aria-label="Explore destinations">' + chips + "</nav></section>\n";
 }
-function renderPopularTowns() {
+function popularTowns(limit) {
   var towns = [];
   countries().forEach(function (c) {
     regionsIn(c).forEach(function (r) {
       townsWithHub(c, r).forEach(function (t) {
-        towns.push({ name: t, href: townUrl(c, r, t), count: countTown(c, r, t) });
+        towns.push({
+          name: t,
+          country: c,
+          region: r,
+          href: townUrl(c, r, t),
+          count: countTown(c, r, t),
+        });
       });
     });
   });
   towns.sort(function (a, b) { return b.count - a.count || a.name.localeCompare(b.name); });
-  towns = towns.slice(0, 8);
+  return towns.slice(0, limit || 8);
+}
+function renderPopularTowns() {
+  var towns = popularTowns(8);
   if (!towns.length) return "";
   return '<section class="hub-cat" id="popular"><div class="hub-cat__head"><h2>Popular surf destinations</h2></div>' +
     '<nav class="chip-nav" aria-label="Popular destinations">' +
@@ -1300,12 +1310,33 @@ function renderLatestListings() {
     picked.map(function (x) { return renderCard(x.d, x.cat, "h3"); }).join("") +
     "</ul></section>\n";
 }
-function renderLatestBlog() {
-  var posts = BLOG_POSTS.slice(0, 3);
-  if (!posts.length) return "";
-  return '<section class="hub-cat" id="blog"><div class="hub-cat__head"><h2>From the blog</h2>' +
-    '<a href="/blog/">All articles &rarr;</a></div>' +
-    '<ul class="grid">' + posts.map(function (p) { return renderBlogCard(p, "h3"); }).join("") + "</ul></section>\n";
+function townGuideBlurb(t) {
+  var ed = townContent(t.country, t.region, t.name);
+  if (ed.intro) return ed.intro;
+  var parts = [];
+  CATEGORIES.forEach(function (cat) {
+    var n = itemsInTown(t.country, t.region, t.name, cat).length;
+    if (n) parts.push(n + " " + (n === 1 ? cat.singular : cat.plural));
+  });
+  return parts.join(", ") + " in " + t.name + ".";
+}
+function renderDestinationGuideCard(t, nameTag) {
+  nameTag = nameTag || "h3";
+  var title = "Surfing in " + t.name;
+  var place = [t.region, t.country].filter(Boolean).join(", ");
+  return '<li class="card">' +
+    '<div class="card__media"><a href="' + esc(t.href) + '" aria-label="' + esc(title) + '">' +
+    mediaInner(title, "", "destination", t.href) + "</a></div>" +
+    '<div class="card__body"><span class="card__place">' + flagHtml(t.country) + esc(place) + "</span>" +
+    "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(t.href) + '">' + esc(title) + "</a></" + nameTag + ">" +
+    '<p class="card__blurb">' + esc(townGuideBlurb(t)) + "</p>" +
+    '<div class="card__foot"><a class="visit" href="' + esc(t.href) + '">View guide &rarr;</a></div></div></li>';
+}
+function renderPopularGuides() {
+  var towns = popularTowns(8);
+  if (!towns.length) return "";
+  return '<section class="hub-cat" id="guides"><div class="hub-cat__head"><h2>Popular destination guides</h2></div>' +
+    '<ul class="grid">' + towns.map(function (t) { return renderDestinationGuideCard(t, "h3"); }).join("") + "</ul></section>\n";
 }
 function renderHub() {
   return head({
@@ -1321,7 +1352,7 @@ function renderHub() {
   renderDestinations() +
   renderPopularTowns() +
   renderLatestListings() +
-  renderLatestBlog() +
+  renderPopularGuides() +
   "</main>\n" + FOOTER + "</body>\n</html>\n";
 }
 function renderSearchPage() {

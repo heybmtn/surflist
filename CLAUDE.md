@@ -101,7 +101,8 @@ Registries near the top of `build.js`:
 
 Thresholds: a town hub needs **≥2 listings**; a town+category page needs **≥2 in
 that category**. Homepage "popular towns" = top 8 by listing count; "latest
-listings" = a random 8 from every category. Every surf school gets a listing
+listings" = a random 8 from every category; "popular destination guides" =
+those same towns as hub cards. Every surf school gets a listing
 page at `/surf-schools/<slug>/`; `verified` is a paid badge, not the gate for
 having a school page. Duplicate school names are disambiguated with a town
 suffix; `--check` fails if two listing paths would still collide.
