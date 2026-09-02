@@ -24,7 +24,10 @@ everything else.
    `england/cornwall/newquay/index.html` and every other `.html` file are
    **generated**. `node build.js` overwrites them on every run. You only ever
    edit the files in `data/` and — occasionally — `build.js`, `styles.css` and
-   `search.js`. `search.json` is generated too; don't hand-edit it.
+   `search.js`. `search.json` and `chrome.js` are generated too; don't
+   hand-edit them. Header and footer live in `header()` / `footer()` in
+   `build.js` and are served globally from `/chrome.js`, so a chrome change
+   does not rewrite every page.
 
 2. **Always start from the latest repo.** `git pull` (or re-clone) before you
    edit. If you edit an old copy of `build.js` and then build, you silently wipe
@@ -443,9 +446,11 @@ Fix collisions before building.
 
 **`node build.js`**: regenerates the homepage, every hub, every surf-school
 listing page (and any verified pages in other categories), plus `sitemap.xml`,
-`robots.txt` and `llms.txt`. It does not validate internal links or JSON-LD
-itself, so spot-check new or changed pages in the browser (or a link checker)
-before committing.
+`robots.txt`, `llms.txt` and `chrome.js` (global header and footer). It does
+not validate internal links or JSON-LD itself, so spot-check new or changed
+pages in the browser (or a link checker) before committing. Chrome-only
+edits (`header()` / `footer()` in `build.js`) should change `chrome.js`, not
+every HTML file.
 
 Then commit both source and generated files and push; Cloudflare Pages rebuilds
 on push.
