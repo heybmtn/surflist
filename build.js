@@ -340,6 +340,11 @@ function postPlainText(p) {
     else if (b.quote) parts.push(b.quote);
     else if (Array.isArray(b.ul)) parts.push(b.ul.join(" "));
     else if (Array.isArray(b.ol)) parts.push(b.ol.join(" "));
+    else if (b.table) {
+      var cells = (b.table.headers || []).slice();
+      (b.table.rows || []).forEach(function (r) { cells = cells.concat(r || []); });
+      parts.push(cells.join(" "));
+    }
   });
   return parts.join(" ");
 }
@@ -1524,6 +1529,16 @@ function renderBlogBody(blocks) {
       return "<ul>" + b.ul.map(function (i) { return "<li>" + renderInline(i) + "</li>"; }).join("") + "</ul>";
     if (Array.isArray(b.ol) && b.ol.length)
       return "<ol>" + b.ol.map(function (i) { return "<li>" + renderInline(i) + "</li>"; }).join("") + "</ol>";
+    if (b.table && Array.isArray(b.table.headers) && Array.isArray(b.table.rows)) {
+      var th = b.table.headers.map(function (h) { return "<th>" + renderInline(h) + "</th>"; }).join("");
+      var trs = b.table.rows.map(function (row) {
+        return "<tr>" + (row || []).map(function (cell) {
+          return "<td>" + renderInline(cell) + "</td>";
+        }).join("") + "</tr>";
+      }).join("");
+      return '<div class="article-table-wrap"><table>' +
+        "<thead><tr>" + th + "</tr></thead><tbody>" + trs + "</tbody></table></div>";
+    }
     return "";
   }).join("");
 }

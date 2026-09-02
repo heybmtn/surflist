@@ -335,7 +335,7 @@ first. Copy an existing post and change the fields.
 - **`slug`** — URL path under `/blog/`. Unique. If omitted, it is derived from the title.
 - **`date`** / optional **`updated`** — `YYYY-MM-DD`. `date` is published; `updated` only if the article actually changed.
 - **`description`** — meta description. Keep it under ~155 characters and true.
-- **`body`** — mix of strings (paragraphs), `{ h2 }` / `{ h3 }`, `{ ul }` / `{ ol }`, `{ quote }`. Links in any of those strings: `[label](/path/)` or `[label](https://…)`.
+- **`body`** — mix of strings (paragraphs), `{ h2 }` / `{ h3 }`, `{ ul }` / `{ ol }`, `{ quote }`, `{ table: { headers, rows } }`. Links in any of those strings: `[label](/path/)` or `[label](https://…)`.
 - **`places`** — only towns that already have a hub. A typo 404s the chip.
 - Do not invent listing facts in a post. Link to the directory page instead.
 - `verified` does not apply to posts.
