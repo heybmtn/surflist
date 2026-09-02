@@ -225,6 +225,11 @@
     }
     .detail__media img, .detail__media .card__ph { width: 100%; height: 100%; object-fit: cover; display: block; }
     .detail__grid { display: grid; grid-template-columns: 1fr 320px; gap: 2.6rem; align-items: start; }
+    /* Grid items default to min-width: auto, so a wide table (or long
+       unbreakable string) expands the column and the whole page scrolls
+       sideways. Allow the article column to shrink; tables scroll inside. */
+    .detail__grid > * { min-width: 0; }
+    .detail__title, .detail__lead, .article-prose { overflow-wrap: break-word; }
     .detail__lead { font-size: 1.18rem; line-height: 1.6; margin: 0 0 1.1rem; }
     .detail__prose p { margin: 0 0 1rem; }
     .tags { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; }
@@ -249,6 +254,8 @@
     @media (max-width: 720px) {
       .detail__grid { grid-template-columns: 1fr; gap: 1.8rem; }
       .detail__facts { position: static; }
+      .detail__title { font-size: 1.55rem; }
+      .article-prose th, .article-prose td { padding: 0.45rem 0.55rem; }
     }
 
     /* ===== accessibility & performance tuning ===== */
@@ -588,8 +595,22 @@
     .article-prose ul, .article-prose ol { margin: 0 0 1.1rem; padding: 0 0 0 1.2rem; }
     .article-prose li { margin: 0.35rem 0; }
     .article-prose li::marker { color: var(--accent); }
-    .article-prose .article-table-wrap { overflow-x: auto; margin: 0 0 1.25rem; -webkit-overflow-scrolling: touch; }
-    .article-prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; line-height: 1.4; }
+    .article-prose .article-table-wrap {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 0 0 1.25rem;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+    .article-prose table {
+      width: 100%;
+      min-width: max-content;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
     .article-prose th, .article-prose td {
       border: 1px solid var(--line); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top;
     }
