@@ -786,6 +786,10 @@ function renderTownHub(country, region, town) {
 
   var autoIntro = town + " is a surf spot in " + placeStr + ". Find surf schools, shops, places to stay and board repair in " + town + " below.";
   var intro = ed.intro || autoIntro;
+  var guidePost = townGuidePost({ country: country, region: region, name: town });
+  var guideCta = guidePost
+    ? '<div class="hero-actions"><a class="btn" href="' + esc(blogHref(guidePost)) + '">Read the surf guide &rarr;</a></div>'
+    : "";
 
   // category sections
   var sectionCats = CATEGORIES.filter(function (cat) { return itemsInTown(country, region, town, cat).length > 0; });
@@ -851,7 +855,7 @@ function renderTownHub(country, region, town) {
   }) +
   "<body>\n" + header() +
   '<main id="main" class="wrap">' + crumbs(trail) +
-  '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + jumpNav + "</section>\n" +
+  '<section class="hero"><h1>Surfing in ' + esc(town) + "</h1><p>" + esc(intro) + "</p>" + guideCta + jumpNav + "</section>\n" +
   sections + "\n" + beachesHtml + whenHtml + faqHtml + "\n</main>\n" + FOOTER +
   "</body>\n</html>\n";
 }
@@ -1321,7 +1325,8 @@ function townGuideBlurb(t) {
   return parts.join(", ") + " in " + t.name + ".";
 }
 /* Destination blog posts (first `places` entry + Destinations tag) become the
-   "View guide" target for that town's homepage card. Town hubs stay as-is. */
+   "View guide" target for that town's homepage card, and a hero CTA on the
+   town hub. */
 function townGuidePost(t) {
   return BLOG_POSTS.find(function (p) {
     var pl = (p.places || [])[0];
