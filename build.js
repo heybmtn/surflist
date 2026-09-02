@@ -1269,16 +1269,14 @@ function renderSearch(opts) {
   opts = opts || {};
   var id = "search-" + (++searchWidgetSeq);
   var compact = !!opts.compact;
-  var placeholder = compact
-    ? "Search destinations &amp; listings"
-    : "Search a destination, town or surf business&hellip;";
+  var placeholder = "Search schools, shop and stays";
   var value = opts.value ? ' value="' + esc(opts.value) + '"' : "";
   return '<div class="search' + (compact ? " search--compact" : "") + '" role="search" data-index="' + SEARCH_JSON_HREF + '">' +
     '<form class="search__form" action="/search/" method="get">' +
     SEARCH_ICON +
     '<input type="search" name="q" id="' + id + '-input" class="search__input" placeholder="' + placeholder + '" ' +
     'autocomplete="off" spellcheck="false" enterkeyhint="search" inputmode="search" ' +
-    'aria-label="Search destinations and listings" role="combobox" aria-expanded="false" ' +
+    'aria-label="Search schools, shop and stays" role="combobox" aria-expanded="false" ' +
     'aria-controls="' + id + '-results" aria-autocomplete="list"' + value + (opts.autofocus ? " autofocus" : "") + " />" +
     '<button type="button" class="search__clear" hidden aria-label="Clear search">&times;</button>' +
     '<ul id="' + id + '-results" class="search__results" role="listbox" hidden></ul>' +
