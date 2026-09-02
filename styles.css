@@ -107,6 +107,8 @@
     .card__ph--surf-stays { background: linear-gradient(135deg, hsl(152, 36%, 40%), hsl(166, 40%, 18%)); }
     .card__ph--surf-services { background: linear-gradient(135deg, hsl(232, 20%, 42%), hsl(230, 34%, 15%)); }
     .card__ph--blog { background: linear-gradient(135deg, hsl(176, 52%, 38%), hsl(176, 70%, 18%)); }
+    .card__ph--destination { background: linear-gradient(135deg, hsl(189, 48%, 42%), hsl(176, 55%, 18%)); }
+    .card__place .flag { width: 1.15em; margin-right: 0.35em; vertical-align: -0.12em; }
     /* shared visual recipe for .badge-verified and .badge-featured — same
        shape, different color, so the two are never confused */
     .badge-verified, .badge-featured {
