@@ -558,8 +558,17 @@ function head(o) {
     (o.prefetchSearch ? '<link rel="prefetch" href="' + SEARCH_JSON_HREF + '" as="fetch" crossorigin />\n' : "") +
     (o.jsonld ? '<script type="application/ld+json">\n' + safeJsonLd(o.jsonld) + "\n</script>\n" : "") +
     '<script type="application/ld+json">\n' + safeJsonLd(WEBSITE_JSONLD) + "\n</script>\n" +
+    PLAUSIBLE +
     "</head>\n";
 }
+
+/* Privacy-friendly analytics. Emitted in every page <head>. */
+const PLAUSIBLE = '<!-- Privacy-friendly analytics by Plausible -->\n' +
+  '<script async src="https://plausible.io/js/pa-0D7CmjO_XbF7M-4C8FHOD.js"></script>\n' +
+  '<script>\n' +
+  '  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};\n' +
+  '  plausible.init()\n' +
+  '</script>\n';
 const WEBSITE_JSONLD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
