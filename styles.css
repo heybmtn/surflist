@@ -17,6 +17,11 @@
       --shadow-xs: 0 2px 6px rgba(0,0,0,.12);
       --shadow-sm: 0 14px 28px -20px rgba(19,48,44,.45);
       --shadow-md: 0 14px 28px -16px rgba(19,48,44,.35);
+      --text-h1: 48px;
+      --text-section: 24px;
+      --text-card: 17px;
+      --text-body: 14px;
+      --text-meta: 12px;
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; height: 100%; }
@@ -36,6 +41,7 @@
       font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
       color: var(--ink);
       background: var(--paper);
+      font-size: var(--text-body);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
@@ -58,7 +64,7 @@
     .layout { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; align-items: start; margin-top: 1.8rem; }
     .sidebar { position: sticky; top: 1.2rem; align-self: start; max-height: calc(100vh - 2.4rem); overflow: auto; }
     .filter-label {
-      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+      font-size: var(--text-meta); text-transform: uppercase; letter-spacing: 0.12em;
       color: var(--muted); margin: 0 0 0.6rem;
     }
     .side-list { display: flex; flex-direction: column; gap: 0.12rem; }
@@ -113,7 +119,7 @@
        shape, different color, so the two are never confused */
     .badge-verified, .badge-featured {
       display: inline-flex; align-items: center; gap: 0.34em;
-      font-size: 0.68rem; letter-spacing: 0.01em; font-weight: 700;
+      font-size: var(--text-meta); letter-spacing: 0.01em; font-weight: 700;
       padding: 0.3em 0.62em; border-radius: var(--radius);
       box-shadow: var(--shadow-xs);
     }
@@ -124,10 +130,10 @@
     }
     .badge-verified svg { width: 0.9em; height: 0.9em; fill: currentColor; }
     .card__body { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.95rem 1rem 1.05rem; flex: 1; }
-    .card__place { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
-    .card__name { font-size: 1.12rem; font-weight: 600; margin: 0; line-height: 1.25; }
+    .card__place { font-size: var(--text-meta); text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+    .card__name { font-size: var(--text-card); font-weight: 600; margin: 0; line-height: 1.25; }
     .card__blurb {
-      color: var(--muted); font-size: 0.92rem; margin: 0.15rem 0 0;
+      color: var(--muted); font-size: var(--text-body); margin: 0.15rem 0 0;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .card__levels { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.55rem; }
@@ -217,13 +223,13 @@
     .back { display: inline-block; color: var(--muted); text-decoration: none; font-size: 0.9rem; margin-bottom: 1.4rem; }
     .back:hover { color: var(--accent); }
     .detail__head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin-bottom: 1.4rem; min-width: 0; }
-    .detail__eyebrow { width: 100%; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 0; }
+    .detail__eyebrow { width: 100%; font-size: var(--text-meta); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin: 0; }
     .detail__title {
-      font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 700; letter-spacing: -0.02em;
+      font-size: var(--text-h1); font-weight: 700; letter-spacing: -0.02em;
       margin: 0; line-height: 1.15; min-width: 0; max-width: 100%; width: 100%;
     }
     .badge-verified.inline {
-      position: static; box-shadow: none; font-size: 0.72rem;
+      position: static; box-shadow: none; font-size: var(--text-meta);
     }
     .detail__media {
       border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16 / 9;
@@ -249,7 +255,7 @@
       background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
       padding: 1.4rem; position: sticky; top: 1.2rem; box-shadow: var(--shadow-xs);
     }
-    .detail__facts h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 0.6rem; }
+    .detail__facts h2 { font-size: var(--text-meta); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 0.6rem; }
     .facts { margin: 0 0 1.2rem; }
     .facts div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
     .facts div:first-child { border-top: 0; }
@@ -260,7 +266,7 @@
     @media (max-width: 720px) {
       .detail__grid { grid-template-columns: 1fr; gap: 1.8rem; }
       .detail__facts { position: static; }
-      .detail__title { font-size: 1.55rem; }
+      .detail__title { font-size: var(--text-h1); }
       .article-prose th, .article-prose td { padding: 0.45rem 0.55rem; }
     }
 
@@ -268,7 +274,7 @@
     /* filtered-out cards */
     .card[hidden] { display: none; }
     /* legible font sizes (>= 12px) */
-    .card__place, .filter-label { font-size: 0.75rem; }
+    .card__place, .filter-label { font-size: var(--text-meta); }
     .count { font-size: 1rem; }
     /* contrast fixes */
     .badge-verified { color: #3f2600; }
@@ -287,7 +293,7 @@
       .visit { padding: 11px 0; }
     }
     /* keep even the smallest labels >= 12px */
-    .badge-verified, .detail__eyebrow { font-size: 0.75rem; }
+    .badge-verified, .detail__eyebrow { font-size: var(--text-meta); }
 
     /* ===== multi-category: nav, hub, category head ===== */
     .header__inner { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem 1.5rem; flex-wrap: wrap; }
@@ -315,8 +321,8 @@
     .header__stats { margin: 0.3rem 0 0; color: var(--muted); font-size: 0.85rem; }
 
     .hero { padding: 1.2rem 0 0.5rem; max-width: 640px; }
-    .hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.6rem; line-height: 1.15; }
-    .hero p { color: var(--muted); font-size: 1.12rem; line-height: 1.55; margin: 0; }
+    .hero h1 { font-size: var(--text-h1); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.6rem; line-height: 1.15; }
+    .hero p { color: var(--muted); font-size: var(--text-body); line-height: 1.55; margin: 0; }
     .hero p + .btn { margin-top: 0.9rem; }
     /* About / Get listed stack several sentences; global .hero p is margin: 0. */
     .hero--copy p + p { margin-top: 0.9rem; }
@@ -382,10 +388,10 @@
       background: color-mix(in srgb, var(--dot) 42%, transparent);
       color: inherit; font-weight: 700; padding: 0;
     }
-    .search__meta { font-size: 0.82rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.35em 0.55em; align-items: center; }
+    .search__meta { font-size: var(--text-meta); color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.35em 0.55em; align-items: center; }
     .search__verified {
       display: inline-flex; align-items: center; gap: 0.15em;
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.01em; color: #6a3f04;
+      font-size: var(--text-meta); font-weight: 700; letter-spacing: 0.01em; color: #6a3f04;
     }
     .search__verified svg { width: 0.9em; height: 0.9em; fill: currentColor; }
     .search__empty { padding: 0.75em 0.7em; color: var(--muted); font-size: 0.92rem; }
@@ -411,12 +417,12 @@
 
     .hub-cat { margin-top: 2.8rem; scroll-margin-top: 1.5rem; }
     .hub-cat__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
-    .hub-cat__head h2 { font-size: 1.35rem; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+    .hub-cat__head h2 { font-size: var(--text-section); font-weight: 700; margin: 0; letter-spacing: -0.01em; }
     .hub-cat__head a { color: var(--accent); font-weight: 600; font-size: 0.95rem; text-decoration: none; white-space: nowrap; }
     .hub-cat__head a:hover { color: var(--ink); }
 
     .cat-head { margin: 1.4rem 0 0.4rem; }
-    .cat-head h1 { font-size: clamp(1.7rem, 3.5vw, 2.3rem); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.3rem; line-height: 1.15; }
+    .cat-head h1 { font-size: var(--text-h1); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 0.3rem; line-height: 1.15; }
     .cat-head p { color: var(--muted); margin: 0; max-width: 560px; }
 
     /* card name renders the same at any heading level via the .card__name class */
@@ -428,7 +434,7 @@
 
     /* ===== verified profile additions (surf spots, lessons, prices, season, demo) ===== */
     /* "Verified by surflist · last checked …" line under the title/badge */
-    .verified-meta { width: 100%; margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
+    .verified-meta { width: 100%; margin: 0.35rem 0 0; font-size: var(--text-meta); color: var(--muted); }
     .detail__note { margin: 0 0 1.1rem; font-size: 0.92rem; color: var(--muted); }
 
     /* content blocks on the listing page: Surf spots / Lessons / Prices / When to go */
@@ -463,7 +469,7 @@
 
     /* town editorial sections (beaches / when to surf / FAQ) */
     .town-ed { margin-top: 2.8rem; scroll-margin-top: 1.5rem; }
-    .town-ed > h2 { font-size: 1.35rem; font-weight: 700; margin: 0 0 1rem;
+    .town-ed > h2 { font-size: var(--text-section); font-weight: 700; margin: 0 0 1rem;
       letter-spacing: -0.01em; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
     .ed-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; margin-bottom: 1rem; }
     .ed-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1rem 1.1rem; box-shadow: var(--shadow-xs); }
@@ -488,31 +494,7 @@
       .faq-item[open]::details-content { opacity: 1; block-size: auto; }
     }
 
-    /* homepage: explore destinations — wrapping A–Z country chips */
-    .dest-chips { display: flex; flex-wrap: wrap; gap: 0.6rem 0.7rem; }
-    .dest-chips .dest-country {
-      display: inline-flex; align-items: center; gap: 0.4em; width: max-content;
-      min-height: 44px; padding: 0.4em 1.05em 0.4em 0.8em;
-      border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
-      transition: border-color .12s, color .12s;
-    }
-    .dest-chips .dest-country:hover { border-color: var(--accent); }
-    /* Flag SVGs have a large intrinsic width (viewBox 640). As a flex item
-       that defaults to min-width: auto, the img overflows and paints over
-       the country name — eating flex gap. Constrain the item and use
-       margin-right so space does not depend on gap. */
-    .dest-chips .flag {
-      flex: 0 0 auto;
-      width: 1.3em;
-      max-width: 1.3em;
-      min-width: 0;
-      height: auto;
-      margin-right: 0.5em;
-    }
-    .dest-chips .dest-country span { padding-left: 0.05em; }
     .flag { display: inline-block; width: 1.3em; height: auto; vertical-align: -0.15em; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
-    .dest-country { font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
-    .dest-country:hover { color: var(--accent); }
 
     /* homepage: popular destinations chip row */
     .chip-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -549,7 +531,7 @@
     /* agency page */
     .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.2rem; }
     .copy { max-width: 640px; }
-    .copy p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin: 0; }
+    .copy p { color: var(--muted); font-size: var(--text-body); line-height: 1.6; margin: 0; }
     .copy p + p { margin-top: 0.9rem; }
     .copy em { font-style: italic; color: var(--ink); }
     .hub-cat .copy { margin-bottom: 1rem; }
@@ -588,9 +570,9 @@
 
     /* ===== blog articles ===== */
     .article { display: block; min-width: 0; max-width: 100%; }
-    .article-prose { font-size: 1.05rem; line-height: 1.65; }
+    .article-prose { font-size: var(--text-body); line-height: 1.65; }
     .article-prose h2 {
-      font-size: 1.28rem; font-weight: 700; letter-spacing: -0.01em;
+      font-size: var(--text-section); font-weight: 700; letter-spacing: -0.01em;
       margin: 2rem 0 0.7rem; line-height: 1.25;
     }
     .article-prose h3 {
