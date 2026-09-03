@@ -353,6 +353,17 @@ function readingMins(p) {
   return Math.max(1, Math.round(wordCount(postPlainText(p)) / 200));
 }
 
+/* header stat counts — read once from the loaded data so they stay correct as listings are added */
+function categoryCount(slug) {
+  var cat = CATEGORIES.find(function (c) { return c.slug === slug; });
+  return cat ? cat.items.length : 0;
+}
+var HEADER_STATS = {
+  schools: categoryCount("surf-schools"),
+  shops: categoryCount("surf-shops"),
+  stays: categoryCount("surf-stays"),
+};
+
 /* every (listing, category) pair, for whole-tree passes */
 var ALL = [];
 CATEGORIES.forEach(function (cat) { cat.items.forEach(function (d) { ALL.push({ d: d, cat: cat }); }); });
@@ -456,7 +467,11 @@ function header(opts) {
   return '<a class="skip-link" href="#main">Skip to content</a>\n' +
     '<header><div class="wrap header__inner"><a class="brand" href="/">surflist<span>.</span></a>' +
     search +
-    "</div></header>\n";
+    "</div>" +
+    '<div class="wrap"><p class="header__stats">' +
+    HEADER_STATS.schools + " surf schools · " + HEADER_STATS.shops + " surf shops · " +
+    HEADER_STATS.stays + " places to stay</p></div>" +
+    "</header>\n";
 }
 function footer() {
   return '<footer><div class="wrap footer-grid">' +
