@@ -505,6 +505,7 @@
       padding: 0.4em 1.1em; transition: border-color .12s, background .12s;
     }
     .chip-nav a:hover { border-color: var(--accent); }
+    .chip-nav .flag { width: 1.15em; margin-right: 0.35em; flex-shrink: 0; }
 
     /* ===== FORMS (list-your-business) ===== */
     /* generic form layout primitives, borrowing .search__input's look */

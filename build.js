@@ -1307,7 +1307,7 @@ function renderPopularTowns() {
   if (!towns.length) return "";
   return '<section class="hub-cat" id="popular"><div class="hub-cat__head"><h2>Popular destinations</h2></div>' +
     '<nav class="chip-nav" aria-label="Popular destinations">' +
-    towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
+    towns.map(function (t) { return '<a href="' + t.href + '">' + flagHtml(t.country) + esc(t.name) + "</a>"; }).join("") +
     "</nav></section>\n";
 }
 function renderLatestListings() {
