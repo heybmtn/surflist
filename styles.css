@@ -299,20 +299,6 @@
 
     /* ===== multi-category: nav, hub, category head ===== */
     .header__inner { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem 1.5rem; flex-wrap: wrap; }
-    .header__visitors {
-      display: inline-flex; align-items: center; gap: 0.45rem 0.55rem; flex-wrap: wrap;
-      margin: 0 0 0 auto; color: var(--muted); font-size: 0.85rem; font-weight: 500;
-    }
-    .header__visitors-live { display: inline-flex; align-items: center; gap: 0.4rem; }
-    .header__visitors-dot {
-      width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
-      animation: visitorsPulse 2.2s ease-in-out infinite;
-    }
-    @keyframes visitorsPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .header__visitors [data-visitors-live],
-    .header__visitors [data-visitors-total] { font-variant-numeric: tabular-nums; color: var(--ink); }
-    .header__visitors-sep { opacity: 0.55; }
     .nav { display: flex; flex-wrap: wrap; gap: 0.15rem; }
     .nav a {
       padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); color: var(--muted); text-decoration: none;
