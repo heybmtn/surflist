@@ -1269,14 +1269,14 @@ function renderSearch(opts) {
   opts = opts || {};
   var id = "search-" + (++searchWidgetSeq);
   var compact = !!opts.compact;
-  var placeholder = "Search schools, shop and stays";
+  var placeholder = "Where do you want to surf?";
   var value = opts.value ? ' value="' + esc(opts.value) + '"' : "";
   return '<div class="search' + (compact ? " search--compact" : "") + '" role="search" data-index="' + SEARCH_JSON_HREF + '">' +
     '<form class="search__form" action="/search/" method="get">' +
     SEARCH_ICON +
     '<input type="search" name="q" id="' + id + '-input" class="search__input" placeholder="' + placeholder + '" ' +
     'autocomplete="off" spellcheck="false" enterkeyhint="search" inputmode="search" ' +
-    'aria-label="Search schools, shop and stays" role="combobox" aria-expanded="false" ' +
+    'aria-label="Where do you want to surf?" role="combobox" aria-expanded="false" ' +
     'aria-controls="' + id + '-results" aria-autocomplete="list"' + value + (opts.autofocus ? " autofocus" : "") + " />" +
     '<button type="button" class="search__clear" hidden aria-label="Clear search">&times;</button>' +
     '<ul id="' + id + '-results" class="search__results" role="listbox" hidden></ul>' +
@@ -1284,13 +1284,6 @@ function renderSearch(opts) {
 }
 
 /* ---------- homepage ---------- */
-function renderDestinations() {
-  var chips = countries().slice().sort(function (a, b) { return a.localeCompare(b); }).map(function (c) {
-    return '<a class="dest-country" href="' + countryUrl(c) + '">' + flagHtml(c) + "<span>" + esc(c) + "</span></a>";
-  }).join("");
-  return '<section class="hub-cat" id="destinations"><div class="hub-cat__head"><h2>Explore destinations</h2></div>' +
-    '<nav class="dest-chips" aria-label="Explore destinations">' + chips + "</nav></section>\n";
-}
 function popularTowns(limit) {
   var towns = [];
   countries().forEach(function (c) {
@@ -1312,7 +1305,7 @@ function popularTowns(limit) {
 function renderPopularTowns() {
   var towns = popularTowns(8);
   if (!towns.length) return "";
-  return '<section class="hub-cat" id="popular"><div class="hub-cat__head"><h2>Popular surf destinations</h2></div>' +
+  return '<section class="hub-cat" id="popular"><div class="hub-cat__head"><h2>Popular destinations</h2></div>' +
     '<nav class="chip-nav" aria-label="Popular destinations">' +
     towns.map(function (t) { return '<a href="' + t.href + '">' + esc(t.name) + "</a>"; }).join("") +
     "</nav></section>\n";
@@ -1372,7 +1365,7 @@ function renderDestinationGuideCard(t, nameTag) {
 function renderPopularGuides() {
   var towns = popularTowns(8);
   if (!towns.length) return "";
-  return '<section class="hub-cat" id="guides"><div class="hub-cat__head"><h2>Popular destination guides</h2></div>' +
+  return '<section class="hub-cat" id="guides"><div class="hub-cat__head"><h2>Surf guides</h2></div>' +
     '<ul class="grid">' + towns.map(function (t) { return renderDestinationGuideCard(t, "h3"); }).join("") + "</ul></section>\n";
 }
 function renderHub() {
@@ -1383,10 +1376,9 @@ function renderHub() {
     prefetchSearch: true,
     headerSearch: false,
   },
-  '<main id="main" class="wrap"><section class="hero"><h1>Where surfers and surf businesses meet.</h1>' +
+  '<main id="main" class="wrap"><section class="hero"><h1>Find your next surf trip</h1>' +
   "<p>Find surf schools, shops, and stays by destination.</p>" +
   renderSearch() + "</section>\n" +
-  renderDestinations() +
   renderPopularTowns() +
   renderLatestListings() +
   renderPopularGuides() +

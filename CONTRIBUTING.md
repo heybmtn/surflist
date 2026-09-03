@@ -264,7 +264,7 @@ second and it does.
 
 ### The homepage — these sections are automatic
 
-- **Popular surf destinations** (town chips): the **top 8 towns by listing
+- **Popular destinations** (town chips): the **top 8 towns by listing
   count**, then alphabetical. To feature a town, give it more listings.
 - **Latest listings**: a random 8 drawn from **every listing in every
   category** (free and verified alike), reshuffled client-side on each page
@@ -273,7 +273,7 @@ second and it does.
   the business's site. The verified badge appears only when `verified: true`.
   There's no `lastVerified`-based ordering or schools-only featuring — every
   listing has an equal chance of appearing.
-- **Popular destination guides**: the same top 8 towns as cards linking to each
+- **Surf guides**: the same top 8 towns as cards linking to each
   town hub (`Surfing in <town>`). The blurb is the town intro when one exists,
   otherwise a count of listings by category.
 
