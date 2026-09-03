@@ -905,6 +905,9 @@ window.POSTS = [
     date: "2026-09-02",
     description: "When to surf Newquay, the best spots from Fistral to Watergate Bay, month-by-month water temperatures, and what wetsuit to pack.",
     blurb: "When to go, the beaches we love, water temperatures month by month, and what to pack for a Newquay surf trip.",
+    image: "/images/blog/surfing-newquay-fistral-beach-surfer.webp",
+    imageCard: "/images/blog/surfing-newquay-fistral-beach-surfer-card.webp",
+    imageAlt: "Surfer in a black wetsuit carrying a board through shallow water at Fistral Beach, Newquay, Cornwall, with the town on the cliffs behind",
     tags: ["Destinations", "Guides"],
     lead: "We've been coming back to Newquay for years, and it still feels like the beating heart of British surfing. On a good autumn morning, with clean lines rolling into Fistral and the car park slowly filling up, there's nowhere we'd rather paddle out. This guide is everything we've learned from those trips. We'll cover the best seasons, the water temperatures month by month, the wetsuit you'll want, the best surf spots, where beginners should start, and what to pack. Newquay isn't the warmest place to surf, and it isn't the emptiest. But few towns give you this many waves in one small stretch of coast — and that's what makes it special.",
     places: [
