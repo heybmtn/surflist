@@ -247,11 +247,14 @@ function phClass(seed, catSlug) {
   for (var i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
   return "card__ph card__ph--" + palettes[h % palettes.length];
 }
-function mediaInner(name, image, catSlug, seed) {
+function mediaInner(name, image, catSlug, seed, alt) {
   if (image) {
-    return '<img src="' + esc(image) + '" alt="' + esc(name) + '" width="400" height="250" loading="lazy" decoding="async">';
+    return '<img src="' + esc(image) + '" alt="' + esc(alt || name) + '" width="400" height="250" loading="lazy" decoding="async">';
   }
   return '<div class="' + phClass(seed || name, catSlug) + '" aria-hidden="true"></div>';
+}
+function postCardImage(p) {
+  return (p && (p.imageCard || p.image)) || "";
 }
 function socialsHtml(socials, googleUrl) {
   socials = socials || {};
@@ -1352,9 +1355,10 @@ function renderDestinationGuideCard(t, nameTag) {
   var title = "Surfing in " + t.name;
   var place = [t.region, t.country].filter(Boolean).join(", ");
   var blurb = (post && post.blurb) ? post.blurb : townGuideBlurb(t);
+  var cardImg = postCardImage(post);
   return '<li class="card">' +
     '<div class="card__media"><a href="' + esc(href) + '" aria-label="' + esc(title) + '">' +
-    mediaInner(title, "", "destination", href) + "</a></div>" +
+    mediaInner(title, cardImg, "destination", href, (post && post.imageAlt) || title) + "</a></div>" +
     '<div class="card__body"><span class="card__place">' + flagHtml(t.country) + esc(place) + "</span>" +
     "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + esc(title) + "</a></" + nameTag + ">" +
     '<p class="card__blurb">' + esc(blurb) + "</p>" +
@@ -1607,7 +1611,7 @@ function renderBlogCard(p, nameTag) {
   var date = fmtDate(p.date);
   return '<li class="card" data-facet="|' + esc((p.tags || []).join("|")) + '|">' +
     '<div class="card__media"><a href="' + esc(href) + '" aria-label="' + name + '">' +
-    mediaInner(p.title, p.image, "blog") + "</a></div>" +
+    mediaInner(p.title, postCardImage(p), "blog", undefined, p.imageAlt || p.title) + "</a></div>" +
     '<div class="card__body"><span class="card__place">' + date + "</span>" +
     "<" + nameTag + ' class="card__name"><a class="card__name-link" href="' + esc(href) + '">' + name + "</a></" + nameTag + ">" +
     (p.blurb ? '<p class="card__blurb">' + esc(p.blurb) + "</p>" : "") +
@@ -1794,7 +1798,7 @@ function renderBlogPost(p) {
   '<time datetime="' + esc(p.date) + '" itemprop="datePublished">' + fmtDate(p.date) + "</time>" +
   " &middot; " + mins + " min read</p>" +
   '<h1 class="detail__title" itemprop="headline">' + esc(p.title) + "</h1></div>\n" +
-  (p.image ? '  <div class="detail__media"><img src="' + esc(p.image) + '" alt="" itemprop="image" /></div>\n' : "") +
+  (p.image ? '  <div class="detail__media"><img src="' + esc(p.image) + '" alt="' + esc(p.imageAlt || "") + '" width="1600" height="1067" decoding="async" itemprop="image" /></div>\n' : "") +
   '  <div class="detail__grid"><div class="detail__body">' +
   (p.lead ? '<p class="detail__lead">' + renderInline(p.lead) + "</p>" : "") +
   '<div class="article-prose" itemprop="articleBody">' + renderBlogBody(p.body) + "</div>" +
