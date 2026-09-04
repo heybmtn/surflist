@@ -1480,69 +1480,88 @@ function renderAbout() {
   "</main>\n");
 }
 
-/* ---------- agency (footer-only; mention / visibility for surf businesses) ---------- */
+/* ---------- agency (footer-only; visibility for surf businesses) ---------- */
 function renderAgency() {
   var pageUrl = SITE + "/agency/";
   var trail = [{ name: "Home", href: "/" }, { name: "Agency" }];
-  var desc = "We help surf businesses get talked about — blogger outreach, digital PR and brand mentions that get you recommended by customers, search engines and AI.";
-  var callMailto = "mailto:hello@surflist.co?subject=Book%20a%2015-min%20call";
-  function ctas(primaryHref) {
-    return '<div class="hero-actions">' +
-      '<a class="btn" href="' + primaryHref + '">Get your surf business mentioned &rarr;</a>' +
-      '<a class="btn btn--secondary" href="' + callMailto + '">Book a 15-min call</a></div>';
+  var desc = "Surflist helps surf schools, surf shops and surf stays get seen on Google — and turn that attention into bookings.";
+  var helloMailto = "mailto:hello@surflist.co?subject=Free%20visibility%20check";
+  function cards(items) {
+    return items.map(function (pair) {
+      return '<div class="ed-item"><h3>' + pair[0] + "</h3><p>" + pair[1] + "</p></div>";
+    }).join("");
   }
-  var offerings = [
-    ["Blogger Outreach", "Get featured on relevant surfing, travel, lifestyle and local sites."],
-    ["Editorial Mentions", "Earn contextual mentions inside established articles your customers already read."],
-    ["Digital PR", "Turn your business into a story journalists and publishers want to cover."],
-    ["Brand Mentions", "Get your name showing up across relevant sites and online conversations."],
-    ["Media Placement", "Land in the publications your customers already trust."],
-    ["Community Visibility", "Build genuine presence across surf forums, groups and discussions."],
+  var audiences = cards([
+    ["Surf schools", "Fill your lessons and camps, in season and out."],
+    ["Surf shops", "Bring in walk-ins, rentals and repeat buyers."],
+    ["Surf stays", "Keep your beds full with the right guests."],
+  ]);
+  var services = cards([
+    ["Show up on Google Maps", "Most people find surf spots on their phone. We set up and improve your Google Business Profile so you appear in the map results when people search near you. That means good photos, the right categories, opening hours that match your season, and quick replies to questions."],
+    ["Pages built for every spot and service", "We build clear pages for each place you work and each thing you offer — beginner lessons, board hire, surf-and-stay packages, and more. When someone searches &ldquo;surf lessons in [your town]&rdquo;, we help that page come up. The more real your pages, the more Google trusts you."],
+    ["Get listed where travellers look", "Tourists trust travel guides, surf directories and local tourism sites. We get your business listed on the ones that matter, with links back to your site. This builds your reputation and helps you rank higher over time."],
+    ["Turn happy surfers into reviews", "Reviews sell surf lessons. We set up a simple way to ask every happy customer for one, at the right moment. We also help you reply to reviews — good and bad — so new customers trust you before they even call."],
+    ["Turn clicks into bookings", "Getting found is only half the job. We check your booking journey on mobile and fix what slows people down. Fewer clicks, clearer prices, an easy &ldquo;Book now&rdquo; — so more visitors become paying customers."],
+    ["Get recommended by AI", "More surfers now ask ChatGPT, Claude or Gemini things like &ldquo;best surf school in [your area] for beginners&rdquo;. These tools pick their answers from what they find online — your website, your reviews, and the travel sites that mention you. We help make sure your business is the one they name, not your competitor."],
+  ]);
+  var reasons = cards([
+    ["We only do surf", "We're not a general agency that took your money and Googled &ldquo;how surf schools work&rdquo;. We know your busy months, your quiet months and what makes a beginner say yes."],
+    ["We think about tourists, not just locals", "Your best customers often search from another city or country. We help you get found by people who haven't arrived yet — including in AI tools like ChatGPT, Claude and Gemini, where more people now ask for recommendations instead of using Google."],
+    ["We keep it simple", "You'll always know what we're doing and why. No jargon, no long reports you'll never read."],
+  ]);
+  var steps = [
+    ["Free check", "We look at your Google profile, your website and your reviews. Then we tell you what's working, what's not, and where the quick wins are."],
+    ["A clear plan", "You get a short plan with the jobs that will bring the most bookings first. No 40-page document — just what matters."],
+    ["We get to work", "We fix, build and improve month by month. You see the results in your bookings, your calls and your map rankings."],
   ].map(function (pair) {
-    return '<div class="ed-item"><h3>' + pair[0] + "</h3><p>" + pair[1] + "</p></div>";
+    return "<li><h3>" + pair[0] + "</h3><p>" + pair[1] + "</p></li>";
   }).join("");
-  var questions = [
-    "Where's the best place to learn to surf in Cornwall?",
-    "Best surf camp in Devon for beginners?",
-    "Where can I hire a surfboard near Newquay?",
-    "Which surf school in Croyde is best for families?",
-    "Where should I stay for a surf trip to Wales?",
-  ].map(function (q) { return "<li>&ldquo;" + q + "&rdquo;</li>"; }).join("");
+  var faqItems = [
+    ["How long until I see results?", "Some things, like a better Google profile, can help within weeks. Ranking higher and building links takes a few months. We aim for quick wins early and steady growth after."],
+    ["Do I need a new website?", "Not always. We work with what you have where we can. If your site is holding you back, we'll tell you straight."],
+    ["What if I'm only busy in summer?", "That's normal for surf. We plan around your season — building your visibility before the rush, and keeping you found in the quiet months."],
+    ["Will AI tools really send me customers?", "More and more, yes. People now ask ChatGPT, Claude and Gemini for travel and surf tips the way they used to ask Google. The businesses that show up in those answers get a head start."],
+    ["How much does it cost?", "It depends on your business and your goals. Book a free check and we'll give you honest options with clear prices."],
+  ];
+  var faqHtml = faqItems.map(function (pair) {
+    return '<details class="faq-item"><summary>' + pair[0] + "</summary><div><p>" + pair[1] + "</p></div></details>";
+  }).join("");
+  var faqJsonld = {
+    "@type": "FAQPage",
+    "@id": pageUrl + "#faq",
+    mainEntity: faqItems.map(function (pair) {
+      return { "@type": "Question", name: pair[0], acceptedAnswer: { "@type": "Answer", text: pair[1] } };
+    }),
+  };
   return page({
-    title: "Be the surf business AI recommends | surflist",
+    title: "Get found by surfers before they reach the beach | surflist",
     desc: desc,
     canonical: pageUrl,
-    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [breadcrumbJsonLd(trail)] }, null, 2),
+    jsonld: JSON.stringify({ "@context": "https://schema.org", "@graph": [breadcrumbJsonLd(trail), faqJsonld] }, null, 2),
   },
   '<main id="main" class="wrap">' + crumbs(trail) +
-  '<section class="hero hero--copy"><h1>Be the surf business AI recommends.</h1>' +
-  "<p>Your customers used to type <em>&ldquo;best surf school in Cornwall&rdquo;</em> into Google and scroll the results.</p>" +
-  "<p>Now more of them ask AI instead:</p>" +
-  '<blockquote class="pullquote"><p>&ldquo;I\'m heading to Cornwall for a week in September. I\'m a complete beginner and want good instructors, small groups and a beach that works for learners. Where should I go?&rdquo;</p></blockquote>' +
-  "<p>That's a different kind of search — and the businesses that win it aren't always the ones ranking #1 on Google. They're the ones the wider web talks about.</p>" +
-  "<p>We help surf businesses get talked about.</p>" +
-  ctas("#get-started") + "</section>\n" +
-  '<section class="hub-cat" id="why"><div class="hub-cat__head"><h2>Why this matters</h2></div>' +
-  '<div class="copy"><p>Old search rewarded one thing: a page ranking for a keyword.</p>' +
-  "<p>AI search works differently. Tools like Google's AI answers, ChatGPT and Perplexity increasingly draw on the <em>whole</em> web — blogs, publications, reviews, forums and local sites — to decide which businesses are worth recommending.</p>" +
-  "<p>So when someone asks where to learn to surf in Cornwall, the answer is shaped by who <em>else</em> mentions you, not just what's on your own site.</p>" +
-  "<p>If the surf web isn't talking about you, you're unlikely to be in the answer.</p></div></section>\n" +
+  '<section class="hero hero--copy"><h1>Get found by surfers before they reach the beach</h1>' +
+  "<p>Surflist helps surf schools, surf shops and surf stays get seen on Google — and turn that attention into bookings. We only work with surf businesses, so we know your season, your customer and your competition.</p>" +
+  '<div class="hero-actions"><a class="btn" href="#get-started">Get a free visibility check</a></div></section>\n' +
+  '<section class="hub-cat" id="who"><div class="hub-cat__head"><h2>Made for surf businesses</h2></div>' +
+  '<div class="copy"><p>Your customers plan ahead. They search for lessons, boards and places to stay weeks before they arrive. If you don\'t show up, someone else gets the booking.</p>' +
+  "<p>We help three kinds of surf business:</p></div>" +
+  '<div class="ed-list">' + audiences + "</div></section>\n" +
   '<section class="hub-cat" id="what"><div class="hub-cat__head"><h2>What we do</h2></div>' +
-  '<div class="copy"><p>We build the mentions, visibility and credibility that get surf businesses recommended — by customers, search engines and AI alike. We work with surf schools, camps, shops, coaches, retreats and brands.</p></div>' +
-  '<div class="ed-list">' + offerings + "</div>" +
-  "\n<!-- SLOT: campaign scope — e.g. placements over weeks, with a report. -->\n" +
+  '<div class="ed-list ed-list--prose">' + services + "</div></section>\n" +
+  '<section class="hub-cat" id="why"><div class="hub-cat__head"><h2>Why surf businesses choose Surflist</h2></div>' +
+  '<div class="ed-list ed-list--prose">' + reasons + "</div></section>\n" +
+  '<section class="hub-cat" id="how"><div class="hub-cat__head"><h2>How we work</h2></div>' +
+  '<ol class="agency-steps">' + steps + "</ol></section>\n" +
+  '<section class="hub-cat" id="results"><div class="hub-cat__head"><h2>What good looks like</h2></div>' +
+  '<div class="copy"><p>Our aim is simple: more people find you, more people trust you, and more people book.</p></div>' +
+  "\n<!-- SLOT: 2–3 real results once you have them, e.g. “Filled every summer lesson slot by June”. -->\n" +
+  "\n<!-- SLOT: client testimonial — short quote, owner name, business. -->\n" +
   "</section>\n" +
-  '<section class="hub-cat" id="questions"><div class="hub-cat__head"><h2>Be the answer to questions like these</h2></div>' +
-  '<ul class="agency-qs">' + questions + "</ul>" +
-  '<div class="copy"><p>These are the questions your customers are actually asking. We help make sure your business is part of the answer.</p></div></section>\n' +
-  "\n<!-- SLOT: proof — a result, testimonial, featured-in logos, or mini case study. -->\n" +
-  '<section class="hub-cat" id="think"><div class="hub-cat__head"><h2>How to think about it</h2></div>' +
-  '<div class="agency-compare"><div class="ed-item"><h3>The old way</h3><p>target a keyword &rarr; rank a page &rarr; get the click.</p></div>' +
-  '<div class="ed-item"><h3>The new way</h3><p>answer real questions &rarr; earn mentions &rarr; build authority &rarr; become the recommended business.</p></div></div>' +
-  '<p class="agency-tagline">Get mentioned. Build authority. Get recommended.</p></section>\n' +
-  '<section class="hub-cat" id="get-started"><div class="hub-cat__head"><h2>Get started</h2></div>' +
-  '<div class="copy"><p>We help surf businesses across the UK get more visible, more credible and easier for both people and AI to find and recommend.</p></div>' +
-  "\n<!-- SLOT: optional pricing anchor. -->\n" +
+  '<section class="hub-cat" id="faq"><div class="hub-cat__head"><h2>Common questions</h2></div>' +
+  '<div class="faq">' + faqHtml + "</div></section>\n" +
+  '<section class="hub-cat" id="get-started"><div class="hub-cat__head"><h2>Ready for a fuller lineup of bookings?</h2></div>' +
+  '<div class="copy"><p>Get a free visibility check. We\'ll show you exactly where surfers are finding your competition instead of you — and how to fix it.</p></div>' +
   '<form id="agency-form" class="form-field">' +
   '<div class="form-hp" aria-hidden="true"><label for="agency-company">Company</label>' +
   '<input id="agency-company" name="company" tabindex="-1" autocomplete="off"></div>' +
@@ -1553,13 +1572,14 @@ function renderAgency() {
   '<div class="form-row"><label for="agency-contact-email">Contact email</label>' +
   '<input id="agency-contact-email" name="contact_email" type="email" required autocomplete="email"></div>' +
   '<div class="form-row"><label for="agency-message">Message</label>' +
-  '<textarea id="agency-message" name="message" maxlength="2000" placeholder="Optional — what you do, and what you want to be mentioned for"></textarea></div>' +
+  '<textarea id="agency-message" name="message" maxlength="2000" placeholder="Optional — what you do, and what you want from a visibility check"></textarea></div>' +
   '<p class="form-error" id="agency-error" hidden></p>' +
   '<div class="form-actions">' +
-  '<button type="submit" class="btn">Get your surf business mentioned &rarr;</button>' +
-  '<a class="btn btn--secondary" href="' + callMailto + '">Book a 15-min call</a></div>' +
+  '<button type="submit" class="btn">Get my free check</button></div>' +
   "</form>" +
   '<div class="form-success" hidden></div>' +
+  '<p class="agency-contact">Prefer to chat? Email us at <a href="' + helloMailto + '">hello@surflist.co</a>.</p>' +
+  "\n<!-- SLOT: public phone number once you have one. -->\n" +
   "</section>\n" +
   "</main>\n",
   '<script src="/agency.js" defer></script>\n');
@@ -1923,7 +1943,7 @@ function renderLlms() {
   });
   out.push("## About");
   out.push("");
-  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Everything surfing: " + SITE + "/blog/. Surflist also helps surf businesses earn mentions and get recommended in search and AI answers: " + SITE + "/agency/.");
+  out.push("Surflist is a curated directory of surf schools, shops, stays and services, organised by country, region and town. Every listing is checked against the business's own official website. To get listed, see " + SITE + "/list-your-business/ or email listings@surflist.co. Read more at " + SITE + "/about/. Everything surfing: " + SITE + "/blog/. Surflist also helps surf schools, shops and stays get seen on Google and turn that attention into bookings: " + SITE + "/agency/.");
   out.push("");
   return out.join("\n");
 }
