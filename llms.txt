@@ -15,8 +15,8 @@
     - [Surfing in Jacó](https://surflist.co/costa-rica/puntarenas/jaco/): 5 listings.
     - [Surfing in Pavones](https://surflist.co/costa-rica/puntarenas/pavones/): 4 listings.
     - [Surfing in Santa Teresa](https://surflist.co/costa-rica/puntarenas/santa-teresa/): 5 listings.
-- [Surfing in England](https://surflist.co/england/): 64 listings across Cornwall, Devon, Yorkshire.
-  - [Surfing in Cornwall](https://surflist.co/england/cornwall/): 40 listings.
+- [Surfing in England](https://surflist.co/england/): 63 listings across Cornwall, Devon, Yorkshire.
+  - [Surfing in Cornwall](https://surflist.co/england/cornwall/): 39 listings.
     - [Surfing in Bude](https://surflist.co/england/cornwall/bude/): 2 listings.
     - [Surfing in Hayle](https://surflist.co/england/cornwall/hayle/): 3 listings.
     - [Surfing in Newquay](https://surflist.co/england/cornwall/newquay/): 13 listings.
@@ -119,10 +119,9 @@
     - [Surfing in São Pedro de Moel](https://surflist.co/portugal/silver-coast/sao-pedro-de-moel/): 2 listings.
   - [Surfing in Viana do Castelo](https://surflist.co/portugal/viana-do-castelo/): 2 listings.
     - [Surfing in Cabedelo](https://surflist.co/portugal/viana-do-castelo/cabedelo/): 2 listings.
-- [Surfing in Scotland](https://surflist.co/scotland/): 7 listings across Argyll, Caithness, East Lothian.
+- [Surfing in Scotland](https://surflist.co/scotland/): 6 listings across Argyll, Caithness, East Lothian.
   - [Surfing in Argyll](https://surflist.co/scotland/argyll/): 2 listings.
-  - [Surfing in Caithness](https://surflist.co/scotland/caithness/): 3 listings.
-    - [Surfing in Thurso](https://surflist.co/scotland/caithness/thurso/): 2 listings.
+  - [Surfing in Caithness](https://surflist.co/scotland/caithness/): 2 listings.
   - [Surfing in East Lothian](https://surflist.co/scotland/east-lothian/): 2 listings.
     - [Surfing in Belhaven Bay](https://surflist.co/scotland/east-lothian/belhaven-bay/): 2 listings.
 - [Surfing in Spain](https://surflist.co/spain/): 39 listings across Asturias, Basque Country, Canary Islands, Cantabria.
@@ -236,7 +235,6 @@
 - [Stoked Surf School](https://surflist.co/surf-schools/stoked-surf-school-perranporth/): surf school in Perranporth, Cornwall, England — Perranporth's year-round school with a permanent base, on-site surf-and-skate shop and a structured progression system.
 - [George's Surf School](https://surflist.co/surf-schools/george-s-surf-school/): surf school in Polzeath, Cornwall, England — Bespoke private coaching at Polzeath and Harlyn — an ISA/Surfing England Centre of Excellence with video analysis.
 - [Surf's Up Surf School](https://surflist.co/surf-schools/surf-s-up-surf-school/): surf school in Polzeath, Cornwall, England — Polzeath school teaching all abilities on one of Cornwall's safest, gently shelving beaches, with qualified instructors and all equipment included.
-- [Eskinzo Surf School](https://surflist.co/surf-schools/eskinzo-surf-school/): surf school in Porthtowan, Cornwall, England — Porthtowan's surf club and school, with a talented local crew coaching all levels on one of the north coast's punchier beach breaks.
 - [Sennen Surfing Centre](https://surflist.co/surf-schools/sennen-surfing-centre/): surf school in Sennen Cove, Cornwall, England — Award-winning O'Neill academy on the golden sands of Sennen, near Land's End — one of the UK's longest-running surf schools.
 - [Breakers Surf School](https://surflist.co/surf-schools/breakers-surf-school/): surf school in St Agnes, Cornwall, England — Sheltered Trevaunance Cove school with strong local knowledge — lessons, SUP and a kids' club, open all year.
 - [St Ives Surf School](https://surflist.co/surf-schools/st-ives-surf-school/): surf school in St Ives, Cornwall, England — St Ives' only surf school, on blue-flag Porthmeor by the Tate — a Surfing England Centre of Excellence, plus SUP and coasteering.
@@ -388,7 +386,6 @@
 - [Pete's Surf School](https://surflist.co/surf-schools/pete-s-surf-school/): surf school in Machrihanish, Argyll, Scotland — Kintyre surf school teaching on the long Atlantic sands of Machrihanish Bay near Campbeltown, for beginners and improvers.
 - [Blackhouse Watersports](https://surflist.co/surf-schools/blackhouse-watersports/): surf school in Tiree, Argyll, Scotland — Surf and kitesurf school on Balevullin beach on the Isle of Tiree, the 'Hawaii of the North', with ISA instructors and lessons for all ages on white-sand Hebridean beaches.
 - [North Coast Watersports](https://surflist.co/surf-schools/north-coast-watersports/): surf school in Dunnet Bay, Caithness, Scotland — Award-winning school on the North Coast 500, teaching at the long sandy sweep of Dunnet Bay near Thurso, with ISA-trained local coaches.
-- [Thurso Surf](https://surflist.co/surf-schools/thurso-surf/): surf school in Thurso, Caithness, Scotland — Small-group lessons and surf camps around Thurso, Scotland's cold-water surfing mecca, home to the world-class Thurso East reef break.
 - [Coast to Coast Surf School](https://surflist.co/surf-schools/coast-to-coast-surf-school/): surf school in Belhaven Bay, East Lothian, Scotland — Scotland's leading surf school (since 2004) at Belhaven Bay near Dunbar — the closest surf beach to Edinburgh — with lessons, SUP, coasteering and island surf camps.
 - [Ocean Vertical](https://surflist.co/surf-schools/ocean-vertical/): surf school in Belhaven Bay, East Lothian, Scotland — All-levels surf lessons at Belhaven Bay from a base in a 200-year-old Victorian stables, with surf-and-yoga retreats along the East Lothian coast.
 - [Alamar Salinas](https://surflist.co/surf-schools/alamar-salinas/): surf school in Salinas, Asturias, Spain — Friendly Salinas surf school offering group and private lessons tailored to every age and level, with all equipment provided.
