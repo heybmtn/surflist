@@ -1888,12 +1888,6 @@ window.LISTINGS = [
     socials: {},
     levels: ["Beginner", "Intermediate", "Advanced"] },
   // ---- Salinas (Asturias) ----
-  { name: "Salinas Surf Camp", country: "Spain", region: "Asturias", town: "Salinas",
-    url: "https://salinassurfcamp.com",
-    blurb: "School and surf camp on Salinas beach with 15+ years' experience, a surf house steps from the sand, kids' summer camps and gear hire including surfskate.",
-    image: "", verified: false,
-    socials: {},
-    levels: ["Beginner", "Intermediate", "Kids"] },
   { name: "Escuela de Surf Las Dunas", country: "Spain", region: "Asturias", town: "Salinas",
     url: "https://escueladesurflasdunas.com",
     blurb: "Salinas school and surf camp for adults and children, with courses at all levels on one of the most consistent beaches of the Cantabrian Sea, open all year.",
