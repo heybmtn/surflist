@@ -591,6 +591,9 @@ window.POSTS = [
     date: "2026-09-02",
     description: "When to surf Ericeira, the best spots from Foz do Lizandro to Coxos, month-by-month water temperatures, and what wetsuit to pack.",
     blurb: "When to go, the spots we love, water temperatures month by month, and what to pack for an Ericeira surf trip.",
+    image: "/images/blog/surfing-ericeira-ribeira-dilhas-surfer.webp",
+    imageCard: "/images/blog/surfing-ericeira-ribeira-dilhas-surfer-card.webp",
+    imageAlt: "Surfer in a black wetsuit riding a turquoise wave on a white board at Ribeira d'Ilhas, Ericeira, Portugal, with waves crashing against dark cliffs behind",
     tags: ["Destinations", "Guides"],
     lead: "We keep coming back to Ericeira. It's a small fishing town on Portugal's west coast, and it packs more good waves into a short stretch of shore than almost anywhere in Europe. We've had long, easy sessions on the sandy beaches to the south, and we've watched the heavy reefs to the north from the cliffs, coffee in hand, working up the nerve to paddle out. This guide covers everything we wish we'd known before our first trip — the best seasons, the surf spots by skill level, the water temperatures month by month, and what to pack. Whatever your level, and whatever the swell is doing, there's almost always a wave here that suits you.",
     places: [
