@@ -124,9 +124,9 @@
   - [Surfing in Caithness](https://surflist.co/scotland/caithness/): 2 listings.
   - [Surfing in East Lothian](https://surflist.co/scotland/east-lothian/): 2 listings.
     - [Surfing in Belhaven Bay](https://surflist.co/scotland/east-lothian/belhaven-bay/): 2 listings.
-- [Surfing in Spain](https://surflist.co/spain/): 39 listings across Asturias, Basque Country, Canary Islands, Cantabria.
-  - [Surfing in Asturias](https://surflist.co/spain/asturias/): 4 listings.
-    - [Surfing in Salinas](https://surflist.co/spain/asturias/salinas/): 3 listings.
+- [Surfing in Spain](https://surflist.co/spain/): 38 listings across Asturias, Basque Country, Canary Islands, Cantabria.
+  - [Surfing in Asturias](https://surflist.co/spain/asturias/): 3 listings.
+    - [Surfing in Salinas](https://surflist.co/spain/asturias/salinas/): 2 listings.
   - [Surfing in Basque Country](https://surflist.co/spain/basque-country/): 8 listings.
     - [Surfing in San Sebastián](https://surflist.co/spain/basque-country/san-sebastian/): 3 listings.
     - [Surfing in Sopelana](https://surflist.co/spain/basque-country/sopelana/): 2 listings.
@@ -390,7 +390,6 @@
 - [Ocean Vertical](https://surflist.co/surf-schools/ocean-vertical/): surf school in Belhaven Bay, East Lothian, Scotland — All-levels surf lessons at Belhaven Bay from a base in a 200-year-old Victorian stables, with surf-and-yoga retreats along the East Lothian coast.
 - [Alamar Salinas](https://surflist.co/surf-schools/alamar-salinas/): surf school in Salinas, Asturias, Spain — Friendly Salinas surf school offering group and private lessons tailored to every age and level, with all equipment provided.
 - [Escuela de Surf Las Dunas](https://surflist.co/surf-schools/escuela-de-surf-las-dunas/): surf school in Salinas, Asturias, Spain — Salinas school and surf camp for adults and children, with courses at all levels on one of the most consistent beaches of the Cantabrian Sea, open all year.
-- [Salinas Surf Camp](https://surflist.co/surf-schools/salinas-surf-camp/): surf school in Salinas, Asturias, Spain — School and surf camp on Salinas beach with 15+ years' experience, a surf house steps from the sand, kids' summer camps and gear hire including surfskate.
 - [ANAM CARA Surf School](https://surflist.co/surf-schools/anam-cara-surf-school/): surf school in Tapia de Casariego, Asturias, Spain — Surf school at a rural tourism complex in Tapia de Casariego, the western-Asturian town famed for its international surf contest, with lessons and stays combined.
 - [Mundaka Barra Surf](https://surflist.co/surf-schools/mundaka-barra-surf/): surf school in Mundaka, Basque Country, Spain — School in Mundaka — home to one of the world's best left-hand barrels — run by local coach Gaizka San Justo, with safe, fun lessons for children and beginners from age seven.
 - [Pukas Surf Eskola](https://surflist.co/surf-schools/pukas-surf-eskola/): surf school in San Sebastián, Basque Country, Spain — The school arm of the iconic Basque surf brand Pukas, teaching on Zurriola since 1982 with top facilities, the widest rental quiver in town and lessons for all levels.
